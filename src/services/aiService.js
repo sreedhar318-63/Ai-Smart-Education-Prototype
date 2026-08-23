@@ -127,16 +127,81 @@ function generateSmartMockContent(type, data) {
     return generateMockFlashcards(goal, domain, data?.context?.coveredTopics || []);
   }
 
-  if (type === 'resume_generation') {
-    return generateMockResume(
-      data?.context?.goal,
-      data?.context?.role,
-      data?.context?.completedTopics || [],
-      data?.context?.skillGapMap
-    );
+  if (type === 'doubt_resolution') {
+    return generateMockDoubtResolution(data?.userPrompt, data?.context);
   }
 
-  return `Here is a personalized explanation of ${topicName || goal} tailored to your background in ${domain}.`;
+  return `Here is a personalized response regarding ${topicName || goal} tailored to your background in ${domain}.`;
+}
+
+/**
+ * Generate intelligent doubt resolution responses tailored to topic, persona, and analogy domain
+ */
+function generateMockDoubtResolution(userPrompt = '', context = {}) {
+  const { goal = 'Software Engineering', domain = 'cooking', persona = 'Patient Teacher', topicName = '' } = context || {};
+  const queryLower = (userPrompt || '').toLowerCase();
+  
+  let header = '';
+  if (persona === 'Strict Senior Engineer') {
+    header = `⚡ **Strict Senior Tech Brief:**\n`;
+  } else if (persona === 'Socratic Questioner') {
+    header = `🔍 **Socratic Perspective:**\n`;
+  } else {
+    header = `💚 **AI Mentor Guidance:**\n`;
+  }
+
+  let coreAnswer = '';
+  if (queryLower.includes('example') || queryLower.includes('code') || queryLower.includes('how to')) {
+    coreAnswer = `Here is a practical code example demonstrating **${topicName || goal}**:\n\n` +
+      `\`\`\`javascript\n` +
+      `// Production Example: ${topicName || goal}\n` +
+      `function executeProcess(inputData) {\n` +
+      `  // 1. Guard check (Analogy: verifying ingredients in ${domain})\n` +
+      `  if (!inputData) throw new Error("Missing payload");\n\n` +
+      `  // 2. Perform transformation\n` +
+      `  const result = {\n` +
+      `    id: Date.now(),\n` +
+      `    data: inputData,\n` +
+      `    processedAt: new Date().toISOString()\n` +
+      `  };\n\n` +
+      `  return result;\n` +
+      `}\n\n` +
+      `// Test invocation:\n` +
+      `const outcome = executeProcess({ step: 'Mastery' });\n` +
+      `console.log('Outcome:', outcome);\n` +
+      `\`\`\`\n\n` +
+      `**Why this matters:** Keeping computations pure and predictable prevents side-effects across components.`;
+  } else if (queryLower.includes('why') || queryLower.includes('vs') || queryLower.includes('difference') || queryLower.includes('instead')) {
+    coreAnswer = `Great question regarding **${topicName || 'this concept'}**!\n\n` +
+      `Here is why this approach is preferred over legacy patterns:\n\n` +
+      `• **1. Unidirectional Data Flow:** State flows predictably, making debugging much simpler.\n` +
+      `• **2. Reusability:** Modular abstractions can be tested independently without relying on global state.\n` +
+      `• **3. Scalability:** Fits into large codebase standards without unexpected re-render bottlenecks.\n\n` +
+      `*Analogy Bridge (${domain}):* Think of it like pre-measuring ingredients before heating the pan—it guarantees consistent results every single time!`;
+  } else if (queryLower.includes('bug') || queryLower.includes('error') || queryLower.includes('issue') || queryLower.includes('wrong')) {
+    coreAnswer = `When working with **${topicName || goal}**, keep an eye out for these 3 common bugs:\n\n` +
+      `⚠️ **1. Direct State Mutation:** Modifying objects directly breaks change detection. Always return fresh updated copies.\n` +
+      `⚠️ **2. Uncleaned Async Effects:** Forgetting to cancel timers or subscriptions can lead to memory leaks.\n` +
+      `⚠️ **3. Incorrect Dependency Arrays:** Missing dependency variables causes stale closures.`;
+  } else {
+    coreAnswer = `Regarding your doubt: **"${userPrompt}"**\n\n` +
+      `When tackling **${topicName || goal}**, keep these key principles in mind:\n\n` +
+      `1. **Focus on Core Mechanics:** Understand the input-to-output flow before adding complex abstractions.\n` +
+      `2. **Real-World Mental Model:** In your **${domain}** analogy, every step in the pipeline must execute cleanly in sequence.\n` +
+      `3. **Incremental Progress:** Test each small block in isolation before combining them into a full feature.\n\n` +
+      `If you'd like, I can write a custom code snippet, give another real-world metaphor, or break down potential edge cases!`;
+  }
+
+  let followUp = '';
+  if (persona === 'Socratic Questioner') {
+    followUp = `\n\n> 💬 **Follow-up reflection for you:** How would you modify this approach if the input data was streamable or asynchronous?`;
+  } else if (persona === 'Strict Senior Engineer') {
+    followUp = `\n\n> 📌 **Senior Rule:** Ensure you write unit tests covering edge cases before deploying this code to production.`;
+  } else {
+    followUp = `\n\n> 🌟 **Tip:** Feel free to ask me follow-up questions or paste any code you want me to review!`;
+  }
+
+  return `${header}${coreAnswer}${followUp}`;
 }
 
 /**

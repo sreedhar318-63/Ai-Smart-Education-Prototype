@@ -1,5 +1,5 @@
 import React from 'react';
-import { BookOpen, Terminal, RotateCcw, User, Flame, ArrowLeft, FileText, Award } from 'lucide-react';
+import { BookOpen, Terminal, RotateCcw, User, Flame, ArrowLeft, FileText, Award, MessageSquare } from 'lucide-react';
 
 export const PERSONAS = [
   {
@@ -32,6 +32,7 @@ export default function Navbar({
   onOpenDebugger,
   onOpenResumeBuilder,
   onOpenCertificate,
+  onToggleChatbot,
   onResetSession,
   onGoBack,
   activeView,
@@ -106,6 +107,16 @@ export default function Navbar({
         {/* Top-Right Corner: Certificate, Resume Builder, Unobtrusive Circular Avatar Button & Prompt Inspector */}
         <div className="flex items-center space-x-2">
           
+          {/* Ask Doubts Chatbot Button */}
+          <button
+            onClick={onToggleChatbot}
+            className="flex items-center space-x-1.5 px-2.5 py-1.5 rounded-xl bg-amber-700 hover:bg-amber-800 text-white text-xs font-bold transition-all shadow-xs cursor-pointer"
+            title="Ask AI Mentor a Doubt"
+          >
+            <MessageSquare className="w-3.5 h-3.5 text-amber-200" />
+            <span className="hidden sm:inline">Ask Doubts</span>
+          </button>
+
           {/* Mastery Certificate Button */}
           {hasOnboarded && (
             <button

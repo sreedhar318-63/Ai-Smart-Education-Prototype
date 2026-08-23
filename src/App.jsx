@@ -8,6 +8,7 @@ import LearnerProfileScreen from './components/LearnerProfileScreen';
 import PromptDebuggerModal from './components/PromptDebuggerModal';
 import ResumeBuilderModal from './components/ResumeBuilderModal';
 import CertificateModal from './components/CertificateModal';
+import ChatbotWidget from './components/ChatbotWidget';
 import { generatePersonalizedContent } from './services/aiService';
 import { generate90DayHeatmapData, updateTodayHeatmap } from './utils/mockHeatmap';
 
@@ -47,6 +48,9 @@ export default function App() {
 
   // Certificate modal state
   const [isCertificateOpen, setIsCertificateOpen] = useState(false);
+
+  // AI Doubts Chatbot widget state
+  const [isChatbotOpen, setIsChatbotOpen] = useState(false);
 
 
 
@@ -336,6 +340,7 @@ ${formData.jobDescription ? `Target Job Description: ${formData.jobDescription}`
         onOpenDebugger={() => setIsDebuggerOpen(true)}
         onOpenResumeBuilder={() => setIsResumeBuilderOpen(true)}
         onOpenCertificate={() => setIsCertificateOpen(true)}
+        onToggleChatbot={() => setIsChatbotOpen(prev => !prev)}
         onResetSession={handleResetSession}
         onGoBack={handleGoBack}
         activeView={activeView}
@@ -445,6 +450,16 @@ ${formData.jobDescription ? `Target Job Description: ${formData.jobDescription}`
         onboardingData={onboardingData}
         pathData={pathData}
         completedTopicIds={completedTopicIds}
+      />
+
+      {/* AI Doubts Solver Floating Chatbot Widget */}
+      <ChatbotWidget
+        persona={persona}
+        onboardingData={onboardingData}
+        currentTopic={todayTopics[currentTopicIndex]}
+        learnerModel={learnerModel}
+        isOpen={isChatbotOpen}
+        onToggle={() => setIsChatbotOpen(prev => !prev)}
       />
 
     </div>
