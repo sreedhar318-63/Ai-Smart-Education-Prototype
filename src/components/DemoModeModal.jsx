@@ -148,8 +148,8 @@ export default function DemoModeModal({ isOpen, onClose, onNavigateStep }) {
   };
 
   return (
-    <div className="fixed bottom-4 right-4 z-50 max-w-md w-full animate-in slide-in-from-bottom-5 duration-300">
-      <div className="bg-stone-900 text-white rounded-3xl p-5 border border-amber-500/50 shadow-2xl space-y-4 relative overflow-hidden backdrop-blur-md">
+    <div className="fixed bottom-4 left-4 right-4 sm:left-auto sm:right-4 z-50 max-w-md w-auto sm:w-full animate-in slide-in-from-bottom-5 duration-300">
+      <div className="bg-stone-900 text-white rounded-3xl p-4 sm:p-5 border border-amber-500/50 shadow-2xl space-y-4 relative overflow-hidden backdrop-blur-md">
         
         {/* Glowing top line */}
         <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-amber-500 via-amber-300 to-amber-500"></div>
