@@ -11,10 +11,12 @@ const SUGGESTED_DOMAINS = [
 ];
 
 const SUGGESTED_GOALS = [
-  "Learn React & modern frontend architecture",
-  "Become job-ready in Data Analysis",
-  "Master System Design & Backend API design",
-  "Understand Machine Learning & AI fundamentals"
+  "Master AI Engineering & LLM Applications",
+  "Learn React & Modern Fullstack Web Architecture",
+  "Become Job-Ready in Data Science & Machine Learning",
+  "Master System Design & Microservice Architectures",
+  "Learn MLOps, Cloud Infrastructure & Model Deployment",
+  "Become a Cybersecurity & Network Security Specialist"
 ];
 
 export default function OnboardingScreen({ onSubmitOnboarding, isLoading }) {
