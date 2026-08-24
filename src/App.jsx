@@ -34,9 +34,9 @@ export default function App() {
   const [skills, setSkills] = useState(savedData.skills);
   const [careerGoal, setCareerGoal] = useState(savedData.career);
 
-  // Active view switcher: 'dashboard', 'learning-twin', 'adaptive-quiz', 'skill-graph', 'smart-revision', 'career', 'roadmap', 'learning', 'recap', 'profile'
-  const [activeView, setActiveView] = useState('dashboard');
-  const [currentStep, setCurrentStep] = useState(2); // Step 1: Onboarding, Step 2: Main views
+  // Active view switcher: 'onboarding', 'dashboard', 'learning-twin', 'adaptive-quiz', 'skill-graph', 'smart-revision', 'career', 'roadmap', 'learning', 'recap', 'profile'
+  const [activeView, setActiveView] = useState('onboarding');
+  const [currentStep, setCurrentStep] = useState(1); // Step 1: Onboarding / Setup Landing Page, Step 2: Main views
 
   // Judge Demo Mode State
   const [isDemoModeOpen, setIsDemoModeOpen] = useState(false);
@@ -96,26 +96,36 @@ export default function App() {
 
   // Synchronize navigation step with browser history hash
   const navigateToView = (newView) => {
-    setCurrentStep(2);
-    setActiveView(newView);
-    window.location.hash = `#${newView}`;
+    if (newView === 'onboarding') {
+      setCurrentStep(1);
+      setActiveView('onboarding');
+      window.location.hash = '#onboarding';
+    } else {
+      setCurrentStep(2);
+      setActiveView(newView);
+      window.location.hash = `#${newView}`;
+    }
   };
 
-  // Ensure website opens on Landing Page (Dashboard) by default
+  // Synchronize browser history and hash navigation
   useEffect(() => {
     const hash = window.location.hash.replace('#', '');
-    if (!hash || hash === 'dashboard') {
+    if (hash === 'onboarding' || (!hash && currentStep === 1)) {
+      setCurrentStep(1);
+      setActiveView('onboarding');
+    } else if (hash) {
       setCurrentStep(2);
-      setActiveView('dashboard');
-    } else {
       setActiveView(hash);
     }
 
     const handleHashChange = () => {
       const h = window.location.hash.replace('#', '');
-      if (h) {
-        setActiveView(h);
+      if (h === 'onboarding') {
+        setCurrentStep(1);
+        setActiveView('onboarding');
+      } else if (h) {
         setCurrentStep(2);
+        setActiveView(h);
       }
     };
     window.addEventListener('hashchange', handleHashChange);
@@ -123,20 +133,23 @@ export default function App() {
   }, []);
 
   const handleGoBack = () => {
-    if (activeView !== 'dashboard') {
+    if (activeView !== 'dashboard' && activeView !== 'onboarding') {
       navigateToView('dashboard');
+    } else if (activeView === 'dashboard') {
+      setCurrentStep(1);
+      setActiveView('onboarding');
     } else {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 
-  // Reset entire state and return to Landing Page
+  // Reset entire state and return to Onboarding Landing Page
   const handleResetSession = () => {
     setStudentProfile(INITIAL_STUDENT_PROFILE);
     setSkills(INITIAL_SKILLS);
     setCareerGoal('AI Engineer');
-    setCurrentStep(2);
-    navigateToView('dashboard');
+    setCurrentStep(1);
+    navigateToView('onboarding');
     setCurrentDay(1);
     setCompletedTopicIds([]);
     setCurrentTopicIndex(0);

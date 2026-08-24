@@ -98,6 +98,15 @@ export default function Navbar({
         {hasOnboarded && (
           <nav className="flex flex-wrap items-center justify-center gap-1 bg-stone-100/90 p-1 rounded-2xl border border-stone-200/80 text-xs font-semibold">
             <button
+              onClick={() => onNavigate('onboarding')}
+              className={`px-3 py-1.5 rounded-xl transition-all cursor-pointer ${
+                activeView === 'onboarding' ? 'bg-amber-600 text-white shadow-xs' : 'text-stone-700 hover:text-stone-900'
+              }`}
+            >
+              Setup Plan
+            </button>
+
+            <button
               onClick={() => onNavigate('dashboard')}
               className={`px-3 py-1.5 rounded-xl transition-all cursor-pointer ${
                 activeView === 'dashboard' ? 'bg-stone-900 text-white shadow-xs' : 'text-stone-700 hover:text-stone-900'
