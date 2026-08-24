@@ -96,16 +96,26 @@ export default function App() {
 
   // Synchronize navigation step with browser history hash
   const navigateToView = (newView) => {
+    setCurrentStep(2);
     setActiveView(newView);
     window.location.hash = `#${newView}`;
   };
 
-  // Synchronize browser Back & Forward button clicks
+  // Ensure website opens on Landing Page (Dashboard) by default
   useEffect(() => {
+    const hash = window.location.hash.replace('#', '');
+    if (!hash || hash === 'dashboard') {
+      setCurrentStep(2);
+      setActiveView('dashboard');
+    } else {
+      setActiveView(hash);
+    }
+
     const handleHashChange = () => {
-      const hash = window.location.hash.replace('#', '');
-      if (hash) {
-        setActiveView(hash);
+      const h = window.location.hash.replace('#', '');
+      if (h) {
+        setActiveView(h);
+        setCurrentStep(2);
       }
     };
     window.addEventListener('hashchange', handleHashChange);
@@ -116,16 +126,16 @@ export default function App() {
     if (activeView !== 'dashboard') {
       navigateToView('dashboard');
     } else {
-      setCurrentStep(1);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 
-  // Reset entire state
+  // Reset entire state and return to Landing Page
   const handleResetSession = () => {
     setStudentProfile(INITIAL_STUDENT_PROFILE);
     setSkills(INITIAL_SKILLS);
     setCareerGoal('AI Engineer');
-    setCurrentStep(1);
+    setCurrentStep(2);
     navigateToView('dashboard');
     setCurrentDay(1);
     setCompletedTopicIds([]);
