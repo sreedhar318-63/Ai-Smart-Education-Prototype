@@ -1,328 +1,308 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { 
- BookOpen, Terminal, ArrowLeft, Award, 
- MessageSquare, Play, User, Menu, X, FileText,
- LayoutDashboard, Brain, Sparkles, GitBranch, RotateCcw, Target, ChevronDown
+  Route, Menu, X, ChevronDown, Play, MessageSquare, User,
+  Target, GitBranch, RotateCcw, Award, FileText, Terminal
 } from 'lucide-react';
 
 export const PERSONAS = [
- {
- id: 'Patient Teacher',
- name: 'Patient Teacher',
- icon: '💚',
- tagline: 'Warm, encouraging, step-by-step guidance'
- },
- {
- id: 'Strict Senior Engineer',
- name: 'Strict Senior Engineer',
- icon: '⚡',
- tagline: 'Direct, code-focused, concise, high standards'
- },
- {
- id: 'Socratic Questioner',
- name: 'Socratic Questioner',
- icon: '🔍',
- tagline: 'Asks guiding questions, sparks critical thinking'
- }
+  { id: 'Patient Teacher', name: 'Patient Teacher', icon: '👨‍🏫' },
+  { id: 'Strict Senior Engineer', name: 'Strict Senior', icon: '⚡' },
+  { id: 'Socratic Questioner', name: 'Socratic Guide', icon: '🔍' }
 ];
 
 export default function Navbar({
- currentStep,
- persona,
- onPersonaChange,
- onOpenDebugger,
- onOpenResumeBuilder,
- onOpenCertificate,
- onToggleChatbot,
- onResetSession,
- onGoBack,
- activeView,
- onNavigate,
- onStartDemoMode,
- hasOnboarded,
- studentProfile
+  currentStep,
+  persona,
+  onPersonaChange,
+  onOpenDebugger,
+  onOpenResumeBuilder,
+  onOpenCertificate,
+  onToggleChatbot,
+  onGoBack,
+  activeView,
+  onNavigate,
+  onStartDemoMode,
 }) {
- const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
- const [isToolsDropdownOpen, setIsToolsDropdownOpen] = useState(false);
- const dropdownRef = useRef(null);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMoreMenuOpen, setIsMoreMenuOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
- const showGoBack = (currentStep > 1 || activeView !== 'dashboard');
+  const showGoBack = (currentStep > 1 || activeView !== 'dashboard');
 
- // Close dropdown when clicking outside
- useEffect(() => {
- function handleClickOutside(event) {
- if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
- setIsToolsDropdownOpen(false);
- }
- }
- document.addEventListener('mousedown', handleClickOutside);
- return () => document.removeEventListener('mousedown', handleClickOutside);
- }, []);
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsMoreMenuOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
- const handleNav = (view) => {
- onNavigate(view);
- setIsMobileMenuOpen(false);
- setIsToolsDropdownOpen(false);
- };
+  const handleNav = (view) => {
+    onNavigate(view);
+    setIsMobileMenuOpen(false);
+    setIsMoreMenuOpen(false);
+  };
 
- const navItems = [
- { id: 'onboarding', label: 'Setup Plan', icon: Target },
- { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
- { id: 'learning-twin', label: 'Learning Twin', icon: Brain },
- { id: 'adaptive-quiz', label: 'Adaptive Quiz', icon: Sparkles },
- { id: 'skill-graph', label: 'Skill Graph', icon: GitBranch },
- { id: 'smart-revision', label: 'Smart Revision', icon: RotateCcw },
- { id: 'career', label: 'Career & Roadmap', icon: Target },
- ];
+  const mainNav = [
+    { id: 'dashboard', label: 'Dashboard' },
+    { id: 'learning-twin', label: 'Learning Twin' },
+    { id: 'adaptive-quiz', label: 'Adaptive Quiz' },
+    { id: 'career', label: 'Career Path' },
+  ];
 
- return (
- <header className="sticky top-0 z-40 bg-[#FCFBF9]/95 border-b border-neutral-200/80 px-3 lg:px-8 py-2.5 transition-all">
- <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-3">
- 
- {/* Top Row / Brand & Mobile Menu Bar */}
- <div className="flex items-center justify-between w-full lg:w-auto gap-2">
- 
- <div className="flex items-center space-x-2">
- {showGoBack && (
- <button
- onClick={onGoBack}
- className="flex items-center space-x-1 px-2.5 py-1.5 rounded-lg bg-neutral-200/80 hover:bg-neutral-300/80 text-neutral-800 font-semibold text-xs transition-colors cursor-pointer"
- title="Go back to previous page"
- >
- <ArrowLeft className="w-4 h-4 text-neutral-700" />
- <span className="hidden sm:inline">Back</span>
- </button>
- )}
+  const secondaryNav = [
+    { id: 'onboarding', label: 'Setup Plan', icon: Target },
+    { id: 'skill-graph', label: 'Skill Graph', icon: GitBranch },
+    { id: 'smart-revision', label: 'Smart Revision', icon: RotateCcw },
+  ];
 
- <button 
- onClick={() => handleNav('dashboard')}
- className="flex items-center space-x-2 text-left group cursor-pointer focus:outline-none"
- >
- <div className="w-8 h-8 rounded-lg bg-neutral-900 text-neutral-100 flex items-center justify-center group-hover:bg-warning-600 transition-colors shrink-0">
- <BookOpen className="w-4 h-4 text-warning-300" />
- </div>
- <h1 className="font-editorial text-xl sm:text-2xl font-semibold tracking-tight text-neutral-900 leading-none">
- Mentor<span className="italic text-warning-700">Path</span>
- </h1>
- </button>
- </div>
+  const toolsNav = [
+    { id: 'cert', label: 'Mastery Certificate', icon: Award, action: onOpenCertificate },
+    { id: 'resume', label: 'Resume Builder', icon: FileText, action: onOpenResumeBuilder },
+    { id: 'debug', label: 'Prompt Inspector', icon: Terminal, action: onOpenDebugger },
+  ];
 
- <div className="flex items-center space-x-2">
- {/* Persona Selector */}
- <div className="flex items-center space-x-1 bg-neutral-100 border border-neutral-300 px-2 py-1 rounded-lg text-xs ">
- <select
- value={persona}
- onChange={(e) => onPersonaChange(e.target.value)}
- className="bg-transparent font-bold text-neutral-800 focus:outline-none cursor-pointer text-xs max-w-[120px] sm:max-w-none truncate"
- aria-label="Select AI Mentor Persona"
- >
- {PERSONAS.map(p => (
- <option key={p.id} value={p.id}>{p.icon} {p.name}</option>
- ))}
- </select>
- </div>
+  return (
+    <header className="sticky top-0 z-40 bg-neutral-50 border-b border-neutral-200">
+      <div className="max-w-7xl mx-auto h-16 px-4 lg:px-8 flex items-center justify-between">
+        
+        {/* LEFT GROUP: Logo + Optional Breadcrumb */}
+        <div className="flex items-center gap-4">
+          <button 
+            onClick={() => handleNav('dashboard')}
+            className="flex items-center gap-2.5 group focus:outline-none"
+            aria-label="Home"
+          >
+            <div className="w-8 h-8 rounded-lg bg-neutral-900 text-neutral-50 flex items-center justify-center transition-colors group-hover:bg-neutral-800">
+              <Route className="w-4 h-4" />
+            </div>
+            <span className="font-editorial text-xl font-bold tracking-tight text-neutral-900">
+              MentorPath
+            </span>
+          </button>
 
- {/* Mobile Menu Toggle Button */}
- <button
- onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
- className="lg:hidden p-2 rounded-lg bg-neutral-200/80 hover:bg-neutral-300 text-neutral-800 transition-colors cursor-pointer"
- aria-label="Toggle Mobile Navigation Drawer"
- aria-expanded={isMobileMenuOpen}
- >
- {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
- </button>
- </div>
+          {showGoBack && (
+            <div className="hidden sm:flex items-center gap-2 text-neutral-400">
+              <span className="text-sm">/</span>
+              <button 
+                onClick={onGoBack} 
+                className="text-xs font-semibold text-neutral-500 hover:text-neutral-900 transition-colors"
+              >
+                Back
+              </button>
+            </div>
+          )}
+        </div>
 
- </div>
+        {/* CENTER GROUP: Main Nav + More Dropdown */}
+        <nav className="hidden lg:flex items-center gap-1 absolute left-1/2 -translate-x-1/2">
+          {mainNav.map((item) => {
+            const isActive = activeView === item.id;
+            return (
+              <button
+                key={item.id}
+                onClick={() => handleNav(item.id)}
+                className={`px-3 py-1.5 text-sm font-medium rounded-md transition-colors ${
+                  isActive 
+                    ? 'bg-neutral-200/50 text-neutral-900' 
+                    : 'text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900'
+                }`}
+              >
+                {item.label}
+              </button>
+            );
+          })}
+          
+          {/* MORE DROPDOWN */}
+          <div className="relative ml-1" ref={dropdownRef}>
+            <button
+              onClick={() => setIsMoreMenuOpen(!isMoreMenuOpen)}
+              className={`flex items-center gap-1 px-3 py-1.5 text-sm font-medium rounded-md transition-colors ${
+                isMoreMenuOpen || secondaryNav.some(n => n.id === activeView)
+                  ? 'bg-neutral-200/50 text-neutral-900'
+                  : 'text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900'
+              }`}
+            >
+              More <ChevronDown className="w-4 h-4" />
+            </button>
 
- {/* Desktop Main Navigation Tabs */}
- <nav className="hidden lg:flex items-center overflow-x-auto whitespace-nowrap scrollbar-none py-0.5">
- <div className="flex items-center gap-1 bg-neutral-100/90 p-1 rounded-lg border border-neutral-200/80 text-xs font-semibold">
- {navItems.map((item) => {
- const IconComponent = item.icon;
- const isActive = activeView === item.id;
- return (
- <button
- key={item.id}
- onClick={() => handleNav(item.id)}
- className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
- isActive 
- ? item.id === 'onboarding' 
- ? 'bg-warning-600 text-neutral-50 ' 
- : 'bg-neutral-900 text-neutral-50 ' 
- : 'text-neutral-700 hover:text-neutral-900 hover:bg-neutral-200/50'
- }`}
- >
- <IconComponent className={`w-3.5 h-3.5 ${isActive ? 'text-warning-300' : 'text-neutral-500'}`} />
- <span>{item.label}</span>
- </button>
- );
- })}
- </div>
- </nav>
+            {isMoreMenuOpen && (
+              <div className="absolute top-full left-0 mt-1 w-56 bg-neutral-50 border border-neutral-200 rounded-lg shadow-sm py-2 z-50">
+                
+                {/* Persona Selector */}
+                <div className="px-3 py-1.5">
+                  <p className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider mb-1">AI Persona</p>
+                  <select
+                    value={persona}
+                    onChange={(e) => onPersonaChange(e.target.value)}
+                    className="w-full bg-white border border-neutral-200 text-xs font-medium text-neutral-800 rounded p-1.5 focus:outline-none cursor-pointer hover:border-neutral-300"
+                  >
+                    {PERSONAS.map(p => <option key={p.id} value={p.id}>{p.icon} {p.name}</option>)}
+                  </select>
+                </div>
 
- {/* Desktop Right Actions & Tools */}
- <div className="hidden lg:flex items-center space-x-2 shrink-0">
- 
- {/* JUDGE DEMO MODE BUTTON */}
- <button
- onClick={onStartDemoMode}
- className="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-warning-500 hover:bg-warning-600 text-neutral-950 font-bold text-xs transition-all cursor-pointer"
- title="Start Guided AI Demo"
- >
- <Play className="w-3.5 h-3.5 fill-current shrink-0" />
- <span>AI Demo</span>
- </button>
+                <div className="my-1 border-t border-neutral-100"></div>
 
- {/* Ask Doubts Chatbot */}
- <button
- onClick={onToggleChatbot}
- className="flex items-center space-x-1.5 px-2.5 py-1.5 rounded-lg bg-neutral-900 hover:bg-warning-700 text-neutral-50 text-xs font-bold transition-all cursor-pointer"
- title="Ask AI Mentor a Doubt"
- >
- <MessageSquare className="w-3.5 h-3.5 text-warning-300 shrink-0" />
- <span>Doubts</span>
- </button>
+                {/* Secondary Views */}
+                <div className="px-3 py-1.5 text-[10px] font-bold text-neutral-400 uppercase tracking-wider">Views</div>
+                {secondaryNav.map(item => (
+                  <button 
+                    key={item.id} 
+                    onClick={() => handleNav(item.id)} 
+                    className="w-full flex items-center gap-2.5 px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-100 transition-colors text-left"
+                  >
+                    <item.icon className="w-4 h-4 text-neutral-400" /> {item.label}
+                  </button>
+                ))}
 
- {/* Tools & Certs Dropdown */}
- <div className="relative" ref={dropdownRef}>
- <button
- onClick={() => setIsToolsDropdownOpen(!isToolsDropdownOpen)}
- className="flex items-center space-x-1 px-2.5 py-1.5 rounded-lg bg-neutral-100 hover:bg-neutral-200 text-neutral-800 text-xs font-semibold transition-colors cursor-pointer"
- title="More Learning Tools"
- >
- <span>Tools</span>
- <ChevronDown className="w-3.5 h-3.5 text-neutral-600" />
- </button>
+                <div className="my-1 border-t border-neutral-100"></div>
 
- {isToolsDropdownOpen && (
- <div className="absolute right-0 mt-2 w-48 bg-neutral-100 border border-neutral-200 rounded-lg py-2 z-50 animate-in fade-in slide-in-duration-150">
- <button
- onClick={() => { onOpenCertificate(); setIsToolsDropdownOpen(false); }}
- className="w-full flex items-center space-x-2.5 px-3 py-2 text-xs font-medium text-neutral-700 hover:bg-warning-50 hover:text-accent-800 transition-colors text-left"
- >
- <Award className="w-4 h-4 text-warning-600 shrink-0" />
- <span>Mastery Certificate</span>
- </button>
+                {/* Tools */}
+                <div className="px-3 py-1.5 text-[10px] font-bold text-neutral-400 uppercase tracking-wider">Tools</div>
+                {toolsNav.map(item => (
+                  <button 
+                    key={item.id} 
+                    onClick={() => { item.action(); setIsMoreMenuOpen(false); }} 
+                    className="w-full flex items-center gap-2.5 px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-100 transition-colors text-left"
+                  >
+                    <item.icon className="w-4 h-4 text-neutral-400" /> {item.label}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        </nav>
 
- <button
- onClick={() => { onOpenResumeBuilder(); setIsToolsDropdownOpen(false); }}
- className="w-full flex items-center space-x-2.5 px-3 py-2 text-xs font-medium text-neutral-700 hover:bg-warning-50 hover:text-accent-800 transition-colors text-left"
- >
- <FileText className="w-4 h-4 text-warning-600 shrink-0" />
- <span>Resume Bullet Generator</span>
- </button>
+        {/* RIGHT GROUP: CTAs & Avatar (Max 3 items) */}
+        <div className="hidden lg:flex items-center gap-3">
+          
+          {/* Secondary CTA: Doubts (Ghost Outline) */}
+          <button
+            onClick={onToggleChatbot}
+            className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-neutral-700 hover:bg-neutral-100 hover:text-neutral-900 border border-neutral-300 hover:border-neutral-400 rounded-md transition-colors"
+          >
+            <MessageSquare className="w-4 h-4" />
+            <span>Ask AI</span>
+          </button>
 
- <button
- onClick={() => { onOpenDebugger(); setIsToolsDropdownOpen(false); }}
- className="w-full flex items-center space-x-2.5 px-3 py-2 text-xs font-medium text-neutral-700 hover:bg-warning-50 hover:text-accent-800 transition-colors text-left"
- >
- <Terminal className="w-4 h-4 text-neutral-600 shrink-0" />
- <span>Prompt Inspector</span>
- </button>
- </div>
- )}
- </div>
+          {/* Primary CTA: AI Demo (Accent Color) */}
+          <button
+            onClick={onStartDemoMode}
+            className="flex items-center gap-1.5 px-4 py-1.5 text-sm font-bold text-white bg-accent-600 hover:bg-accent-700 rounded-md transition-colors shadow-xs"
+          >
+            <Play className="w-4 h-4 fill-current" />
+            <span>AI Demo</span>
+          </button>
 
- {/* Learner Profile Avatar */}
- <button
- onClick={() => handleNav('profile')}
- className={`relative p-0.5 rounded-full transition-all cursor-pointer ${
- activeView === 'profile' ? 'ring-2 ring-warning-600 ring-offset-2 bg-warning-600' : 'hover:ring-2 hover:ring-warning-500/50'
- }`}
- title="Open Profile & Analytics"
- >
- <div className="w-8 h-8 rounded-full bg-neutral-900 text-warning-300 flex items-center justify-center border border-warning-500/40 ">
- <User className="w-4 h-4" />
- </div>
- </button>
+          {/* Avatar */}
+          <button
+            onClick={() => handleNav('profile')}
+            className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors border ${
+              activeView === 'profile' 
+                ? 'bg-neutral-900 text-white border-neutral-900' 
+                : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200 border-neutral-300'
+            }`}
+            title="Profile"
+          >
+            <User className="w-4 h-4" />
+          </button>
+        </div>
 
- </div>
+        {/* MOBILE MENU TOGGLE */}
+        <button
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          className="lg:hidden p-2 text-neutral-600 hover:bg-neutral-100 rounded-md transition-colors"
+        >
+          {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+        </button>
+      </div>
 
- </div>
+      {/* MOBILE DROPDOWN DRAWER */}
+      {isMobileMenuOpen && (
+        <div className="lg:hidden absolute top-16 left-0 right-0 bg-neutral-50 border-b border-neutral-200 px-4 py-4 shadow-sm z-50 max-h-[80vh] overflow-y-auto">
+          <div className="space-y-6">
+            
+            {/* Persona */}
+            <div>
+              <p className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider mb-2">AI Persona</p>
+              <select
+                value={persona}
+                onChange={(e) => onPersonaChange(e.target.value)}
+                className="w-full bg-white border border-neutral-200 text-sm font-medium text-neutral-800 rounded-md p-2 focus:outline-none"
+              >
+                {PERSONAS.map(p => <option key={p.id} value={p.id}>{p.icon} {p.name}</option>)}
+              </select>
+            </div>
+            
+            {/* Navigation */}
+            <div>
+              <p className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider mb-2">Navigation</p>
+              <div className="space-y-1">
+                {[...mainNav, ...secondaryNav].map(item => {
+                  const isActive = activeView === item.id;
+                  return (
+                    <button 
+                      key={item.id} 
+                      onClick={() => handleNav(item.id)} 
+                      className={`w-full text-left px-3 py-2 text-sm font-medium rounded-md transition-colors ${
+                        isActive ? 'bg-neutral-200/50 text-neutral-900' : 'text-neutral-700 hover:bg-neutral-100'
+                      }`}
+                    >
+                      {item.label}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
 
- {/* Mobile Navigation Drawer */}
- {isMobileMenuOpen && (
- <div className="lg:hidden mt-3 pt-3 border-t border-neutral-200/80 animate-in slide-in-duration-200">
- 
- {/* Main Navigation Options */}
- <div className="space-y-1">
- <p className="px-2 text-[10px] font-bold uppercase tracking-wider text-neutral-400">Navigation Pages</p>
- {navItems.map((item) => {
- const IconComponent = item.icon;
- const isActive = activeView === item.id;
- return (
- <button
- key={item.id}
- onClick={() => handleNav(item.id)}
- className={`w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-xs font-semibold transition-all text-left cursor-pointer ${
- isActive 
- ? 'bg-neutral-900 text-warning-300 ' 
- : 'text-neutral-700 hover:bg-neutral-200/60 hover:text-neutral-900'
- }`}
- >
- <IconComponent className={`w-4 h-4 ${isActive ? 'text-warning-300' : 'text-neutral-500'}`} />
- <span>{item.label}</span>
- </button>
- );
- })}
- </div>
+            {/* Tools & CTAs */}
+            <div>
+              <p className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider mb-2">Tools & Actions</p>
+              <div className="space-y-1">
+                {toolsNav.map(item => (
+                  <button 
+                    key={item.id} 
+                    onClick={() => { item.action(); setIsMobileMenuOpen(false); }} 
+                    className="w-full flex items-center gap-2.5 px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-100 rounded-md transition-colors"
+                  >
+                    <item.icon className="w-4 h-4 text-neutral-400" /> {item.label}
+                  </button>
+                ))}
+                
+                {/* Profile */}
+                <button 
+                  onClick={() => handleNav('profile')} 
+                  className="w-full flex items-center gap-2.5 px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-100 rounded-md transition-colors"
+                >
+                  <User className="w-4 h-4 text-neutral-400" /> Learner Profile
+                </button>
 
- {/* Quick Tools & Features */}
- <div className="mt-4 pt-3 border-t border-neutral-200/60 space-y-1">
- <p className="px-2 text-[10px] font-bold uppercase tracking-wider text-neutral-400">Tools & Features</p>
- 
- <button
- onClick={() => { onStartDemoMode(); setIsMobileMenuOpen(false); }}
- className="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg bg-warning-500 text-neutral-950 text-xs font-bold transition-all text-left cursor-pointer"
- >
- <Play className="w-4 h-4 fill-current shrink-0" />
- <span>Start Guided AI Demo</span>
- </button>
-
- <button
- onClick={() => { onToggleChatbot(); setIsMobileMenuOpen(false); }}
- className="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-xs font-semibold text-neutral-700 hover:bg-neutral-200/60 text-left cursor-pointer"
- >
- <MessageSquare className="w-4 h-4 text-warning-600 shrink-0" />
- <span>Ask AI Mentor a Doubt</span>
- </button>
-
- <button
- onClick={() => { onOpenCertificate(); setIsMobileMenuOpen(false); }}
- className="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-xs font-semibold text-neutral-700 hover:bg-neutral-200/60 text-left cursor-pointer"
- >
- <Award className="w-4 h-4 text-warning-600 shrink-0" />
- <span>Official Mastery Certificate</span>
- </button>
-
- <button
- onClick={() => { onOpenResumeBuilder(); setIsMobileMenuOpen(false); }}
- className="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-xs font-semibold text-neutral-700 hover:bg-neutral-200/60 text-left cursor-pointer"
- >
- <FileText className="w-4 h-4 text-warning-600 shrink-0" />
- <span>Resume Bullet Generator</span>
- </button>
-
- <button
- onClick={() => { onOpenDebugger(); setIsMobileMenuOpen(false); }}
- className="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-xs font-semibold text-neutral-700 hover:bg-neutral-200/60 text-left cursor-pointer"
- >
- <Terminal className="w-4 h-4 text-neutral-600 shrink-0" />
- <span>Prompt Inspector</span>
- </button>
-
- <button
- onClick={() => handleNav('profile')}
- className="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-xs font-semibold text-neutral-700 hover:bg-neutral-200/60 text-left cursor-pointer"
- >
- <User className="w-4 h-4 text-warning-600 shrink-0" />
- <span>Learner Profile & Heatmap</span>
- </button>
- </div>
-
- </div>
- )}
- </header>
- );
+                {/* Ask AI */}
+                <button 
+                  onClick={() => { onToggleChatbot(); setIsMobileMenuOpen(false); }} 
+                  className="w-full flex items-center gap-2.5 px-3 py-2 text-sm font-medium text-neutral-900 bg-neutral-200/50 hover:bg-neutral-200 rounded-md transition-colors mt-2"
+                >
+                  <MessageSquare className="w-4 h-4" /> Ask AI Mentor
+                </button>
+              </div>
+            </div>
+            
+            {/* Primary Mobile CTA */}
+            <div className="pt-2">
+              <button 
+                onClick={() => { onStartDemoMode(); setIsMobileMenuOpen(false); }} 
+                className="w-full flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-bold text-white bg-accent-600 hover:bg-accent-700 rounded-md shadow-xs transition-colors"
+              >
+                <Play className="w-4 h-4 fill-current" /> AI Demo
+              </button>
+            </div>
+            
+          </div>
+        </div>
+      )}
+    </header>
+  );
 }
