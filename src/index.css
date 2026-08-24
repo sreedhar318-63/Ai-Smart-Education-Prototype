@@ -1,10 +1,56 @@
 @import "tailwindcss";
 
+@theme {
+  --color-neutral-50: #FCFBF9;
+  --color-neutral-100: #F3F1EC;
+  --color-neutral-200: #E8E4DB;
+  --color-neutral-300: #D2CCC0;
+  --color-neutral-400: #AFA695;
+  --color-neutral-500: #8B8272;
+  --color-neutral-600: #665F53;
+  --color-neutral-700: #4B463C;
+  --color-neutral-800: #2C2923;
+  --color-neutral-900: #161512;
+  --color-neutral-950: #0D0C0A;
+
+  --color-accent-50: #FCF5F3;
+  --color-accent-100: #F6E7E2;
+  --color-accent-200: #EAD0C7;
+  --color-accent-300: #DEB5A6;
+  --color-accent-400: #CE937D;
+  --color-accent-500: #C65F3F;
+  --color-accent-600: #AB4E31;
+  --color-accent-700: #883B23;
+  --color-accent-800: #6A2C19;
+  --color-accent-900: #4B1F11;
+
+  --color-success-50: #F0F4F1;
+  --color-success-100: #DBE5DD;
+  --color-success-300: #93B29D;
+  --color-success-500: #4A6B53;
+  --color-success-600: #38533F;
+  --color-success-900: #1F3024;
+
+  --color-warning-50: #FCF8F0;
+  --color-warning-100: #F6EBD3;
+  --color-warning-300: #D8B778;
+  --color-warning-500: #C48D36;
+  --color-warning-600: #9E7029;
+  --color-warning-900: #4F3814;
+
+  --color-error-50: #FCF1F1;
+  --color-error-100: #F4D9D9;
+  --color-error-300: #D89898;
+  --color-error-500: #B95252;
+  --color-error-600: #953E3E;
+  --color-error-900: #4A1F1F;
+}
+
 @layer base {
   body {
     font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-    background-color: #faf9f6;
-    color: #242220;
+    background-color: var(--color-neutral-50);
+    color: var(--color-neutral-900);
   }
 }
 
