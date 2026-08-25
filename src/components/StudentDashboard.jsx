@@ -465,7 +465,20 @@ export default function StudentDashboard({
           {steps.map((step) => {
             const isActive = step.number === currentStepIndex;
             const isCompleted = step.isCompleted;
-            const isLocked = !isCompleted && !isActive;
+            
+            // Real prerequisite unlock condition for each step
+            let isUnlocked = false;
+            if (step.number <= 2) {
+              isUnlocked = true;
+            } else if (step.number === 3) {
+              isUnlocked = true;
+            } else if (step.number === 4 || step.number === 5) {
+              isUnlocked = hasTakenQuiz;
+            } else if (step.number === 6) {
+              isUnlocked = hasTakenQuiz && (hasReviewedGraph || hasExploredTwin);
+            }
+
+            const isLocked = !isUnlocked && !isCompleted;
 
             if (isCompleted && !isCompletedStepsExpanded && !isActive) {
               return (
@@ -479,13 +492,13 @@ export default function StudentDashboard({
                     </span>
                     <div>
                       <span className="font-bold text-neutral-900">Step {step.number}: {step.title}</span>
-                      <p className="text-[11px] text-neutral-600 mt-0.5">{step.resultPayoff}</p>
+                      <p className="text-[11px] text-neutral-700 mt-0.5">{step.resultPayoff}</p>
                     </div>
                   </div>
 
                   <button
                     onClick={() => onNavigate(step.targetView)}
-                    className="text-neutral-700 hover:text-neutral-900 font-semibold text-xs border border-neutral-300 bg-neutral-100 px-3 py-1 rounded cursor-pointer"
+                    className="text-neutral-800 hover:text-neutral-950 font-semibold text-xs border border-neutral-300 bg-neutral-100 px-3 py-1 rounded cursor-pointer"
                   >
                     Review
                   </button>
@@ -501,7 +514,9 @@ export default function StudentDashboard({
                     ? 'bg-warning-500/10 border-warning-500 ring-2 ring-warning-500/30 text-neutral-900 shadow-md'
                     : isCompleted
                     ? 'bg-neutral-50 border-neutral-200'
-                    : 'bg-neutral-50/60 border-neutral-200 opacity-60'
+                    : isUnlocked
+                    ? 'bg-neutral-50 border-neutral-300'
+                    : 'bg-neutral-100/70 border-neutral-300 opacity-80'
                 }`}
               >
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
@@ -511,12 +526,14 @@ export default function StudentDashboard({
                         ? 'bg-warning-600 text-neutral-50' 
                         : isCompleted 
                         ? 'bg-success-600 text-neutral-50' 
-                        : 'bg-neutral-300 text-neutral-700'
+                        : isUnlocked
+                        ? 'bg-neutral-800 text-neutral-50'
+                        : 'bg-neutral-300 text-neutral-800'
                     }`}>
                       {isCompleted ? '✓' : step.number}
                     </span>
                     <div>
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-500 block">
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-700 block">
                         Step {step.number} of 6
                       </span>
                       <h3 className="font-bold text-neutral-900 text-base font-sans">{step.title}</h3>
@@ -527,38 +544,40 @@ export default function StudentDashboard({
                     isActive 
                       ? 'bg-warning-600 text-neutral-50 animate-pulse' 
                       : isCompleted 
-                      ? 'bg-success-100 text-success-800' 
-                      : 'bg-neutral-200 text-neutral-600'
+                      ? 'bg-success-100 text-success-900 border border-success-300' 
+                      : isUnlocked
+                      ? 'bg-neutral-200 text-neutral-900 border border-neutral-400'
+                      : 'bg-neutral-200 text-neutral-800 border border-neutral-300'
                   }`}>
-                    {isActive ? '● CURRENT ACTION REQUIRED' : isCompleted ? '✓ Completed' : '🔒 Locked Step'}
+                    {isActive ? '● CURRENT ACTION REQUIRED' : isCompleted ? '✓ Completed' : isUnlocked ? '⚡ Available' : '🔒 Locked Step'}
                   </span>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-sans pt-1">
                   <div className="bg-neutral-100 p-3.5 rounded-lg border border-neutral-200 space-y-1">
-                    <span className="text-[10px] font-bold text-warning-700 uppercase tracking-wider block flex items-center space-x-1">
-                      <HelpCircle className="w-3 h-3 text-warning-600" />
+                    <span className="text-[10px] font-bold text-warning-800 uppercase tracking-wider block flex items-center space-x-1">
+                      <HelpCircle className="w-3.5 h-3.5 text-warning-700 shrink-0" />
                       <span>WHY THIS STEP MATTERS:</span>
                     </span>
-                    <p className="text-neutral-700 leading-relaxed font-medium">
+                    <p className="text-neutral-800 leading-relaxed font-medium">
                       {step.why}
                     </p>
                   </div>
 
                   <div className="bg-neutral-100 p-3.5 rounded-lg border border-neutral-200 space-y-1">
-                    <span className="text-[10px] font-bold text-success-700 uppercase tracking-wider block flex items-center space-x-1">
-                      <Zap className="w-3 h-3 text-success-600" />
+                    <span className="text-[10px] font-bold text-success-800 uppercase tracking-wider block flex items-center space-x-1">
+                      <Zap className="w-3.5 h-3.5 text-success-700 shrink-0" />
                       <span>WHAT THIS UNLOCKS:</span>
                     </span>
-                    <p className="text-neutral-700 leading-relaxed font-medium">
+                    <p className="text-neutral-800 leading-relaxed font-medium">
                       {step.unlocks}
                     </p>
                   </div>
                 </div>
 
                 {isCompleted && step.resultPayoff && (
-                  <div className="bg-success-50 border border-success-200 p-3 rounded-lg text-xs font-semibold text-success-900 flex items-center space-x-2">
-                    <CheckCircle2 className="w-4 h-4 text-success-600 shrink-0" />
+                  <div className="bg-success-50 border border-success-200 p-3 rounded-lg text-xs font-semibold text-success-950 flex items-center space-x-2">
+                    <CheckCircle2 className="w-4 h-4 text-success-700 shrink-0" />
                     <span>Result Produced: {step.resultPayoff}</span>
                   </div>
                 )}
@@ -575,17 +594,25 @@ export default function StudentDashboard({
                   ) : isCompleted ? (
                     <button
                       onClick={() => onNavigate(step.targetView)}
-                      className="flex items-center space-x-1.5 bg-neutral-200 hover:bg-neutral-300 text-neutral-800 font-semibold py-2 px-4 rounded text-xs transition-colors cursor-pointer"
+                      className="flex items-center space-x-1.5 bg-neutral-200 hover:bg-neutral-300 text-neutral-900 font-semibold py-2.5 px-4 rounded-lg text-xs transition-colors cursor-pointer border border-neutral-300"
                     >
                       <span>Review Step</span>
+                    </button>
+                  ) : isUnlocked ? (
+                    <button
+                      onClick={() => onNavigate(step.targetView)}
+                      className="flex items-center space-x-1.5 bg-warning-600 hover:bg-warning-700 text-neutral-50 font-bold py-2.5 px-5 rounded-lg text-xs transition-colors cursor-pointer shadow-sm"
+                    >
+                      <span>{step.actionLabel}</span>
+                      <ArrowRight className="w-4 h-4" />
                     </button>
                   ) : (
                     <button
                       disabled
-                      className="flex items-center space-x-1.5 bg-neutral-200 text-neutral-400 font-medium py-2 px-4 rounded text-xs cursor-not-allowed"
+                      className="flex items-center space-x-1.5 bg-neutral-200 text-neutral-700 font-semibold py-2.5 px-4 rounded-lg text-xs border border-neutral-300 cursor-not-allowed"
                     >
-                      <Lock className="w-3.5 h-3.5" />
-                      <span>Locked — Finish Step {step.number - 1} First</span>
+                      <Lock className="w-3.5 h-3.5 text-neutral-700" />
+                      <span>Locked — Complete Step 3 Diagnostic First</span>
                     </button>
                   )}
                 </div>
