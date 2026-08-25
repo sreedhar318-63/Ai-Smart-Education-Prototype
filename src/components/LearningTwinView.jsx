@@ -173,23 +173,23 @@ export default function LearningTwinView({
 
  {/* LEARNING SPEED */}
  <div className="bg-neutral-100 p-5 rounded-lg border border-neutral-200 space-y-1">
- <span className="text-xs font-bold uppercase tracking-wider text-neutral-500 block">Learning Speed</span>
+ <span className="text-xs font-bold uppercase tracking-wider text-neutral-600 block">Learning Speed</span>
  <div className="text-3xl font-bold text-warning-700 font-sans">{studentProfile.learningSpeed}</div>
- <span className="text-[11px] text-neutral-500">Pace index</span>
+ <span className="text-[11px] text-neutral-600 font-medium">Pace index</span>
  </div>
 
  {/* RETENTION % */}
  <div className="bg-neutral-100 p-5 rounded-lg border border-neutral-200 space-y-1">
- <span className="text-xs font-bold uppercase tracking-wider text-neutral-500 block">Retention Score</span>
+ <span className="text-xs font-bold uppercase tracking-wider text-neutral-600 block">Retention Score</span>
  <div className="text-3xl font-bold text-success-700 font-sans">{studentProfile.retention}%</div>
- <span className="text-[11px] text-neutral-500">Memory retention</span>
+ <span className="text-[11px] text-neutral-600 font-medium">Memory retention</span>
  </div>
 
  {/* CONFIDENCE % */}
  <div className="bg-neutral-100 p-5 rounded-lg border border-neutral-200 space-y-1">
- <span className="text-xs font-bold uppercase tracking-wider text-neutral-500 block">Confidence</span>
+ <span className="text-xs font-bold uppercase tracking-wider text-neutral-600 block">Confidence</span>
  <div className="text-3xl font-bold text-accent-700 font-sans">{studentProfile.confidence}%</div>
- <span className="text-[11px] text-neutral-500">Self-assessment</span>
+ <span className="text-[11px] text-neutral-600 font-medium">Self-assessment</span>
  </div>
 
  </div>

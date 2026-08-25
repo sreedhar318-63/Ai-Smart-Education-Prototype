@@ -143,7 +143,7 @@ export default function OnboardingScreen({ onSubmitOnboarding, isLoading }) {
  onChange={(e) => setTimeMinutes(Number(e.target.value))}
  className="w-full accent-warning-700 cursor-pointer"
  />
- <div className="flex justify-between text-[11px] text-neutral-400 font-medium">
+ <div className="flex justify-between text-[11px] text-neutral-600 font-medium">
  <span>10m Quick</span>
  <span>25m Standard</span>
  <span>45m Deep</span>
@@ -193,7 +193,7 @@ export default function OnboardingScreen({ onSubmitOnboarding, isLoading }) {
  <div className="flex items-center space-x-2">
  <FileText className="w-4 h-4 text-warning-700" />
  <label className="block text-xs uppercase tracking-wider font-semibold text-neutral-700">
- 5. Target Job Description or Role Title <span className="normal-case text-neutral-400 font-normal">(Optional)</span>
+ 5. Target Job Description or Role Title <span className="normal-case text-neutral-600 font-normal">(Optional)</span>
  </label>
  </div>
  <textarea

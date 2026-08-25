@@ -101,9 +101,9 @@ Average Confusion Cycles per Topic: ${learnerModel.avgCycles || 0}`;
  </span>
  </div>
  <p className="text-sm text-neutral-300 font-sans">
- Goal: <strong className="text-neutral-50 font-bold">{onboardingData.goal}</strong> • Level: <span className="italic text-neutral-400">{onboardingData.skillLevel}</span>
+ Goal: <strong className="text-neutral-50 font-bold">{onboardingData.goal}</strong> • Level: <span className="italic text-neutral-300">{onboardingData.skillLevel}</span>
  </p>
- <p className="text-xs text-neutral-400 font-sans mt-1">
+ <p className="text-xs text-neutral-300 font-sans mt-1">
  Analogy Engine Domain: <strong className="text-neutral-50 font-bold uppercase">{onboardingData.domain}</strong>
  </p>
  </div>
@@ -120,7 +120,7 @@ Average Confusion Cycles per Topic: ${learnerModel.avgCycles || 0}`;
  <div className="text-2xl font-bold text-neutral-50 font-sans">
  {learnerModel.currentStreak || 5}d
  </div>
- <div className="text-[10px] text-neutral-400">
+ <div className="text-[10px] text-neutral-300">
  Longest: {learnerModel.longestStreak || 12}d
  </div>
  </div>
@@ -134,7 +134,7 @@ Average Confusion Cycles per Topic: ${learnerModel.avgCycles || 0}`;
  <div className="text-2xl font-bold text-neutral-50 font-sans">
  {learnerModel.completedTopicsCount || 0}
  </div>
- <div className="text-[10px] text-neutral-400">
+ <div className="text-[10px] text-neutral-300">
  Completed
  </div>
  {(!learnerModel.completedTopicsCount || learnerModel.completedTopicsCount === 0) && (
@@ -154,7 +154,7 @@ Average Confusion Cycles per Topic: ${learnerModel.avgCycles || 0}`;
  <div className="text-2xl font-bold text-neutral-50 font-sans">
  ~{learnerModel.totalMinutesSpent || 0}m
  </div>
- <div className="text-[10px] text-neutral-400">
+ <div className="text-[10px] text-neutral-300">
  Total Focus
  </div>
  {(!learnerModel.totalMinutesSpent || learnerModel.totalMinutesSpent === 0) && (
