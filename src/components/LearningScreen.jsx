@@ -489,11 +489,11 @@ Topic Description: ${currentTopic.description}.`;
               <span>Shaky (Analogy + Example)</span>
             </button>
 
-            {/* BUTTON 3 — Still Lost */}
+            {/* BUTTON 3 — Still Lost (Lightblue with Blueviolet Accent Outline) */}
             <button
               onClick={handleStillLostClick}
               disabled={isGeneratingRemediation}
-              className="flex items-center justify-center space-x-2 p-4 rounded-xl bg-[#ADD8E6] hover:bg-[#96cbe0] text-[#161512] border border-[#91c4d5] font-bold text-sm transition-all cursor-pointer group shadow-md disabled:opacity-50"
+              className="flex items-center justify-center space-x-2 p-4 rounded-xl bg-[#ADD8E6] hover:bg-[#96cbe0] text-[#161512] border-2 border-[#8A2BE2] font-bold text-sm transition-all cursor-pointer group shadow-md disabled:opacity-50"
             >
               <XCircle className="w-5 h-5 text-[#8A2BE2] group-hover:scale-110 transition-transform" />
               <span>Still lost (Visual + Multi-level)</span>
