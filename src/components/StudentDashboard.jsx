@@ -16,9 +16,11 @@ export default function StudentDashboard({
   const [showWhyModal, setShowWhyModal] = useState(false);
   const [isCompletedStepsExpanded, setIsCompletedStepsExpanded] = useState(false);
 
-  // Determine current active workflow step based on real user state
+  // Determine current active workflow step based on real persisted user state
   const hasTakenQuiz = (studentProfile?.level > 1) || (skills.some(s => s.mastery > 0 && s.mastery !== 42));
   const hasReviewedGraph = localStorage.getItem('mentorpath_graph_visited') === 'true';
+  const hasExploredTwin = localStorage.getItem('mentorpath_twin_visited') === 'true';
+  const hasGeneratedResume = localStorage.getItem('mentorpath_resume_visited') === 'true';
 
   let currentStepIndex = 3;
   if (!careerGoal) {
@@ -27,8 +29,10 @@ export default function StudentDashboard({
     currentStepIndex = 3;
   } else if (!hasReviewedGraph) {
     currentStepIndex = 4;
-  } else {
+  } else if (!hasExploredTwin) {
     currentStepIndex = 5;
+  } else {
+    currentStepIndex = 6;
   }
 
   // 6 Graph Nodes with Branching Logic
@@ -83,7 +87,7 @@ export default function StudentDashboard({
       name: "Cognitive Learning Twin",
       targetView: "learning-twin",
       subtitle: "Models memory decay & smart revision",
-      isCompleted: false,
+      isCompleted: hasExploredTwin,
       isActive: currentStepIndex === 5,
       isLocked: !hasTakenQuiz,
       branch: "branch-b"
@@ -94,7 +98,7 @@ export default function StudentDashboard({
       name: "Job Readiness & CV",
       targetView: "career",
       subtitle: "Synthesizes ATS Resume & Certificate",
-      isCompleted: false,
+      isCompleted: hasGeneratedResume,
       isActive: currentStepIndex === 6,
       isLocked: !hasTakenQuiz,
       branch: "convergence"
@@ -149,8 +153,8 @@ export default function StudentDashboard({
       targetView: "learning-twin",
       why: "Simulates how fast you learn, predicts memory decay before forgetting occurs, and queues proactive smart revisions.",
       unlocks: "Industry benchmark evaluation against target job profiles.",
-      resultPayoff: null,
-      isCompleted: false
+      resultPayoff: hasExploredTwin ? "Cognitive twin model calibrated & retention risks mapped." : null,
+      isCompleted: hasExploredTwin
     },
     {
       number: 6,
@@ -159,8 +163,8 @@ export default function StudentDashboard({
       targetView: "career",
       why: "Translates verified skill mastery into an ATS-optimized CV and official Certificate of Mastery.",
       unlocks: "Printable Master Certificate & ATS Resume Export.",
-      resultPayoff: null,
-      isCompleted: false
+      resultPayoff: hasGeneratedResume ? "Certified resume generated & job readiness benchmarked at 68%." : null,
+      isCompleted: hasGeneratedResume
     }
   ];
 

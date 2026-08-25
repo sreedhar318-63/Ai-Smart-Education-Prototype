@@ -114,6 +114,15 @@ export default function App() {
       window.location.hash = `#${newView}`;
       localStorage.setItem('mentorpath_active_view', newView);
       localStorage.setItem('mentorpath_onboarded', 'true');
+
+      // Track step completion visit flags
+      if (newView === 'skill-graph') {
+        localStorage.setItem('mentorpath_graph_visited', 'true');
+      } else if (newView === 'learning-twin') {
+        localStorage.setItem('mentorpath_twin_visited', 'true');
+      } else if (newView === 'career') {
+        localStorage.setItem('mentorpath_resume_visited', 'true');
+      }
     }
  };
 
