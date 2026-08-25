@@ -100,11 +100,12 @@ export default function StudentDashboard({
       subtitle: "Synthesizes ATS Resume & Certificate",
       isCompleted: hasGeneratedResume,
       isActive: currentStepIndex === 6,
-      isLocked: !hasTakenQuiz,
+      isLocked: !hasExploredTwin && !hasReviewedGraph,
       branch: "convergence"
     }
   ];
 
+  // SINGLE SOURCE OF TRUTH FOR ALL 6 STEPS & PREREQUISITE WIRING
   const steps = [
     {
       number: 1,
@@ -114,7 +115,10 @@ export default function StudentDashboard({
       why: "Tailors AI explanation depth, analogy metaphors (e.g. cooking, sports), and session timing directly to your background.",
       unlocks: "Personalized 5-8 topic learning roadmap.",
       resultPayoff: `Target Role: ${careerGoal || 'AI Engineer'} • Level: ${studentProfile.skillLevel || 'Beginner'} • Metaphor: ${studentProfile.domain || 'Cooking'}`,
-      isCompleted: true
+      isCompleted: true,
+      prerequisiteStepNumber: null,
+      prerequisiteName: null,
+      isUnlocked: true
     },
     {
       number: 2,
@@ -124,7 +128,10 @@ export default function StudentDashboard({
       why: "Deconstructs target role requirements into structured, bite-sized daily objectives instead of overwhelming course lists.",
       unlocks: "Interactive adaptive learning modules & diagnostic quizzes.",
       resultPayoff: "Roadmap Active: 5 core topics, estimated 85 minutes total learning path.",
-      isCompleted: true
+      isCompleted: true,
+      prerequisiteStepNumber: 1,
+      prerequisiteName: "Setup Plan",
+      isUnlocked: true
     },
     {
       number: 3,
@@ -134,7 +141,10 @@ export default function StudentDashboard({
       why: "Measures real-time baseline mastery, cognitive speed, and detects exact underlying mental model errors beyond simple right/wrong.",
       unlocks: "Populated 2D Skill Graph Matrix & Cognitive Learning Twin profile.",
       resultPayoff: hasTakenQuiz ? "Initial assessment completed. 1 bottleneck identified in Probability." : null,
-      isCompleted: hasTakenQuiz
+      isCompleted: hasTakenQuiz,
+      prerequisiteStepNumber: 2,
+      prerequisiteName: "AI Roadmap Path",
+      isUnlocked: true
     },
     {
       number: 4,
@@ -144,7 +154,10 @@ export default function StudentDashboard({
       why: "Visualizes how foundational prerequisite nodes (e.g. Probability 42%) bottleneck progression in target AI roles.",
       unlocks: "Targeted micro-revisions & memory retention decay prediction.",
       resultPayoff: hasReviewedGraph ? "Skill Graph calibrated: Probability identified as core bottleneck." : null,
-      isCompleted: hasReviewedGraph
+      isCompleted: hasReviewedGraph,
+      prerequisiteStepNumber: 3,
+      prerequisiteName: "Adaptive Quiz",
+      isUnlocked: hasTakenQuiz
     },
     {
       number: 5,
@@ -154,7 +167,10 @@ export default function StudentDashboard({
       why: "Simulates how fast you learn, predicts memory decay before forgetting occurs, and queues proactive smart revisions.",
       unlocks: "Industry benchmark evaluation against target job profiles.",
       resultPayoff: hasExploredTwin ? "Cognitive twin model calibrated & retention risks mapped." : null,
-      isCompleted: hasExploredTwin
+      isCompleted: hasExploredTwin,
+      prerequisiteStepNumber: 4,
+      prerequisiteName: "Skill Graph Matrix",
+      isUnlocked: hasTakenQuiz || hasReviewedGraph
     },
     {
       number: 6,
@@ -164,7 +180,10 @@ export default function StudentDashboard({
       why: "Translates verified skill mastery into an ATS-optimized CV and official Certificate of Mastery.",
       unlocks: "Printable Master Certificate & ATS Resume Export.",
       resultPayoff: hasGeneratedResume ? "Certified resume generated & job readiness benchmarked at 68%." : null,
-      isCompleted: hasGeneratedResume
+      isCompleted: hasGeneratedResume,
+      prerequisiteStepNumber: 5,
+      prerequisiteName: "Cognitive Learning Twin",
+      isUnlocked: hasExploredTwin || hasReviewedGraph
     }
   ];
 
@@ -275,10 +294,10 @@ export default function StudentDashboard({
             <path d="M 52% 60% C 56% 80%, 60% 80%, 64% 80%" fill="none" stroke={hasTakenQuiz ? "#E5A93C" : "#4B463C"} strokeWidth="2" strokeDasharray={hasTakenQuiz ? "none" : "4 4"} markerEnd={hasTakenQuiz ? "url(#arrow-amber)" : "url(#arrow-gray)"} />
 
             {/* Line 4 -> 6 (Convergence Top) */}
-            <path d="M 78% 20% C 82% 20%, 84% 40%, 87% 45%" fill="none" stroke="#4B463C" strokeWidth="2" strokeDasharray="4 4" markerEnd="url(#arrow-gray)" />
+            <path d="M 78% 20% C 82% 20%, 84% 40%, 87% 45%" fill="none" stroke={hasExploredTwin || hasReviewedGraph ? "#E5A93C" : "#4B463C"} strokeWidth="2" strokeDasharray={hasExploredTwin || hasReviewedGraph ? "none" : "4 4"} markerEnd={hasExploredTwin || hasReviewedGraph ? "url(#arrow-amber)" : "url(#arrow-gray)"} />
 
             {/* Line 5 -> 6 (Convergence Bottom) */}
-            <path d="M 78% 80% C 82% 80%, 84% 60%, 87% 55%" fill="none" stroke="#4B463C" strokeWidth="2" strokeDasharray="4 4" markerEnd="url(#arrow-gray)" />
+            <path d="M 78% 80% C 82% 80%, 84% 60%, 87% 55%" fill="none" stroke={hasExploredTwin ? "#E5A93C" : "#4B463C"} strokeWidth="2" strokeDasharray={hasExploredTwin ? "none" : "4 4"} markerEnd={hasExploredTwin ? "url(#arrow-amber)" : "url(#arrow-gray)"} />
           </svg>
 
           {/* 2D GRAPH NODE CONTAINER */}
@@ -369,11 +388,17 @@ export default function StudentDashboard({
                 className={`p-3.5 rounded-lg text-left transition-all cursor-pointer space-y-1.5 group shadow-lg ${
                   currentStepIndex === 5
                     ? 'bg-warning-500/20 border-warning-500 ring-2 ring-warning-500/40'
+                    : hasExploredTwin
+                    ? 'bg-neutral-950 border-success-500/60'
                     : 'bg-neutral-950 border-neutral-800 opacity-80'
                 }`}
               >
                 <div className="flex items-center justify-between text-xs">
-                  <span className="w-5 h-5 rounded-full bg-neutral-800 text-neutral-300 font-bold flex items-center justify-center text-[10px]">5</span>
+                  <span className={`w-5 h-5 rounded-full font-bold flex items-center justify-center text-[10px] ${
+                    hasExploredTwin ? 'bg-success-600 text-neutral-50' : 'bg-neutral-800 text-neutral-300'
+                  }`}>
+                    {hasExploredTwin ? '✓' : '5'}
+                  </span>
                   <span className="text-[9px] uppercase font-bold text-accent-400">Branch B</span>
                 </div>
                 <p className="font-bold text-neutral-50 text-xs font-sans">Learning Twin</p>
@@ -384,10 +409,20 @@ export default function StudentDashboard({
             {/* NODE 6: JOB READINESS */}
             <button
               onClick={() => onNavigate('career')}
-              className="bg-neutral-950 border border-neutral-800 opacity-75 hover:opacity-100 p-4 rounded-lg text-left transition-all cursor-pointer space-y-2 group shadow-lg"
+              className={`p-4 rounded-lg text-left transition-all cursor-pointer space-y-2 group shadow-lg ${
+                currentStepIndex === 6
+                  ? 'bg-warning-500/20 border-warning-500 ring-2 ring-warning-500/40'
+                  : hasGeneratedResume
+                  ? 'bg-neutral-950 border-success-500/60'
+                  : 'bg-neutral-950 border-neutral-800 opacity-75 hover:opacity-100'
+              }`}
             >
               <div className="flex items-center justify-between text-xs">
-                <span className="w-6 h-6 rounded-full bg-neutral-800 text-neutral-400 font-bold flex items-center justify-center text-xs">6</span>
+                <span className={`w-6 h-6 rounded-full font-bold flex items-center justify-center text-xs ${
+                  hasGeneratedResume ? 'bg-success-600 text-neutral-50' : 'bg-neutral-800 text-neutral-400'
+                }`}>
+                  {hasGeneratedResume ? '✓' : '6'}
+                </span>
                 <span className="text-[10px] uppercase font-bold text-neutral-400">Convergence</span>
               </div>
               <p className="font-bold text-neutral-50 text-sm font-sans group-hover:text-warning-300">Job Readiness & CV</p>
@@ -465,20 +500,7 @@ export default function StudentDashboard({
           {steps.map((step) => {
             const isActive = step.number === currentStepIndex;
             const isCompleted = step.isCompleted;
-            
-            // Real prerequisite unlock condition for each step
-            let isUnlocked = false;
-            if (step.number <= 2) {
-              isUnlocked = true;
-            } else if (step.number === 3) {
-              isUnlocked = true;
-            } else if (step.number === 4 || step.number === 5) {
-              isUnlocked = hasTakenQuiz;
-            } else if (step.number === 6) {
-              isUnlocked = hasTakenQuiz && (hasReviewedGraph || hasExploredTwin);
-            }
-
-            const isLocked = !isUnlocked && !isCompleted;
+            const isUnlocked = step.isUnlocked;
 
             if (isCompleted && !isCompletedStepsExpanded && !isActive) {
               return (
@@ -612,7 +634,7 @@ export default function StudentDashboard({
                       className="flex items-center space-x-1.5 bg-neutral-200 text-neutral-700 font-semibold py-2.5 px-4 rounded-lg text-xs border border-neutral-300 cursor-not-allowed"
                     >
                       <Lock className="w-3.5 h-3.5 text-neutral-700" />
-                      <span>Locked — Complete Step 3 Diagnostic First</span>
+                      <span>Locked — Complete Step {step.prerequisiteStepNumber} ({step.prerequisiteName}) First</span>
                     </button>
                   )}
                 </div>
