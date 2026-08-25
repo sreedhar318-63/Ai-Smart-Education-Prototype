@@ -126,7 +126,7 @@ Average Confusion Cycles per Topic: ${learnerModel.avgCycles || 0}`;
  </div>
 
  {/* Topics Completed */}
- <div className="bg-neutral-800/90 border border-neutral-700/80 p-3.5 rounded-lg text-center space-y-0.5">
+ <div className="bg-neutral-800/90 border border-neutral-700/80 p-3.5 rounded-lg text-center space-y-0.5 relative group overflow-hidden">
  <div className="flex items-center justify-center space-x-1 mb-1">
  <BookOpen className="w-3.5 h-3.5 text-success-400" />
  <span className="text-xs font-medium text-neutral-300 uppercase tracking-wider">Topics</span>
@@ -137,10 +137,16 @@ Average Confusion Cycles per Topic: ${learnerModel.avgCycles || 0}`;
  <div className="text-[10px] text-neutral-400">
  Completed
  </div>
+ {(!learnerModel.completedTopicsCount || learnerModel.completedTopicsCount === 0) && (
+ <div className="absolute inset-0 bg-neutral-900/95 flex flex-col items-center justify-center p-2 transition-opacity opacity-0 group-hover:opacity-100 backdrop-blur-sm z-10">
+ <span className="text-[10px] text-warning-300 font-bold leading-tight mb-1">Take a quiz to track progress</span>
+ <button onClick={() => onReturnToLearning('adaptive-quiz')} className="text-[9px] bg-warning-600 hover:bg-warning-700 text-white px-2 py-0.5 rounded cursor-pointer">Start Now</button>
+ </div>
+ )}
  </div>
 
  {/* Time Spent */}
- <div className="bg-neutral-800/90 border border-neutral-700/80 p-3.5 rounded-lg text-center space-y-0.5">
+ <div className="bg-neutral-800/90 border border-neutral-700/80 p-3.5 rounded-lg text-center space-y-0.5 relative group overflow-hidden">
  <div className="flex items-center justify-center space-x-1 mb-1">
  <Clock className="w-3.5 h-3.5 text-cyan-400" />
  <span className="text-xs font-medium text-neutral-300 uppercase tracking-wider">Time</span>
@@ -151,6 +157,12 @@ Average Confusion Cycles per Topic: ${learnerModel.avgCycles || 0}`;
  <div className="text-[10px] text-neutral-400">
  Total Focus
  </div>
+ {(!learnerModel.totalMinutesSpent || learnerModel.totalMinutesSpent === 0) && (
+ <div className="absolute inset-0 bg-neutral-900/95 flex flex-col items-center justify-center p-2 transition-opacity opacity-0 group-hover:opacity-100 backdrop-blur-sm z-10">
+ <span className="text-[10px] text-cyan-300 font-bold leading-tight mb-1">Start your first session</span>
+ <button onClick={() => onReturnToLearning('adaptive-quiz')} className="text-[9px] bg-cyan-600 hover:bg-cyan-700 text-white px-2 py-0.5 rounded cursor-pointer">Go</button>
+ </div>
+ )}
  </div>
  </div>
 

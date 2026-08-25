@@ -14,6 +14,14 @@ export default function StudentDashboard({
  onStartQuiz
 }) {
  const [showWhyModal, setShowWhyModal] = useState(false);
+ const [showChecklist, setShowChecklist] = useState(() => {
+ return localStorage.getItem('mentorpath_checklist_done') !== 'true';
+ });
+
+ const dismissChecklist = () => {
+ localStorage.setItem('mentorpath_checklist_done', 'true');
+ setShowChecklist(false);
+ };
  const weakSkills = skills.filter(s => s.retention < 60 || s.mastery < 65);
  const topRecommendation = weakSkills.find(s => s.id === 'probability') || weakSkills[0] || skills[2] || skills[0];
  const whyExplanation = explainRecommendation(topRecommendation.name, topRecommendation.mastery, careerGoal);
@@ -21,6 +29,50 @@ export default function StudentDashboard({
  return (
  <div className="max-w-6xl mx-auto px-4 py-8 space-y-10 animate-in fade-in duration-300">
  
+ {/* ONBOARDING CHECKLIST (FIRST VISIT ONLY) */}
+ {showChecklist && (
+ <div className="bg-neutral-900 border border-warning-500/50 p-6 rounded-lg space-y-5 relative shadow-xl shadow-warning-900/10">
+ <button onClick={dismissChecklist} className="absolute top-4 right-4 text-neutral-400 hover:text-neutral-100 transition-colors cursor-pointer">
+ <X className="w-5 h-5" />
+ </button>
+ 
+ <div>
+ <h2 className="font-editorial text-2xl font-bold text-neutral-50">Welcome to MentorPath</h2>
+ <p className="text-sm text-neutral-300 font-sans mt-1">You're almost ready. Complete this 3-step checklist to activate your Learning Twin.</p>
+ </div>
+ 
+ <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+ <div className="bg-neutral-950 p-4 rounded-lg border border-success-500/30 opacity-70">
+ <div className="flex items-center space-x-2 text-success-400 font-bold mb-1 text-sm">
+ <CheckCircle2 className="w-4 h-4"/><span>Step 1: Goal Set</span>
+ </div>
+ <p className="text-xs text-neutral-400">You defined your target career.</p>
+ </div>
+ 
+ <div className="bg-neutral-950 p-4 rounded-lg border border-success-500/30 opacity-70">
+ <div className="flex items-center space-x-2 text-success-400 font-bold mb-1 text-sm">
+ <CheckCircle2 className="w-4 h-4"/><span>Step 2: Path Built</span>
+ </div>
+ <p className="text-xs text-neutral-400">AI generated your personalized roadmap.</p>
+ </div>
+ 
+ <div className="bg-warning-500/10 p-4 rounded-lg border border-warning-500 ring-2 ring-warning-500/20 relative">
+ <div className="absolute -top-2.5 -right-2.5 bg-warning-500 text-neutral-950 text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase shadow-md shadow-warning-500/20">Next Action</div>
+ <div className="flex items-center space-x-2 text-warning-400 font-bold mb-1 text-sm">
+ <Play className="w-4 h-4"/><span>Step 3: First Assessment</span>
+ </div>
+ <p className="text-xs text-neutral-300 mb-4">Take an adaptive quiz to calibrate your baseline skills.</p>
+ <button 
+ onClick={() => { dismissChecklist(); onNavigate('adaptive-quiz'); }} 
+ className="w-full bg-warning-600 hover:bg-warning-700 text-neutral-50 font-bold py-2.5 px-3 rounded text-xs transition-colors cursor-pointer"
+ >
+ Take Initial Assessment
+ </button>
+ </div>
+ </div>
+ </div>
+ )}
+
  {/* 1. HERO SECTION - SHORTLISTING POSITIONING */}
  <div className="text-neutral-100 rounded-lg p-6 md:p-10 border border-neutral-800 relative overflow-hidden flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8">
  

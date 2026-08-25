@@ -110,6 +110,26 @@ export default function LearningTwinView({
  return (
  <div className="max-w-5xl mx-auto px-4 py-8 space-y-8 animate-in fade-in duration-300">
  
+ {/* EMPTY STATE FOR NEW USERS */}
+ {(!skills || skills.length === 0) ? (
+ <div className="bg-neutral-900 border border-neutral-800 rounded-lg p-10 md:p-16 text-center space-y-6 flex flex-col items-center">
+ <div className="w-16 h-16 bg-neutral-800 rounded-full flex items-center justify-center mb-2">
+ <Brain className="w-8 h-8 text-neutral-500" />
+ </div>
+ <h2 className="font-editorial text-3xl font-bold text-neutral-50">Learning Twin Calibrating...</h2>
+ <p className="text-neutral-400 font-sans max-w-lg leading-relaxed text-sm">
+ Your AI Learning Twin models your cognitive state in real-time. It needs initial assessment data to predict your retention risks and learning speed.
+ </p>
+ <button 
+ onClick={() => onNavigate('adaptive-quiz')} 
+ className="bg-warning-600 hover:bg-warning-700 text-neutral-950 font-bold py-3.5 px-6 rounded-lg text-sm inline-flex items-center space-x-2 transition-colors cursor-pointer mt-4"
+ >
+ <Zap className="w-4 h-4"/> 
+ <span>Take First Quiz to Calibrate Twin</span>
+ </button>
+ </div>
+ ) : (
+ <>
  {/* HEADER */}
  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-neutral-900 text-neutral-100 p-6 md:p-8 rounded-lg ">
  <div className="space-y-2">
