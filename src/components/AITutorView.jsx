@@ -210,33 +210,33 @@ export default function AITutorView({
   return (
     <div className="max-w-4xl mx-auto px-4 py-6 pb-24 space-y-4 font-sans animate-in fade-in duration-300">
       
-      {/* HEADER BAR */}
-      <div className="bg-neutral-900 border border-neutral-800 text-neutral-50 p-4 md:p-6 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-xl">
+      {/* HEADER BAR (BURLYWOOD BACKGROUND) */}
+      <div className="bg-[#DEB887] border border-[#C59B67] text-[#1A0F05] p-4 md:p-6 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-md">
         <div className="flex items-center space-x-3">
-          <div className="w-12 h-12 rounded-xl bg-amber-500 text-neutral-950 flex items-center justify-center font-bold text-xl shadow-lg">
+          <div className="w-12 h-12 rounded-xl bg-[#8A2BE2] text-white flex items-center justify-center font-bold text-xl shadow-md border border-[#6b1cb9]">
             {activePersonaObj.icon}
           </div>
           <div>
             <div className="flex items-center space-x-2">
-              <h1 className="text-xl font-bold text-neutral-50">AI Personal Tutor</h1>
-              <span className="bg-amber-500/20 text-amber-300 border border-amber-500/40 text-[10px] px-2.5 py-0.5 rounded-full font-bold uppercase">
+              <h1 className="text-xl font-bold text-[#1A0F05]">AI Personal Tutor</h1>
+              <span className="bg-[#8A2BE2] text-white text-[10px] px-2.5 py-0.5 rounded-full font-bold uppercase shadow-2xs">
                 {activePersonaObj.name}
               </span>
             </div>
-            <p className="text-xs text-neutral-400 mt-0.5">
+            <p className="text-xs text-[#3D2714] font-medium mt-0.5">
               Interactive voice, camera OCR, and Socratic "Teach Me" learning engine.
             </p>
           </div>
         </div>
 
-        {/* MODE SWITCHER PILLS */}
-        <div className="flex items-center space-x-2 bg-neutral-950 p-1.5 rounded-xl border border-neutral-800 self-start md:self-auto">
+        {/* MODE SWITCHER PILLS (BISQUE CONTAINER) */}
+        <div className="flex items-center space-x-2 bg-[#FFE4C4] p-1.5 rounded-xl border border-[#C59B67] self-start md:self-auto">
           <button
             onClick={() => setMode('tutor')}
             className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${
               mode === 'tutor'
-                ? 'bg-amber-500 text-neutral-950 shadow-md'
-                : 'text-neutral-400 hover:text-neutral-200'
+                ? 'bg-[#8A2BE2] text-white shadow-sm'
+                : 'text-[#5C4228] hover:text-[#1A0F05]'
             }`}
           >
             Direct Tutor
@@ -245,8 +245,8 @@ export default function AITutorView({
             onClick={() => startTeachMeMode('Recursion & Base Cases')}
             className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${
               mode === 'teach_me'
-                ? 'bg-amber-500 text-neutral-950 shadow-md'
-                : 'text-neutral-400 hover:text-neutral-200'
+                ? 'bg-[#8A2BE2] text-white shadow-sm'
+                : 'text-[#5C4228] hover:text-[#1A0F05]'
             }`}
           >
             🧠 "Teach Me" Socratic
@@ -254,52 +254,52 @@ export default function AITutorView({
         </div>
       </div>
 
-      {/* QUICK SUGGESTED ACTION CARDS */}
+      {/* QUICK SUGGESTED ACTION CARDS (LIGHTBLUE CARDS WITH DARK TEXT) */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
         <button
           onClick={() => handleSend("Explain recursion with a simple real-world analogy and code example.")}
-          className="p-3 bg-neutral-900 border border-neutral-800 hover:border-amber-500/50 rounded-xl text-left transition-all cursor-pointer space-y-1 group"
+          className="p-3 bg-[#ADD8E6] border border-[#91c4d5] hover:border-[#8A2BE2] rounded-xl text-left transition-all cursor-pointer space-y-1 group shadow-2xs"
         >
-          <Lightbulb className="w-4 h-4 text-amber-400 group-hover:scale-110 transition-transform" />
-          <p className="text-xs font-bold text-neutral-100">Explain Recursion</p>
-          <p className="text-[10px] text-neutral-400">Analogy + Code</p>
+          <Lightbulb className="w-4 h-4 text-[#8A2BE2] group-hover:scale-110 transition-transform" />
+          <p className="text-xs font-bold text-[#161512]">Explain Recursion</p>
+          <p className="text-[10px] text-[#334155] font-semibold">Analogy + Code</p>
         </button>
 
         <button
           onClick={() => toggleVoiceListen()}
-          className={`p-3 border rounded-xl text-left transition-all cursor-pointer space-y-1 group ${
+          className={`p-3 border rounded-xl text-left transition-all cursor-pointer space-y-1 group shadow-2xs ${
             isListening
-              ? 'bg-amber-500/20 border-amber-500 ring-2 ring-amber-500/50'
-              : 'bg-neutral-900 border-neutral-800 hover:border-amber-500/50'
+              ? 'bg-[#8A2BE2] border-[#8A2BE2] text-white ring-2 ring-[#8A2BE2]/50'
+              : 'bg-[#ADD8E6] border-[#91c4d5] hover:border-[#8A2BE2]'
           }`}
         >
-          <Mic className={`w-4 h-4 ${isListening ? 'text-amber-400 animate-pulse' : 'text-amber-400'}`} />
-          <p className="text-xs font-bold text-neutral-100">{isListening ? 'Listening...' : 'Ask by Voice'}</p>
-          <p className="text-[10px] text-neutral-400">Tap to speak</p>
+          <Mic className={`w-4 h-4 ${isListening ? 'text-white animate-pulse' : 'text-[#8A2BE2]'}`} />
+          <p className={`text-xs font-bold ${isListening ? 'text-white' : 'text-[#161512]'}`}>{isListening ? 'Listening...' : 'Ask by Voice'}</p>
+          <p className={`text-[10px] ${isListening ? 'text-white/80' : 'text-[#334155]'} font-semibold`}>Tap to speak</p>
         </button>
 
         <button
           onClick={() => setIsCameraOpen(true)}
-          className="p-3 bg-neutral-900 border border-neutral-800 hover:border-amber-500/50 rounded-xl text-left transition-all cursor-pointer space-y-1 group"
+          className="p-3 bg-[#ADD8E6] border border-[#91c4d5] hover:border-[#8A2BE2] rounded-xl text-left transition-all cursor-pointer space-y-1 group shadow-2xs"
         >
-          <Camera className="w-4 h-4 text-amber-400 group-hover:scale-110 transition-transform" />
-          <p className="text-xs font-bold text-neutral-100">Scan Question</p>
-          <p className="text-[10px] text-neutral-400">Learn from Camera</p>
+          <Camera className="w-4 h-4 text-[#8A2BE2] group-hover:scale-110 transition-transform" />
+          <p className="text-xs font-bold text-[#161512]">Scan Question</p>
+          <p className="text-[10px] text-[#334155] font-semibold">Learn from Camera</p>
         </button>
 
         <button
           onClick={() => startTeachMeMode('Python Loops')}
-          className="p-3 bg-neutral-900 border border-neutral-800 hover:border-amber-500/50 rounded-xl text-left transition-all cursor-pointer space-y-1 group"
+          className="p-3 bg-[#ADD8E6] border border-[#91c4d5] hover:border-[#8A2BE2] rounded-xl text-left transition-all cursor-pointer space-y-1 group shadow-2xs"
         >
-          <BookOpen className="w-4 h-4 text-amber-400 group-hover:scale-110 transition-transform" />
-          <p className="text-xs font-bold text-neutral-100">Test My Knowledge</p>
-          <p className="text-[10px] text-neutral-400">Socratic check</p>
+          <BookOpen className="w-4 h-4 text-[#8A2BE2] group-hover:scale-110 transition-transform" />
+          <p className="text-xs font-bold text-[#161512]">Test My Knowledge</p>
+          <p className="text-[10px] text-[#334155] font-semibold">Socratic check</p>
         </button>
       </div>
 
-      {/* CHAT CONTAINER */}
-      <div className="bg-neutral-900 border border-neutral-800 rounded-2xl h-[480px] flex flex-col overflow-hidden shadow-2xl">
-        <div className="flex-1 p-4 md:p-6 overflow-y-auto space-y-4 bg-neutral-950/40">
+      {/* CHAT CONTAINER (BISQUE CONTAINER) */}
+      <div className="bg-[#FFE4C4] border border-[#E3C6A2] rounded-2xl h-[480px] flex flex-col overflow-hidden shadow-lg">
+        <div className="flex-1 p-4 md:p-6 overflow-y-auto space-y-4 bg-[#FFF8F0]">
           {messages.map((m) => (
             <div
               key={m.id}
@@ -307,27 +307,30 @@ export default function AITutorView({
                 m.sender === 'user' ? 'ml-auto flex-row-reverse' : 'mr-auto'
               }`}
             >
-              <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 font-bold text-xs ${
+              <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 font-bold text-xs shadow-2xs ${
                 m.sender === 'user'
-                  ? 'bg-amber-500 text-neutral-950'
-                  : 'bg-neutral-800 text-amber-400 border border-neutral-700'
+                  ? 'bg-[#8A2BE2] text-white'
+                  : 'bg-[#DEB887] text-[#1A0F05] border border-[#C59B67]'
               }`}>
                 {m.sender === 'user' ? 'You' : activePersonaObj.icon}
               </div>
 
+              {/* CHAT BUBBLES: USER = LIGHTBLUE (#ADD8E6), AI = BISQUE (#FFE4C4) / BURLYWOOD (#DEB887) */}
               <div className={`rounded-2xl px-4 py-3 text-xs leading-relaxed ${
                 m.sender === 'user'
-                  ? 'bg-amber-500 text-neutral-950 font-medium rounded-tr-none'
-                  : 'bg-neutral-900 text-neutral-200 border border-neutral-800 rounded-tl-none space-y-2'
+                  ? 'bg-[#ADD8E6] text-[#0F172A] font-semibold rounded-tr-none border border-[#91c4d5]'
+                  : 'bg-[#FFE4C4] text-[#1A0F05] border border-[#E3C6A2] rounded-tl-none space-y-2 font-medium'
               }`}>
                 <div className="whitespace-pre-wrap">{m.text}</div>
 
-                <div className="flex items-center justify-between pt-1 border-t border-neutral-800/40 mt-2 text-[10px] text-neutral-400">
+                <div className={`flex items-center justify-between pt-1 border-t mt-2 text-[10px] ${
+                  m.sender === 'user' ? 'border-[#91c4d5] text-[#334155]' : 'border-[#E3C6A2] text-[#5C4228]'
+                }`}>
                   <span>{m.timestamp}</span>
                   {m.sender === 'ai' && (
                     <button
                       onClick={() => speakText(m.text)}
-                      className="hover:text-amber-400 transition-colors cursor-pointer flex items-center space-x-1"
+                      className="hover:text-[#8A2BE2] transition-colors cursor-pointer flex items-center space-x-1 font-bold text-[#8A2BE2]"
                     >
                       <Volume2 className="w-3 h-3" />
                       <span>Read Aloud</span>
@@ -339,8 +342,8 @@ export default function AITutorView({
           ))}
 
           {isTyping && (
-            <div className="flex items-center space-x-2 text-xs text-neutral-400 bg-neutral-900 border border-neutral-800 px-4 py-2.5 rounded-xl w-fit">
-              <Sparkles className="w-3.5 h-3.5 text-amber-400 animate-spin" />
+            <div className="flex items-center space-x-2 text-xs text-[#5A2A00] bg-[#DEB887] border border-[#C59B67] px-4 py-2.5 rounded-xl w-fit font-bold">
+              <Sparkles className="w-3.5 h-3.5 text-[#8A2BE2] animate-spin" />
               <span>AI Personal Tutor is thinking...</span>
             </div>
           )}
@@ -348,14 +351,14 @@ export default function AITutorView({
           <div ref={messagesEndRef} />
         </div>
 
-        {/* INPUT BAR */}
-        <div className="p-3 bg-neutral-900 border-t border-neutral-800 flex items-center space-x-2">
+        {/* INPUT BAR (BURLYWOOD CONTAINER WITH DARK TEXT INPUT) */}
+        <div className="p-3 bg-[#DEB887] border-t border-[#C59B67] flex items-center space-x-2">
           <button
             onClick={toggleVoiceListen}
             className={`p-3 rounded-xl transition-all cursor-pointer ${
               isListening
-                ? 'bg-red-500 text-white animate-pulse'
-                : 'bg-neutral-800 text-neutral-300 hover:text-amber-400 hover:bg-neutral-700'
+                ? 'bg-[#8A2BE2] text-white animate-pulse'
+                : 'bg-[#FFE4C4] text-[#1A0F05] hover:bg-[#8A2BE2] hover:text-white border border-[#C59B67]'
             }`}
             title="Voice input"
           >
@@ -364,7 +367,7 @@ export default function AITutorView({
 
           <button
             onClick={() => setIsCameraOpen(true)}
-            className="p-3 rounded-xl bg-neutral-800 text-neutral-300 hover:text-amber-400 hover:bg-neutral-700 transition-colors cursor-pointer"
+            className="p-3 rounded-xl bg-[#FFE4C4] text-[#1A0F05] hover:bg-[#8A2BE2] hover:text-white border border-[#C59B67] transition-colors cursor-pointer"
             title="Camera scan"
           >
             <Camera className="w-4 h-4" />
@@ -380,13 +383,13 @@ export default function AITutorView({
                 ? `Answer step ${socraticStep}: What do you understand about ${socraticTopic}?`
                 : "Ask AI Tutor a question..."
             }
-            className="flex-1 bg-neutral-950 border border-neutral-800 text-neutral-100 text-xs rounded-xl px-4 py-3 focus:outline-none focus:border-amber-500 placeholder:text-neutral-500"
+            className="flex-1 bg-[#FFF8F0] border border-[#C59B67] text-[#1A0F05] font-semibold text-xs rounded-xl px-4 py-3 focus:outline-none focus:border-[#8A2BE2] placeholder:text-[#5C4228]"
           />
 
           <button
             onClick={() => handleSend()}
             disabled={!inputQuery.trim() || isTyping}
-            className="bg-amber-500 hover:bg-amber-400 disabled:opacity-50 text-neutral-950 p-3 rounded-xl transition-all cursor-pointer font-bold shrink-0"
+            className="bg-[#8A2BE2] hover:bg-[#7823c6] disabled:opacity-50 text-white p-3 rounded-xl transition-all cursor-pointer font-bold shrink-0 shadow-2xs"
           >
             <Send className="w-4 h-4" />
           </button>
@@ -395,16 +398,16 @@ export default function AITutorView({
 
       {/* CAMERA SCAN MODAL */}
       {isCameraOpen && (
-        <div className="fixed inset-0 z-50 bg-neutral-950/80 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in duration-200">
-          <div className="bg-neutral-900 border border-neutral-800 rounded-2xl p-6 max-w-lg w-full space-y-6 shadow-2xl">
-            <div className="flex items-center justify-between border-b border-neutral-800 pb-3">
-              <div className="flex items-center space-x-2 text-amber-400">
+        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in duration-200">
+          <div className="bg-[#FFE4C4] border border-[#C59B67] rounded-2xl p-6 max-w-lg w-full space-y-6 shadow-2xl">
+            <div className="flex items-center justify-between border-b border-[#E3C6A2] pb-3">
+              <div className="flex items-center space-x-2 text-[#8A2BE2]">
                 <Camera className="w-5 h-5" />
-                <h3 className="text-base font-bold text-neutral-50">Learn From Camera</h3>
+                <h3 className="text-base font-bold text-[#1A0F05]">Learn From Camera</h3>
               </div>
               <button
                 onClick={() => setIsCameraOpen(false)}
-                className="text-neutral-400 hover:text-neutral-100 p-1"
+                className="text-[#5C4228] hover:text-[#1A0F05] p-1 font-bold"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -412,24 +415,24 @@ export default function AITutorView({
 
             {/* PREVIEW OR UPLOAD DROPZONE */}
             {!cameraImage ? (
-              <div className="border-2 border-dashed border-neutral-700 hover:border-amber-500/60 rounded-xl p-8 text-center space-y-4 bg-neutral-950/50 transition-colors">
-                <div className="w-12 h-12 rounded-full bg-amber-500/10 text-amber-400 flex items-center justify-center mx-auto">
+              <div className="border-2 border-dashed border-[#C59B67] hover:border-[#8A2BE2] rounded-xl p-8 text-center space-y-4 bg-[#FFF8F0] transition-colors">
+                <div className="w-12 h-12 rounded-full bg-[#ADD8E6] text-[#8A2BE2] flex items-center justify-center mx-auto border border-[#91c4d5]">
                   <Upload className="w-6 h-6" />
                 </div>
                 <div>
-                  <p className="text-sm font-bold text-neutral-200">Take Photo or Upload Image</p>
-                  <p className="text-xs text-neutral-400 mt-1">Scan math derivative, Python code error, or textbook concept.</p>
+                  <p className="text-sm font-bold text-[#1A0F05]">Take Photo or Upload Image</p>
+                  <p className="text-xs text-[#5C4228] mt-1 font-medium">Scan math derivative, Python code error, or textbook concept.</p>
                 </div>
-                <label className="inline-flex items-center space-x-2 bg-amber-500 hover:bg-amber-400 text-neutral-950 font-bold px-4 py-2.5 rounded-xl text-xs cursor-pointer transition-all">
+                <label className="inline-flex items-center space-x-2 bg-[#8A2BE2] hover:bg-[#7823c6] text-white font-bold px-4 py-2.5 rounded-xl text-xs cursor-pointer transition-all shadow-2xs">
                   <span>Browse File</span>
                   <input type="file" accept="image/*" onChange={handleImageUpload} className="hidden" />
                 </label>
               </div>
             ) : (
               <div className="space-y-4">
-                <img src={cameraImage} alt="Scanned problem preview" className="w-full h-44 object-cover rounded-xl border border-neutral-800" />
+                <img src={cameraImage} alt="Scanned problem preview" className="w-full h-44 object-cover rounded-xl border border-[#C59B67]" />
                 {isAnalyzingImage && (
-                  <div className="flex items-center justify-center space-x-2 text-xs text-amber-400 py-2">
+                  <div className="flex items-center justify-center space-x-2 text-xs text-[#8A2BE2] font-bold py-2">
                     <Sparkles className="w-4 h-4 animate-spin" />
                     <span>OCR Vision AI is analyzing textbook problem...</span>
                   </div>
@@ -439,18 +442,18 @@ export default function AITutorView({
 
             {/* SCAN RESULT PREVIEW */}
             {scanResult && (
-              <div className="bg-neutral-950 border border-neutral-800 rounded-xl p-4 space-y-3 text-xs text-neutral-200">
-                <div className="flex items-center space-x-2 text-amber-400 font-bold">
+              <div className="bg-[#ADD8E6] border border-[#91c4d5] rounded-xl p-4 space-y-3 text-xs text-[#161512]">
+                <div className="flex items-center space-x-2 text-[#8A2BE2] font-bold">
                   <CheckCircle2 className="w-4 h-4" />
                   <span>{scanResult.title}</span>
                 </div>
-                <p><strong>UNDERSTAND:</strong> {scanResult.understand}</p>
-                <p><strong>SOLUTION:</strong> <code className="text-amber-300 bg-neutral-900 px-2 py-0.5 rounded">{scanResult.solution}</code></p>
-                <p><strong>WHY:</strong> {scanResult.why}</p>
-                <div className="pt-2 border-t border-neutral-800">
+                <p><strong className="text-[#1A0F05]">UNDERSTAND:</strong> {scanResult.understand}</p>
+                <p><strong className="text-[#1A0F05]">SOLUTION:</strong> <code className="text-[#8A2BE2] bg-white px-2 py-0.5 rounded font-bold">{scanResult.solution}</code></p>
+                <p><strong className="text-[#1A0F05]">WHY:</strong> {scanResult.why}</p>
+                <div className="pt-2 border-t border-[#91c4d5]">
                   <button
                     onClick={applyScanResultToChat}
-                    className="w-full bg-amber-500 hover:bg-amber-400 text-neutral-950 font-bold py-2 rounded-xl text-xs transition-colors flex items-center justify-center space-x-1"
+                    className="w-full bg-[#8A2BE2] hover:bg-[#7823c6] text-white font-bold py-2 rounded-xl text-xs transition-colors flex items-center justify-center space-x-1 shadow-2xs"
                   >
                     <span>Import Explanation into Chat</span>
                     <ArrowRight className="w-4 h-4" />

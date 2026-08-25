@@ -1,420 +1,509 @@
 import React, { useState, useEffect } from 'react';
-import { Sparkles, HelpCircle, CheckCircle, AlertTriangle, XCircle, Sliders, ChefHat, ArrowRight, RefreshCcw, BookOpen, Quote, ShieldAlert, Cpu, ArrowLeft, Lightbulb, Zap } from 'lucide-react';
+import { Sparkles, HelpCircle, CheckCircle, AlertTriangle, XCircle, Sliders, ChefHat, ArrowRight, RefreshCcw, BookOpen, Quote, ShieldAlert, Cpu, ArrowLeft, Lightbulb, Zap, Layers } from 'lucide-react';
 import { generatePersonalizedContent } from '../services/aiService';
 import { PERSONAS } from './Navbar';
 
 const EXPLAIN_LEVELS = [
- { id: 'ELI5', label: 'ELI5 (5 Year Old)', desc: 'Zero jargon, pure simple metaphors' },
- { id: 'ELI10', label: 'ELI10 (School)', desc: 'Plain language, practical intuition' },
- { id: 'ELI20', label: 'ELI20 (Peer)', desc: 'Professional engineer-to-peer discussion' },
- { id: 'Expert', label: 'Expert', desc: 'Internal mechanics & memory trade-offs' }
+  { id: 'ELI5', label: 'ELI5 (5 Year Old)', desc: 'Zero jargon, pure simple metaphors' },
+  { id: 'ELI10', label: 'ELI10 (School)', desc: 'Plain language, practical intuition' },
+  { id: 'ELI20', label: 'ELI20 (Peer)', desc: 'Professional engineer-to-peer discussion' },
+  { id: 'Expert', label: 'Expert', desc: 'Internal mechanics & memory trade-offs' }
 ];
 
 const CONFUSION_STYLES = [
- { id: 'Analogy', label: '1. Domain Analogy', icon: '🍳' },
- { id: 'Story', label: '2. Scenario Story', icon: '📖' },
- { id: 'Visual', label: '3. Visual / Diagram', icon: '📐' },
- { id: 'Worked Example', label: '4. Worked Step Example', icon: '🛠' },
- { id: 'Expert', label: '5. Expert Mode', icon: '🔬' }
+  { id: 'Analogy', label: '1. Domain Analogy', icon: '🍳' },
+  { id: 'Story', label: '2. Scenario Story', icon: '📖' },
+  { id: 'Visual', label: '3. Visual / Diagram', icon: '📐' },
+  { id: 'Worked Example', label: '4. Worked Step Example', icon: '🛠' },
+  { id: 'Expert', label: '5. Expert Mode', icon: '🔬' }
 ];
 
+function TopicVisualDiagram({ topicTitle, domain }) {
+  return (
+    <div className="bg-[#ADD8E6] border border-[#91c4d5] p-5 rounded-2xl space-y-4 shadow-sm text-[#161512] animate-in fade-in duration-300">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center space-x-2 text-[#8A2BE2] font-bold text-xs uppercase">
+          <Zap className="w-4 h-4" />
+          <span>Visual Architecture Diagram: {topicTitle}</span>
+        </div>
+        <span className="bg-[#8A2BE2] text-white text-[10px] px-2.5 py-0.5 rounded-full font-bold">
+          Interactive Conceptual Graph
+        </span>
+      </div>
+
+      <div className="bg-[#FFF8F0] p-4 rounded-xl border border-[#96cbe0] flex items-center justify-center">
+        <svg viewBox="0 0 600 180" className="w-full max-h-48">
+          {/* Node 1: Input / Context */}
+          <rect x="20" y="55" width="140" height="70" rx="12" fill="#FFE4C4" stroke="#C59B67" strokeWidth="2" />
+          <text x="90" y="88" textAnchor="middle" fill="#1A0F05" fontSize="12" fontWeight="bold">Input Data / Concept</text>
+          <text x="90" y="105" textAnchor="middle" fill="#5C4228" fontSize="10">({domain || 'Domain'} Metaphor)</text>
+
+          {/* Arrow 1 */}
+          <path d="M 160 90 L 220 90" stroke="#8A2BE2" strokeWidth="3" />
+          <polygon points="220,90 210,84 210,96" fill="#8A2BE2" />
+
+          {/* Node 2: Core Processing / Mechanism */}
+          <rect x="225" y="45" width="160" height="90" rx="14" fill="#8A2BE2" stroke="#6b1cb9" strokeWidth="2" />
+          <text x="305" y="82" textAnchor="middle" fill="#FFFFFF" fontSize="13" fontWeight="bold">{topicTitle.split(' ')[0] || 'Core Mechanics'}</text>
+          <text x="305" y="100" textAnchor="middle" fill="#FFE4C4" fontSize="10">Logic & Execution</text>
+
+          {/* Arrow 2 */}
+          <path d="M 385 90 L 445 90" stroke="#8A2BE2" strokeWidth="3" />
+          <polygon points="445,90 435,84 435,96" fill="#8A2BE2" />
+
+          {/* Node 3: Result / Output */}
+          <rect x="450" y="55" width="130" height="70" rx="12" fill="#DEB887" stroke="#C59B67" strokeWidth="2" />
+          <text x="515" y="88" textAnchor="middle" fill="#1A0F05" fontSize="12" fontWeight="bold">Mastered Result</text>
+          <text x="515" y="105" textAnchor="middle" fill="#5A2A00" fontSize="10">Verified Target</text>
+        </svg>
+      </div>
+
+      <div className="grid grid-cols-3 gap-2 text-center text-[10px] font-bold text-[#334155]">
+        <div className="p-2 bg-[#FFE4C4] rounded-lg border border-[#E3C6A2] text-[#1A0F05]">
+          1. Concept Input
+        </div>
+        <div className="p-2 bg-[#8A2BE2] text-white rounded-lg">
+          2. Algorithmic Transformation
+        </div>
+        <div className="p-2 bg-[#DEB887] text-[#1A0F05] rounded-lg">
+          3. Verified Solution
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function LearningScreen({
- currentTopic,
- topicIndex,
- totalTodayTopics,
- currentDay = 1,
- onboardingData,
- persona,
- learnerModel,
- onSaveTopicConfidence,
- onFinishSession,
- onGoBack
+  currentTopic,
+  topicIndex,
+  totalTodayTopics,
+  currentDay = 1,
+  onboardingData,
+  persona,
+  learnerModel,
+  onGotIt,
+  onSaveTopicConfidence,
+  onFinishSession,
+  onGoBack
 }) {
- const [explainLevelIndex, setExplainLevelIndex] = useState(1); // Default ELI10
- const [styleIndex, setStyleIndex] = useState(0); // Default Analogy
- const [explanationData, setExplanationData] = useState(null);
- const [isLoading, setIsLoading] = useState(false);
- const [confusedCycleCount, setConfusedCycleCount] = useState(0);
+  const [explainLevelIndex, setExplainLevelIndex] = useState(1); // Default ELI10
+  const [styleIndex, setStyleIndex] = useState(0); // Default Analogy
+  const [explanationData, setExplanationData] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [confusedCycleCount, setConfusedCycleCount] = useState(0);
 
- // Active Toast/Notice Banner state when switching styles or clicking ratings
- const [activeToast, setActiveToast] = useState(null);
+  // Remediation states
+  const [remediationType, setRemediationType] = useState(null); // 'shaky' | 'still_lost' | null
+  const [shakyData, setShakyData] = useState(null);
+  const [stillLostData, setStillLostData] = useState(null);
+  const [isGeneratingRemediation, setIsGeneratingRemediation] = useState(false);
 
- // Remediation Modal State when user clicks "Still lost"
- const [showRemediationModal, setShowRemediationModal] = useState(false);
+  // Active Toast/Notice Banner state
+  const [activeToast, setActiveToast] = useState(null);
 
- const currentLevel = EXPLAIN_LEVELS[explainLevelIndex];
- const currentStyle = CONFUSION_STYLES[styleIndex];
+  const currentLevel = EXPLAIN_LEVELS[explainLevelIndex];
+  const currentStyle = CONFUSION_STYLES[styleIndex];
 
- // Active persona object
- const activePersonaObj = PERSONAS.find(p => p.id === persona) || PERSONAS[0];
+  // Active persona object
+  const activePersonaObj = PERSONAS.find(p => p.id === persona) || PERSONAS[0];
 
- // Fetch or re-generate explanation whenever topic, level, style, or persona changes
- useEffect(() => {
- let isSubscribed = true;
+  // Fetch initial topic explanation
+  useEffect(() => {
+    let isSubscribed = true;
 
- async function loadExplanation() {
- setIsLoading(true);
- try {
- const systemPrompt = activePersonaObj.systemPrompt;
- const userPrompt = `Explain the concept "${currentTopic.title}" for a learner whose overall goal is "${onboardingData.goal}".
+    async function loadExplanation() {
+      setIsLoading(true);
+      setRemediationType(null);
+      setShakyData(null);
+      setStillLostData(null);
+
+      try {
+        const systemPrompt = activePersonaObj.systemPrompt;
+        const userPrompt = `Explain the concept "${currentTopic.title}" for a learner whose overall goal is "${onboardingData?.goal || 'AI Engineering'}".
 Required Complexity Level: ${currentLevel.id} (${currentLevel.desc}).
 Required Style Approach: ${currentStyle.id}.
-Analogy Domain to integrate: "${onboardingData.domain}".
+Analogy Domain to integrate: "${onboardingData?.domain || 'cooking'}".
 Topic Description: ${currentTopic.description}.`;
 
- const res = await generatePersonalizedContent({
- type: 'topic_explanation',
- systemPrompt,
- userPrompt,
- learnerModel,
- context: {
- topicName: currentTopic.title,
- goal: onboardingData.goal,
- domain: onboardingData.domain,
- persona: persona,
- level: currentLevel.id,
- style: currentStyle.id,
- learnerModel
- }
- });
+        const res = await generatePersonalizedContent({
+          type: 'topic_explanation',
+          systemPrompt,
+          userPrompt,
+          learnerModel,
+          context: {
+            topicName: currentTopic.title,
+            goal: onboardingData?.goal,
+            domain: onboardingData?.domain,
+            persona: persona,
+            level: currentLevel.id,
+            style: currentStyle.id
+          }
+        });
 
- if (isSubscribed) {
- if (typeof res === 'object') {
- setExplanationData(res);
- } else {
- setExplanationData({
- headline: `Explanation of ${currentTopic.title}`,
- body: res,
- keyTakeaway: `Key Takeaway: Master ${currentTopic.title} to progress in ${onboardingData.goal}.`
- });
- }
- }
- } catch (err) {
- console.error('Failed to load explanation:', err);
- } finally {
- if (isSubscribed) setIsLoading(false);
- }
- }
+        if (isSubscribed) {
+          if (typeof res === 'object') {
+            setExplanationData(res);
+          } else {
+            setExplanationData({
+              headline: `Explanation of ${currentTopic.title}`,
+              body: res,
+              keyTakeaway: `Key Takeaway: Master ${currentTopic.title} to progress in ${onboardingData?.goal || 'AI Engineering'}.`
+            });
+          }
+        }
+      } catch (err) {
+        console.error('Failed to load explanation:', err);
+      } finally {
+        if (isSubscribed) setIsLoading(false);
+      }
+    }
 
- loadExplanation();
+    loadExplanation();
 
- return () => {
- isSubscribed = false;
- };
- }, [currentTopic.id, explainLevelIndex, styleIndex, persona, onboardingData.domain]);
+    return () => {
+      isSubscribed = false;
+    };
+  }, [currentTopic.id, explainLevelIndex, styleIndex, persona, onboardingData?.domain]);
 
- // Handle "I'm still confused" button click
- const handleStillConfused = () => {
- const nextStyleIndex = (styleIndex + 1) % CONFUSION_STYLES.length;
- const nextStyleObj = CONFUSION_STYLES[nextStyleIndex];
- setStyleIndex(nextStyleIndex);
- setConfusedCycleCount(prev => prev + 1);
+  // BUTTON 1 — "Got it" (Advances to next topic)
+  const handleGotItClick = () => {
+    onGotIt(currentTopic.id, {
+      rating: 'Got it',
+      levelUsed: currentLevel.id,
+      finalStyleStopped: currentStyle.id,
+      confusedCycles: confusedCycleCount
+    });
+  };
 
- setActiveToast({
- message: `Switched explanation style to ${nextStyleObj.icon} ${nextStyleObj.label}`,
- type: 'info'
- });
+  // BUTTON 2 — "Shaky" (Re-explain with Analogy Engine + Example, stays on topic)
+  const handleShakyClick = async () => {
+    if (isGeneratingRemediation) return;
+    setIsGeneratingRemediation(true);
+    setRemediationType('shaky');
 
- setTimeout(() => setActiveToast(null), 4000);
- };
+    // Save shaky status to state
+    onSaveTopicConfidence(currentTopic.id, { rating: 'Shaky' });
 
- // Handle self-rating click
- const handleRatingSelect = (rating) => {
- if (rating === 'Still lost') {
- // Open remediation modal instead of abruptly skipping!
- setShowRemediationModal(true);
- } else {
- onSaveTopicConfidence(currentTopic.id, {
- rating, // 'Got it' | 'Shaky'
- levelUsed: currentLevel.id,
- finalStyleStopped: currentStyle.id,
- confusedCycles: confusedCycleCount
- });
- }
- };
+    setActiveToast({
+      message: `🔄 Generating real-world ${onboardingData?.domain || 'cooking'} analogy & concrete example...`,
+      type: 'info'
+    });
 
- // Confirm proceeding with 'Still lost' rating after viewing remediation modal
- const handleConfirmStillLostProceed = () => {
- setShowRemediationModal(false);
- onSaveTopicConfidence(currentTopic.id, {
- rating: 'Still lost',
- levelUsed: currentLevel.id,
- finalStyleStopped: currentStyle.id,
- confusedCycles: confusedCycleCount
- });
- };
+    try {
+      const res = await generatePersonalizedContent({
+        type: 'shaky_analogy_reexplanation',
+        systemPrompt: `You are an expert AI Tutor. Re-explain "${currentTopic.title}" using a fresh real-world analogy from the domain "${onboardingData?.domain || 'cooking'}" AND a concrete step-by-step example.`,
+        userPrompt: `Give me a clear analogy and worked example for ${currentTopic.title}.`,
+        learnerModel,
+        context: { topicName: currentTopic.title, domain: onboardingData?.domain || 'cooking' }
+      });
 
- // Apply instant ELI5 simplification retry inside remediation modal
- const handleApplyELI5Remediation = () => {
- setShowRemediationModal(false);
- setExplainLevelIndex(0); // Switch to ELI5
- setStyleIndex(0); // Switch to Analogy Engine
- setActiveToast({
- message: `💡 Switched to ELI5 Simple Metaphor Mode for ${currentTopic.title}`,
- type: 'remediation'
- });
- setTimeout(() => setActiveToast(null), 5000);
- };
+      if (typeof res === 'object') {
+        setShakyData(res);
+      } else {
+        setShakyData({
+          analogy: `Think of ${currentTopic.title} like preparing a recipe in ${onboardingData?.domain || 'cooking'}: each step builds upon the previous ingredient to ensure perfect execution.`,
+          example: `Concrete Example:\n1. Input: [x = 5]\n2. Transformation: Apply ${currentTopic.title} rule.\n3. Output: Result [y = 25] verified.`,
+          takeaway: `Key Insight: ${currentTopic.title} breaks complex workflows into repeatable steps.`
+        });
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsGeneratingRemediation(false);
+      setTimeout(() => setActiveToast(null), 4000);
+    }
+  };
 
- return (
- <div className="max-w-4xl mx-auto px-4 py-8 space-y-6 animate-in fade-in slide-in-duration-300">
- 
- {/* Toast Notification Banner */}
- {activeToast && (
- <div className={`p-4 rounded-lg border text-xs font-semibold flex items-center justify-between transition-all animate-in fade-in slide-in-${
- activeToast.type === 'remediation' 
- ? 'bg-warning-100 border-warning-300 text-accent-950' 
- : 'bg-neutral-900 border-neutral-800 text-warning-300'
- }`}>
- <div className="flex items-center space-x-2">
- <Sparkles className="w-4 h-4 text-accent-400 shrink-0" />
- <span>{activeToast.message}</span>
- </div>
- <button 
- onClick={() => setActiveToast(null)}
- className="text-neutral-400 hover:text-neutral-50 font-bold ml-4"
- >
- ✕
- </button>
- </div>
- )}
+  // BUTTON 3 — "Still Lost" (Multi-level explanation + Visual Diagram, stays on topic)
+  const handleStillLostClick = async () => {
+    if (isGeneratingRemediation) return;
+    setIsGeneratingRemediation(true);
+    setRemediationType('still_lost');
 
- {/* Session Progress Header Bar */}
- <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-neutral-100 px-6 py-4 rounded-lg border border-neutral-200 ">
- <div className="flex items-center space-x-3">
- <button
- onClick={onGoBack}
- className="p-2 rounded-lg bg-neutral-100 hover:bg-neutral-200 text-neutral-700 transition-colors cursor-pointer"
- title="Back to Roadmap"
- >
- <ArrowLeft className="w-4 h-4" />
- </button>
+    // Save still lost status to state
+    onSaveTopicConfidence(currentTopic.id, { rating: 'Still lost' });
 
- <div>
- <span className="text-xs font-bold text-accent-800 uppercase tracking-wider">
- Day {currentDay} Session • Topic {topicIndex + 1} of {totalTodayTopics}
- </span>
- <h2 className="font-editorial text-2xl font-bold text-neutral-900 leading-tight">
- {currentTopic.title}
- </h2>
- </div>
- </div>
+    setActiveToast({
+      message: `💡 Escalating to Multi-Level Explanation & Visual Concept Diagram...`,
+      type: 'info'
+    });
 
- {/* Persona Active Indicator */}
- <div className="flex items-center space-x-2 bg-neutral-100 px-3 py-1.5 rounded-lg border border-neutral-200 shrink-0 text-xs">
- <span>{activePersonaObj.icon}</span>
- <div>
- <span className="font-semibold text-neutral-900">{activePersonaObj.name}</span>
- <span className="text-[10px] text-neutral-500 block">System Prompt Tone Active</span>
- </div>
- </div>
- </div>
+    try {
+      const res = await generatePersonalizedContent({
+        type: 'still_lost_multilevel',
+        systemPrompt: `You are a master teacher. Provide a multi-level breakdown for "${currentTopic.title}": 1. ELI5 Simplest Metaphor, 2. Step-by-Step Logic.`,
+        userPrompt: `Break down ${currentTopic.title} at multiple depth levels.`,
+        learnerModel,
+        context: { topicName: currentTopic.title, domain: onboardingData?.domain || 'cooking' }
+      });
 
- {/* Main Study Card */}
- <div className="bg-neutral-100 rounded-lg p-6 md:p-10 border border-neutral-200 space-y-8">
- 
- {/* EXPLAIN-O-METER SLIDER */}
- <div className="bg-neutral-50 border border-neutral-200/90 rounded-lg p-5 space-y-3">
- <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
- <div className="flex items-center space-x-2">
- <Sliders className="w-4 h-4 text-warning-700" />
- <label className="text-xs font-bold text-neutral-800 uppercase tracking-wider">
- Explain-o-Meter (Complexity Slider)
- </label>
- </div>
- <span className="text-xs font-bold text-warning-900 bg-warning-200/70 px-3 py-1 rounded-full">
- {currentLevel.label}
- </span>
- </div>
+      if (typeof res === 'object') {
+        setStillLostData(res);
+      } else {
+        setStillLostData({
+          eli5: `Zero-Jargon Metaphor: Imagine ${currentTopic.title} is like a map guide pointing you to the exact item you need without searching every room.`,
+          stepByStep: `Step-by-Step Breakdown:\n1. Start with raw input.\n2. Pass through processing boundary.\n3. Evaluate condition & emit final result.`,
+          takeaway: `Core Takeaway: Master the input-output boundary to understand ${currentTopic.title}.`
+        });
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsGeneratingRemediation(false);
+      setTimeout(() => setActiveToast(null), 4000);
+    }
+  };
 
- <input
- type="range"
- min="0"
- max="3"
- step="1"
- value={explainLevelIndex}
- onChange={(e) => setExplainLevelIndex(Number(e.target.value))}
- className="w-full accent-warning-700 cursor-pointer"
- />
+  return (
+    <div className="max-w-4xl mx-auto px-4 py-8 space-y-6 animate-in fade-in slide-in-duration-300 font-sans">
+      
+      {/* TOAST NOTIFICATION BANNER */}
+      {activeToast && (
+        <div className="p-4 rounded-xl border text-xs font-semibold flex items-center justify-between transition-all bg-[#8A2BE2] border-[#6b1cb9] text-white shadow-md">
+          <div className="flex items-center space-x-2">
+            <Sparkles className="w-4 h-4 text-amber-300 shrink-0 animate-spin" />
+            <span>{activeToast.message}</span>
+          </div>
+          <button 
+            onClick={() => setActiveToast(null)}
+            className="text-white/80 hover:text-white font-bold ml-4"
+          >
+            ✕
+          </button>
+        </div>
+      )}
 
- <div className="grid grid-cols-4 text-center text-[11px] font-medium text-neutral-500 gap-1">
- <span className={explainLevelIndex === 0 ? 'text-warning-900 font-bold' : ''}>ELI5</span>
- <span className={explainLevelIndex === 1 ? 'text-warning-900 font-bold' : ''}>ELI10</span>
- <span className={explainLevelIndex === 2 ? 'text-warning-900 font-bold' : ''}>ELI20 (Peer)</span>
- <span className={explainLevelIndex === 3 ? 'text-warning-900 font-bold' : ''}>Expert</span>
- </div>
+      {/* SESSION PROGRESS HEADER BAR */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-[#DEB887] px-6 py-4 rounded-2xl border border-[#C59B67] shadow-md text-[#1A0F05]">
+        <div className="flex items-center space-x-3">
+          <button
+            onClick={onGoBack}
+            className="p-2 rounded-xl bg-[#FFE4C4] hover:bg-[#8A2BE2] hover:text-white text-[#1A0F05] transition-colors cursor-pointer border border-[#C59B67]"
+            title="Back to Roadmap"
+          >
+            <ArrowLeft className="w-4 h-4" />
+          </button>
 
- <p className="text-xs text-neutral-500 italic text-center pt-1">
- {currentLevel.desc}
- </p>
- </div>
+          <div>
+            <span className="text-xs font-bold text-[#5A2A00] uppercase tracking-wider">
+              Day {currentDay} Session • Topic {topicIndex + 1} of {totalTodayTopics}
+            </span>
+            <h2 className="text-2xl font-bold text-[#1A0F05] leading-tight">
+              {currentTopic.title}
+            </h2>
+          </div>
+        </div>
 
- {/* ANALOGY ENGINE & CONFUSION STYLES HEADER */}
- <div className="flex flex-wrap items-center justify-between gap-3 pb-2 border-b border-neutral-100">
- <div className="flex items-center space-x-2 text-warning-900 bg-warning-100/60 px-3 py-1 rounded-full text-xs font-semibold">
- <ChefHat className="w-4 h-4 text-warning-700" />
- <span>Analogy Engine Domain: <strong className="uppercase">{onboardingData.domain}</strong></span>
- </div>
+        {/* PERSONA ACTIVE INDICATOR */}
+        <div className="flex items-center space-x-2 bg-[#FFE4C4] px-3.5 py-2 rounded-xl border border-[#C59B67] shrink-0 text-xs shadow-2xs">
+          <span className="text-base">{activePersonaObj.icon}</span>
+          <div>
+            <span className="font-bold text-[#1A0F05] block">{activePersonaObj.name}</span>
+            <span className="text-[10px] text-[#5C4228] font-semibold block">System Prompt Tone Active</span>
+          </div>
+        </div>
+      </div>
 
- {/* I'm Still Confused Button */}
- <button
- onClick={handleStillConfused}
- className="flex items-center space-x-2 bg-neutral-900 hover:bg-warning-700 text-neutral-100 px-4 py-2 rounded-lg text-xs font-semibold transition-all cursor-pointer"
- title="Cycles through Analogy -> Story -> Visual -> Worked Example -> Expert"
- >
- <HelpCircle className="w-4 h-4 text-warning-300" />
- <span>I'm still confused ({currentStyle.label})</span>
- </button>
- </div>
+      {/* MAIN STUDY CARD */}
+      <div className="bg-[#FFE4C4] rounded-2xl p-6 md:p-10 border border-[#E3C6A2] space-y-8 shadow-lg">
+        
+        {/* EXPLAIN-O-METER SLIDER */}
+        <div className="bg-[#ADD8E6] border border-[#91c4d5] rounded-xl p-5 space-y-3 shadow-2xs">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div className="flex items-center space-x-2">
+              <Sliders className="w-4 h-4 text-[#8A2BE2]" />
+              <label className="text-xs font-bold text-[#161512] uppercase tracking-wider">
+                Explain-o-Meter (Complexity Slider)
+              </label>
+            </div>
+            <span className="text-xs font-bold text-white bg-[#8A2BE2] px-3 py-1 rounded-full shadow-2xs">
+              {currentLevel.label}
+            </span>
+          </div>
 
- {/* EXPLANATION CONTENT AREA */}
- {isLoading ? (
- <div className="py-16 text-center space-y-4">
- <div className="w-10 h-10 border-4 border-warning-600 border-t-transparent rounded-full animate-spin mx-auto"></div>
- <p className="text-sm text-neutral-600 font-editorial font-medium">
- Generating {currentLevel.id} explanation ({currentStyle.label}) tailored to {onboardingData.domain}...
- </p>
- </div>
- ) : (
- <div className="space-y-6 animate-in fade-in duration-200">
- 
- {/* Persona Callout Quote */}
- <div className="bg-warning-50/50 border-l-4 border-warning-600 p-4 rounded-r-2xl space-y-1">
- <div className="flex items-center space-x-2 text-xs font-bold text-warning-900 uppercase">
- <Quote className="w-3.5 h-3.5" />
- <span>{persona} Tone Perspective</span>
- </div>
- <p className="text-xs text-neutral-700 italic font-editorial">
- "{explanationData?.headline || currentTopic.title}"
- </p>
- </div>
+          <input
+            type="range"
+            min="0"
+            max="3"
+            step="1"
+            value={explainLevelIndex}
+            onChange={(e) => setExplainLevelIndex(Number(e.target.value))}
+            className="w-full accent-[#8A2BE2] cursor-pointer"
+          />
 
- {/* Explanation Body */}
- <div className="prose prose-stone max-w-none text-neutral-800 leading-relaxed font-sans text-sm space-y-4 whitespace-pre-line">
- {explanationData?.body}
- </div>
+          <div className="grid grid-cols-4 text-center text-[11px] font-bold text-[#334155] gap-1">
+            <span className={explainLevelIndex === 0 ? 'text-[#8A2BE2] font-black underline' : ''}>ELI5</span>
+            <span className={explainLevelIndex === 1 ? 'text-[#8A2BE2] font-black underline' : ''}>ELI10</span>
+            <span className={explainLevelIndex === 2 ? 'text-[#8A2BE2] font-black underline' : ''}>ELI20 (Peer)</span>
+            <span className={explainLevelIndex === 3 ? 'text-[#8A2BE2] font-black underline' : ''}>Expert</span>
+          </div>
 
- {/* Key Takeaway Box */}
- {explanationData?.keyTakeaway && (
- <div className="bg-neutral-900 text-neutral-200 p-4 rounded-lg text-xs font-mono-code leading-relaxed border border-neutral-800">
- {explanationData.keyTakeaway}
- </div>
- )}
+          <p className="text-xs text-[#0f172a] font-medium italic text-center pt-1">
+            {currentLevel.desc}
+          </p>
+        </div>
 
- </div>
- )}
+        {/* ANALOGY ENGINE & CONFUSION STYLES HEADER */}
+        <div className="flex flex-wrap items-center justify-between gap-3 pb-2 border-b border-[#E3C6A2]">
+          <div className="flex items-center space-x-2 text-[#1A0F05] bg-[#DEB887] px-3.5 py-1.5 rounded-full text-xs font-bold border border-[#C59B67]">
+            <ChefHat className="w-4 h-4 text-[#5A2A00]" />
+            <span>Analogy Engine Domain: <strong className="uppercase text-[#5A2A00]">{onboardingData?.domain || 'cooking'}</strong></span>
+          </div>
+        </div>
 
- {/* SELF-RATING CONFIDENCE SECTION */}
- <div className="pt-6 border-t border-neutral-200 space-y-4">
- <div className="text-center space-y-1">
- <h3 className="font-editorial text-xl font-bold text-neutral-900">
- How well did you understand this concept?
- </h3>
- <p className="text-xs text-neutral-500 font-sans">
- Your self-rating updates your in-memory confidence map for this session.
- </p>
- </div>
+        {/* EXPLANATION CONTENT AREA */}
+        {isLoading ? (
+          <div className="py-16 text-center space-y-4">
+            <div className="w-10 h-10 border-4 border-[#8A2BE2] border-t-transparent rounded-full animate-spin mx-auto"></div>
+            <p className="text-sm text-[#5C4228] font-semibold">
+              Generating {currentLevel.id} explanation tailored to {onboardingData?.domain || 'cooking'}...
+            </p>
+          </div>
+        ) : (
+          <div className="space-y-6 animate-in fade-in duration-200">
+            
+            {/* Persona Callout Quote */}
+            <div className="bg-[#ADD8E6] border-l-4 border-[#8A2BE2] p-4 rounded-r-2xl space-y-1 border border-[#91c4d5]">
+              <div className="flex items-center space-x-2 text-xs font-bold text-[#8A2BE2] uppercase">
+                <Quote className="w-3.5 h-3.5" />
+                <span>{persona} Tone Perspective</span>
+              </div>
+              <p className="text-xs text-[#161512] font-semibold italic">
+                "{explanationData?.headline || currentTopic.title}"
+              </p>
+            </div>
 
- <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
- 
- {/* Got It */}
- <button
- onClick={() => handleRatingSelect('Got it')}
- className="flex items-center justify-center space-x-2 p-4 rounded-lg bg-success-50 hover:bg-success-100 text-success-900 border border-success-300 font-semibold text-sm transition-all cursor-pointer group"
- >
- <CheckCircle className="w-5 h-5 text-success-600 group-hover:scale-110 transition-transform" />
- <span>Got it!</span>
- </button>
+            {/* Main Explanation Body */}
+            <div className="prose max-w-none text-[#161512] font-medium leading-relaxed text-sm space-y-4 whitespace-pre-line">
+              {explanationData?.body}
+            </div>
 
- {/* Shaky */}
- <button
- onClick={() => handleRatingSelect('Shaky')}
- className="flex items-center justify-center space-x-2 p-4 rounded-lg bg-warning-50 hover:bg-warning-100 text-warning-900 border border-warning-300 font-semibold text-sm transition-all cursor-pointer group"
- >
- <AlertTriangle className="w-5 h-5 text-warning-600 group-hover:scale-110 transition-transform" />
- <span>Shaky</span>
- </button>
+            {/* Key Takeaway Box */}
+            {explanationData?.keyTakeaway && (
+              <div className="bg-[#8A2BE2] text-white p-4.5 rounded-xl text-xs font-mono font-bold leading-relaxed border border-[#6b1cb9] shadow-md">
+                {explanationData.keyTakeaway}
+              </div>
+            )}
 
- {/* Still Lost */}
- <button
- onClick={() => handleRatingSelect('Still lost')}
- className="flex items-center justify-center space-x-2 p-4 rounded-lg bg-error-50 hover:bg-error-100 text-error-900 border border-error-300 font-semibold text-sm transition-all cursor-pointer group"
- >
- <XCircle className="w-5 h-5 text-error-600 group-hover:scale-110 transition-transform" />
- <span>Still lost</span>
- </button>
+            {/* DYNAMIC REMEDIATION SECTION 1 — SHAKY RE-EXPLANATION */}
+            {remediationType === 'shaky' && (
+              <div className="bg-[#DEB887] border border-[#C59B67] p-6 rounded-2xl space-y-4 text-[#1A0F05] animate-in fade-in slide-in-duration-300 shadow-md">
+                <div className="flex items-center space-x-2 text-[#5A2A00] font-bold text-xs uppercase">
+                  <ChefHat className="w-4 h-4 text-[#5A2A00]" />
+                  <span>Analogy Engine Refresher ({onboardingData?.domain || 'cooking'} Domain)</span>
+                </div>
 
- </div>
- </div>
+                {isGeneratingRemediation ? (
+                  <div className="flex items-center space-x-3 py-4 text-xs font-bold text-[#5C4228]">
+                    <div className="w-5 h-5 border-2 border-[#8A2BE2] border-t-transparent rounded-full animate-spin"></div>
+                    <span>Generating custom {onboardingData?.domain || 'cooking'} analogy & worked example...</span>
+                  </div>
+                ) : (
+                  <div className="space-y-4 text-xs">
+                    <div className="bg-[#FFF8F0] p-4 rounded-xl border border-[#C59B67] space-y-2">
+                      <p className="font-bold text-[#8A2BE2] text-sm">🍳 Real-World Domain Analogy</p>
+                      <p className="text-[#1A0F05] font-medium leading-relaxed">{shakyData?.analogy || shakyData?.body}</p>
+                    </div>
 
- </div>
+                    <div className="bg-[#ADD8E6] p-4 rounded-xl border border-[#91c4d5] space-y-2">
+                      <p className="font-bold text-[#161512] text-sm">🛠 Step-by-Step Worked Example</p>
+                      <p className="text-[#0f172a] font-medium whitespace-pre-line leading-relaxed">{shakyData?.example || shakyData?.keyTakeaway}</p>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
 
- {/* REMEDIATION MODAL WHEN "STILL LOST" IS CLICKED */}
- {showRemediationModal && (
- <div className="fixed inset-0 z-50 bg-neutral-900/60 flex items-center justify-center p-4 animate-in fade-in duration-200">
- <div className="bg-neutral-100 rounded-lg p-6 md:p-8 max-w-lg w-full border border-neutral-200 space-y-6 animate-in zoom-in-95 duration-200">
- 
- <div className="flex items-center space-x-3 text-error-600 border-b border-neutral-100 pb-4">
- <div className="w-10 h-10 rounded-lg bg-error-100 border border-error-200 flex items-center justify-center shrink-0">
- <XCircle className="w-6 h-6 text-error-600" />
- </div>
- <div>
- <h3 className="font-editorial text-xl font-bold text-neutral-900">
- Concept Remediation Needed
- </h3>
- <p className="text-xs text-neutral-500">
- Topic: <strong className="text-neutral-800">{currentTopic.title}</strong>
- </p>
- </div>
- </div>
+            {/* DYNAMIC REMEDIATION SECTION 2 — STILL LOST MULTI-LEVEL + VISUAL DIAGRAM */}
+            {remediationType === 'still_lost' && (
+              <div className="space-y-6 animate-in fade-in slide-in-duration-300">
+                
+                {/* Multi-Level Breakdown Box */}
+                <div className="bg-[#DEB887] border border-[#C59B67] p-6 rounded-2xl space-y-4 text-[#1A0F05] shadow-md">
+                  <div className="flex items-center space-x-2 text-[#8A2BE2] font-bold text-xs uppercase">
+                    <Layers className="w-4 h-4 text-[#8A2BE2]" />
+                    <span>Multi-Level Concept Escalation & Simplification</span>
+                  </div>
 
- <div className="space-y-3 text-xs text-neutral-700 leading-relaxed font-sans">
- <p className="bg-error-50 border border-error-200 p-3.5 rounded-lg text-error-950 font-medium">
- We've flagged <strong>"{currentTopic.title}"</strong> as <strong>"Still lost"</strong> in your in-memory Learner Model. Don't worry—learning complex concepts takes iteration!
- </p>
- <p>
- What would you like to do before moving forward?
- </p>
- </div>
+                  {isGeneratingRemediation ? (
+                    <div className="flex items-center space-x-3 py-4 text-xs font-bold text-[#5C4228]">
+                      <div className="w-5 h-5 border-2 border-[#8A2BE2] border-t-transparent rounded-full animate-spin"></div>
+                      <span>Synthesizing multi-level explanation & visual diagram...</span>
+                    </div>
+                  ) : (
+                    <div className="space-y-4 text-xs">
+                      <div className="bg-[#FFF8F0] p-4 rounded-xl border border-[#C59B67] space-y-1.5">
+                        <span className="bg-[#8A2BE2] text-white text-[10px] px-2 py-0.5 rounded font-bold uppercase">Level 1 — ELI5 Simplest Metaphor</span>
+                        <p className="text-[#1A0F05] font-medium leading-relaxed pt-1">{stillLostData?.eli5 || stillLostData?.body}</p>
+                      </div>
 
- <div className="space-y-2.5 pt-2">
- 
- {/* Option 1: Simplify to ELI5 & Retry */}
- <button
- onClick={handleApplyELI5Remediation}
- className="w-full flex items-center justify-between p-4 rounded-lg bg-warning-50 hover:bg-warning-100 border border-warning-300 text-accent-950 font-semibold text-xs transition-all cursor-pointer"
- >
- <div className="flex items-center space-x-3">
- <Lightbulb className="w-5 h-5 text-warning-600 shrink-0" />
- <div className="text-left">
- <p className="font-bold text-sm">Simplify to ELI5 Mode & Retry</p>
- <p className="text-[11px] text-accent-800 font-normal">Re-explains using zero-jargon everyday metaphors right now</p>
- </div>
- </div>
- <Zap className="w-4 h-4 text-warning-600 shrink-0" />
- </button>
+                      <div className="bg-[#ADD8E6] p-4 rounded-xl border border-[#91c4d5] space-y-1.5">
+                        <span className="bg-[#161512] text-white text-[10px] px-2 py-0.5 rounded font-bold uppercase">Level 2 — Step-by-Step Mechanism</span>
+                        <p className="text-[#0f172a] font-medium whitespace-pre-line leading-relaxed pt-1">{stillLostData?.stepByStep || stillLostData?.keyTakeaway}</p>
+                      </div>
+                    </div>
+                  )}
+                </div>
 
- {/* Option 2: Save for Recap & Proceed */}
- <button
- onClick={handleConfirmStillLostProceed}
- className="w-full flex items-center justify-between p-4 rounded-lg bg-neutral-100 hover:bg-neutral-200 border border-neutral-300 text-neutral-800 font-semibold text-xs transition-all cursor-pointer"
- >
- <div className="flex items-center space-x-3">
- <HelpCircle className="w-5 h-5 text-neutral-500 shrink-0" />
- <div className="text-left">
- <p className="font-bold text-sm">Save Rating & Proceed</p>
- <p className="text-[11px] text-neutral-500 font-normal">Saves rating for active recall flashcards & recap review</p>
- </div>
- </div>
- <ArrowRight className="w-4 h-4 text-neutral-500 shrink-0" />
- </button>
+                {/* Rendered SVG Visual Concept Diagram Component */}
+                <TopicVisualDiagram topicTitle={currentTopic.title} domain={onboardingData?.domain} />
 
- </div>
+              </div>
+            )}
 
- </div>
- </div>
- )}
+          </div>
+        )}
 
- </div>
- );
+        {/* SELF-RATING CONFIDENCE SECTION */}
+        <div className="pt-6 border-t border-[#E3C6A2] space-y-4">
+          <div className="text-center space-y-1">
+            <h3 className="text-xl font-bold text-[#1A0F05]">
+              How well did you understand this concept?
+            </h3>
+            <p className="text-xs text-[#5C4228] font-semibold">
+              Clicking "Got it" advances to the next topic. "Shaky" and "Still Lost" stay on this topic and trigger AI re-explanations.
+            </p>
+          </div>
+
+          {/* RATING BUTTONS */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            
+            {/* BUTTON 1 — Got It */}
+            <button
+              onClick={handleGotItClick}
+              disabled={isGeneratingRemediation}
+              className="flex items-center justify-center space-x-2 p-4 rounded-xl bg-[#8A2BE2] hover:bg-[#7823c6] text-white border border-[#6b1cb9] font-bold text-sm transition-all cursor-pointer group shadow-md disabled:opacity-50"
+            >
+              <CheckCircle className="w-5 h-5 text-white group-hover:scale-110 transition-transform" />
+              <span>Got it! (Next Topic)</span>
+            </button>
+
+            {/* BUTTON 2 — Shaky */}
+            <button
+              onClick={handleShakyClick}
+              disabled={isGeneratingRemediation}
+              className="flex items-center justify-center space-x-2 p-4 rounded-xl bg-[#DEB887] hover:bg-[#cda06d] text-[#1A0F05] border border-[#C59B67] font-bold text-sm transition-all cursor-pointer group shadow-md disabled:opacity-50"
+            >
+              <AlertTriangle className="w-5 h-5 text-[#5A2A00] group-hover:scale-110 transition-transform" />
+              <span>Shaky (Analogy + Example)</span>
+            </button>
+
+            {/* BUTTON 3 — Still Lost */}
+            <button
+              onClick={handleStillLostClick}
+              disabled={isGeneratingRemediation}
+              className="flex items-center justify-center space-x-2 p-4 rounded-xl bg-[#ADD8E6] hover:bg-[#96cbe0] text-[#161512] border border-[#91c4d5] font-bold text-sm transition-all cursor-pointer group shadow-md disabled:opacity-50"
+            >
+              <XCircle className="w-5 h-5 text-[#8A2BE2] group-hover:scale-110 transition-transform" />
+              <span>Still lost (Visual + Multi-level)</span>
+            </button>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  );
 }

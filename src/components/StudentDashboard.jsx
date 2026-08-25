@@ -321,32 +321,32 @@ export default function StudentDashboard({
       </div>
 
       {/* 2. VISUAL 2D NODE FLOWCHART GRAPH (BRANCHING ARCHITECTURE) */}
-      <div className="bg-neutral-900 text-neutral-50 rounded-lg p-6 md:p-8 border border-neutral-800 space-y-6 relative overflow-hidden">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-neutral-800 pb-4">
+      <div className="bg-[#FFE4C4] text-[#1A0F05] rounded-xl p-6 md:p-8 border border-[#E8C8A0] space-y-6 relative overflow-hidden shadow-md">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#E8C8A0] pb-4">
           <div>
-            <div className="flex items-center space-x-2 text-xs text-warning-400 font-semibold mb-1">
-              <GitBranch className="w-4 h-4" />
+            <div className="flex items-center space-x-2 text-xs text-[#8A2BE2] font-bold uppercase tracking-wider mb-1">
+              <GitBranch className="w-4 h-4 text-[#8A2BE2]" />
               <span>Interactive Workflow Topology Graph</span>
             </div>
-            <h2 className="font-editorial text-2xl font-bold text-neutral-50">
+            <h2 className="font-editorial text-2xl font-bold text-[#1A0F05]">
               Personalized Learning Journey Map
             </h2>
-            <p className="text-xs text-neutral-300 font-sans mt-0.5">
+            <p className="text-xs text-[#3D2714] font-sans mt-0.5">
               Visualizes node dependencies, branching calibration junctions, and unlock sequences.
             </p>
           </div>
 
           <div className="flex items-center space-x-3 text-[11px] font-sans">
-            <span className="flex items-center space-x-1.5 text-success-400">
-              <span className="w-2.5 h-2.5 rounded-full bg-success-500"></span>
+            <span className="flex items-center space-x-1.5 text-[#1A0F05] font-semibold">
+              <span className="w-2.5 h-2.5 rounded-full bg-[#8A2BE2]"></span>
               <span>Completed</span>
             </span>
-            <span className="flex items-center space-x-1.5 text-warning-400">
-              <span className="w-2.5 h-2.5 rounded-full bg-warning-500 animate-pulse"></span>
+            <span className="flex items-center space-x-1.5 text-[#1A0F05] font-semibold">
+              <span className="w-2.5 h-2.5 rounded-full bg-[#DEB887] animate-pulse"></span>
               <span>Active Action</span>
             </span>
-            <span className="flex items-center space-x-1.5 text-neutral-500">
-              <span className="w-2.5 h-2.5 rounded-full bg-neutral-700"></span>
+            <span className="flex items-center space-x-1.5 text-[#3D2714] font-semibold">
+              <span className="w-2.5 h-2.5 rounded-full bg-[#ADD8E6] border border-[#8A2BE2]/40"></span>
               <span>Locked</span>
             </span>
           </div>
@@ -357,34 +357,34 @@ export default function StudentDashboard({
           {/* CONNECTOR SVG PATH OVERLAY */}
           <svg className="absolute inset-0 w-full h-full pointer-events-none z-0 overflow-visible" style={{ minHeight: '320px' }}>
             <defs>
-              <marker id="arrow-green" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-                <path d="M 0 0 L 10 5 L 0 10 z" fill="#5C9A6C" />
+              <marker id="arrow-violet" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="#8A2BE2" />
               </marker>
-              <marker id="arrow-amber" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-                <path d="M 0 0 L 10 5 L 0 10 z" fill="#E5A93C" />
+              <marker id="arrow-burlywood" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="#DEB887" />
               </marker>
-              <marker id="arrow-gray" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-                <path d="M 0 0 L 10 5 L 0 10 z" fill="#4B463C" />
+              <marker id="arrow-lightblue" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="#ADD8E6" />
               </marker>
             </defs>
 
             {/* Line 1 -> 2 */}
-            <line x1="16%" y1="50%" x2="30%" y2="50%" stroke="#5C9A6C" strokeWidth="2.5" markerEnd="url(#arrow-green)" />
+            <line x1="16%" y1="50%" x2="30%" y2="50%" stroke="#8A2BE2" strokeWidth="2.5" markerEnd="url(#arrow-violet)" />
 
             {/* Line 2 -> 3 */}
-            <line x1="33%" y1="50%" x2="47%" y2="50%" stroke="#5C9A6C" strokeWidth="2.5" markerEnd="url(#arrow-green)" />
+            <line x1="33%" y1="50%" x2="47%" y2="50%" stroke="#8A2BE2" strokeWidth="2.5" markerEnd="url(#arrow-violet)" />
 
             {/* Line 3 -> 4 (Branch A Top) */}
-            <path d="M 52% 40% C 56% 20%, 60% 20%, 64% 20%" fill="none" stroke={hasTakenQuiz ? "#E5A93C" : "#4B463C"} strokeWidth="2" strokeDasharray={hasTakenQuiz ? "none" : "4 4"} markerEnd={hasTakenQuiz ? "url(#arrow-amber)" : "url(#arrow-gray)"} />
+            <path d="M 52% 40% C 56% 20%, 60% 20%, 64% 20%" fill="none" stroke="#8A2BE2" strokeWidth="2" strokeDasharray={hasTakenQuiz ? "none" : "4 4"} markerEnd="url(#arrow-violet)" />
 
             {/* Line 3 -> 5 (Branch B Bottom) */}
-            <path d="M 52% 60% C 56% 80%, 60% 80%, 64% 80%" fill="none" stroke={hasTakenQuiz ? "#E5A93C" : "#4B463C"} strokeWidth="2" strokeDasharray={hasTakenQuiz ? "none" : "4 4"} markerEnd={hasTakenQuiz ? "url(#arrow-amber)" : "url(#arrow-gray)"} />
+            <path d="M 52% 60% C 56% 80%, 60% 80%, 64% 80%" fill="none" stroke="#8A2BE2" strokeWidth="2" strokeDasharray={hasTakenQuiz ? "none" : "4 4"} markerEnd="url(#arrow-violet)" />
 
             {/* Line 4 -> 6 (Convergence Top) */}
-            <path d="M 78% 20% C 82% 20%, 84% 40%, 87% 45%" fill="none" stroke={hasExploredTwin || hasReviewedGraph ? "#E5A93C" : "#4B463C"} strokeWidth="2" strokeDasharray={hasExploredTwin || hasReviewedGraph ? "none" : "4 4"} markerEnd={hasExploredTwin || hasReviewedGraph ? "url(#arrow-amber)" : "url(#arrow-gray)"} />
+            <path d="M 78% 20% C 82% 20%, 84% 40%, 87% 45%" fill="none" stroke={hasExploredTwin || hasReviewedGraph ? "#DEB887" : "#8A2BE2"} strokeWidth="2" strokeDasharray={hasExploredTwin || hasReviewedGraph ? "none" : "4 4"} markerEnd={hasExploredTwin || hasReviewedGraph ? "url(#arrow-burlywood)" : "url(#arrow-violet)"} />
 
             {/* Line 5 -> 6 (Convergence Bottom) */}
-            <path d="M 78% 80% C 82% 80%, 84% 60%, 87% 55%" fill="none" stroke={hasExploredTwin ? "#E5A93C" : "#4B463C"} strokeWidth="2" strokeDasharray={hasExploredTwin ? "none" : "4 4"} markerEnd={hasExploredTwin ? "url(#arrow-amber)" : "url(#arrow-gray)"} />
+            <path d="M 78% 80% C 82% 80%, 84% 60%, 87% 55%" fill="none" stroke={hasExploredTwin ? "#DEB887" : "#8A2BE2"} strokeWidth="2" strokeDasharray={hasExploredTwin ? "none" : "4 4"} markerEnd={hasExploredTwin ? "url(#arrow-burlywood)" : "url(#arrow-violet)"} />
           </svg>
 
           {/* 2D GRAPH NODE CONTAINER */}
@@ -393,55 +393,55 @@ export default function StudentDashboard({
             {/* NODE 1: SETUP */}
             <button
               onClick={() => onNavigate('onboarding')}
-              className="bg-neutral-950 border border-success-500/60 hover:border-success-400 p-4 rounded-lg text-left transition-all cursor-pointer space-y-2 group shadow-lg"
+              className="bg-[#ADD8E6] border border-[#8A2BE2] hover:border-[#8A2BE2] p-4 rounded-xl text-left transition-all cursor-pointer space-y-2 group shadow-xs"
             >
               <div className="flex items-center justify-between text-xs">
-                <span className="w-6 h-6 rounded-full bg-success-600 text-neutral-50 font-bold flex items-center justify-center text-xs">✓</span>
-                <span className="text-[10px] uppercase font-bold text-success-400">Node 1</span>
+                <span className="w-6 h-6 rounded-full bg-[#8A2BE2] text-white font-bold flex items-center justify-center text-xs">✓</span>
+                <span className="text-[10px] uppercase font-bold text-[#8A2BE2]">Node 1</span>
               </div>
-              <p className="font-bold text-neutral-50 text-sm font-sans group-hover:text-success-300">Setup Plan</p>
-              <p className="text-[11px] text-neutral-300 leading-snug">Tailors AI context & analogy engine</p>
+              <p className="font-bold text-[#1A0F05] text-sm font-sans group-hover:text-[#8A2BE2]">Setup Plan</p>
+              <p className="text-[11px] text-[#3D2714] leading-snug">Tailors AI context & analogy engine</p>
             </button>
 
             {/* NODE 2: PATH */}
             <button
               onClick={() => onNavigate('path')}
-              className="bg-neutral-950 border border-success-500/60 hover:border-success-400 p-4 rounded-lg text-left transition-all cursor-pointer space-y-2 group shadow-lg"
+              className="bg-[#ADD8E6] border border-[#8A2BE2] hover:border-[#8A2BE2] p-4 rounded-xl text-left transition-all cursor-pointer space-y-2 group shadow-xs"
             >
               <div className="flex items-center justify-between text-xs">
-                <span className="w-6 h-6 rounded-full bg-success-600 text-neutral-50 font-bold flex items-center justify-center text-xs">✓</span>
-                <span className="text-[10px] uppercase font-bold text-success-400">Node 2</span>
+                <span className="w-6 h-6 rounded-full bg-[#8A2BE2] text-white font-bold flex items-center justify-center text-xs">✓</span>
+                <span className="text-[10px] uppercase font-bold text-[#8A2BE2]">Node 2</span>
               </div>
-              <p className="font-bold text-neutral-50 text-sm font-sans group-hover:text-success-300">AI Roadmap Path</p>
-              <p className="text-[11px] text-neutral-300 leading-snug">Deconstructs goal into daily topics</p>
+              <p className="font-bold text-[#1A0F05] text-sm font-sans group-hover:text-[#8A2BE2]">AI Roadmap Path</p>
+              <p className="text-[11px] text-[#3D2714] leading-snug">Deconstructs goal into daily topics</p>
             </button>
 
             {/* NODE 3: ADAPTIVE QUIZ (JUNCTION) */}
             <button
               onClick={() => onNavigate('adaptive-quiz')}
-              className={`p-4 rounded-lg text-left transition-all cursor-pointer space-y-2 group shadow-xl relative ${
+              className={`p-4 rounded-xl text-left transition-all cursor-pointer space-y-2 group shadow-md relative ${
                 currentStepIndex === 3
-                  ? 'bg-warning-500/20 border-warning-500 ring-2 ring-warning-500/40 scale-105'
+                  ? 'bg-[#ADD8E6] border-[#8A2BE2] ring-2 ring-[#8A2BE2]/60 scale-105'
                   : hasTakenQuiz
-                  ? 'bg-neutral-950 border-success-500/60'
-                  : 'bg-neutral-950 border-warning-500/50'
+                  ? 'bg-[#ADD8E6] border-[#8A2BE2]'
+                  : 'bg-[#ADD8E6] border-[#8A2BE2]/70'
               }`}
             >
               {currentStepIndex === 3 && (
-                <span className="absolute -top-2.5 left-3 bg-warning-500 text-neutral-950 font-bold text-[9px] px-2 py-0.5 rounded uppercase font-sans tracking-wide shadow-md">
+                <span className="absolute -top-2.5 left-3 bg-[#8A2BE2] text-white font-bold text-[9px] px-2 py-0.5 rounded-full uppercase font-sans tracking-wide shadow-xs">
                   YOU ARE HERE
                 </span>
               )}
               <div className="flex items-center justify-between text-xs">
                 <span className={`w-6 h-6 rounded-full font-bold flex items-center justify-center text-xs ${
-                  hasTakenQuiz ? 'bg-success-600 text-neutral-50' : 'bg-warning-500 text-neutral-950'
+                  hasTakenQuiz ? 'bg-[#8A2BE2] text-white' : 'bg-[#DEB887] text-[#1A0F05]'
                 }`}>
                   {hasTakenQuiz ? '✓' : '3'}
                 </span>
-                <span className="text-[10px] uppercase font-bold text-warning-400">Junction Node</span>
+                <span className="text-[10px] uppercase font-bold text-[#8A2BE2]">Junction Node</span>
               </div>
-              <p className="font-bold text-neutral-50 text-sm font-sans group-hover:text-warning-300">Adaptive Quiz</p>
-              <p className="text-[11px] text-neutral-300 leading-snug">Calibrates speed & mental models</p>
+              <p className="font-bold text-[#1A0F05] text-sm font-sans group-hover:text-[#8A2BE2]">Adaptive Quiz</p>
+              <p className="text-[11px] text-[#3D2714] leading-snug">Calibrates speed & mental models</p>
             </button>
 
             {/* PARALLEL BRANCHES (NODE 4 & NODE 5) */}
@@ -449,71 +449,69 @@ export default function StudentDashboard({
               {/* NODE 4: SKILL GRAPH */}
               <button
                 onClick={() => onNavigate('skill-graph')}
-                className={`p-3.5 rounded-lg text-left transition-all cursor-pointer space-y-1.5 group shadow-lg ${
+                className={`p-3.5 rounded-xl text-left transition-all cursor-pointer space-y-1.5 group shadow-xs ${
                   currentStepIndex === 4
-                    ? 'bg-warning-500/20 border-warning-500 ring-2 ring-warning-500/40'
+                    ? 'bg-[#ADD8E6] border-[#8A2BE2] ring-2 ring-[#8A2BE2]/60'
                     : hasReviewedGraph
-                    ? 'bg-neutral-950 border-success-500/60'
-                    : 'bg-neutral-950 border-neutral-800 opacity-80'
+                    ? 'bg-[#ADD8E6] border-[#8A2BE2]'
+                    : 'bg-[#ADD8E6]/80 border-[#8A2BE2]/50 opacity-90'
                 }`}
               >
                 <div className="flex items-center justify-between text-xs">
                   <span className={`w-5 h-5 rounded-full font-bold flex items-center justify-center text-[10px] ${
-                    hasReviewedGraph ? 'bg-success-600 text-neutral-50' : 'bg-neutral-800 text-neutral-300'
+                    hasReviewedGraph ? 'bg-[#8A2BE2] text-white' : 'bg-[#FFE4C4] text-[#1A0F05]'
                   }`}>
                     {hasReviewedGraph ? '✓' : '4'}
                   </span>
-                  <span className="text-[9px] uppercase font-bold text-accent-400">Branch A</span>
+                  <span className="text-[9px] uppercase font-bold text-[#8A2BE2]">Branch A</span>
                 </div>
-                <p className="font-bold text-neutral-50 text-xs font-sans">Skill Graph Matrix</p>
-                <p className="text-[10px] text-neutral-300">Prerequisite bottleneck nodes</p>
+                <p className="font-bold text-[#1A0F05] text-xs font-sans">Skill Graph Matrix</p>
+                <p className="text-[10px] text-[#3D2714]">Prerequisite bottleneck nodes</p>
               </button>
 
               {/* NODE 5: LEARNING TWIN */}
               <button
                 onClick={() => onNavigate('learning-twin')}
-                className={`p-3.5 rounded-lg text-left transition-all cursor-pointer space-y-1.5 group shadow-lg ${
+                className={`p-3.5 rounded-xl text-left transition-all cursor-pointer space-y-1.5 group shadow-xs ${
                   currentStepIndex === 5
-                    ? 'bg-warning-500/20 border-warning-500 ring-2 ring-warning-500/40'
+                    ? 'bg-[#ADD8E6] border-[#8A2BE2] ring-2 ring-[#8A2BE2]/60'
                     : hasExploredTwin
-                    ? 'bg-neutral-950 border-success-500/60'
-                    : 'bg-neutral-950 border-neutral-800 opacity-80'
+                    ? 'bg-[#ADD8E6] border-[#8A2BE2]'
+                    : 'bg-[#ADD8E6]/80 border-[#8A2BE2]/50 opacity-90'
                 }`}
               >
                 <div className="flex items-center justify-between text-xs">
                   <span className={`w-5 h-5 rounded-full font-bold flex items-center justify-center text-[10px] ${
-                    hasExploredTwin ? 'bg-success-600 text-neutral-50' : 'bg-neutral-800 text-neutral-300'
+                    hasExploredTwin ? 'bg-[#8A2BE2] text-white' : 'bg-[#FFE4C4] text-[#1A0F05]'
                   }`}>
                     {hasExploredTwin ? '✓' : '5'}
                   </span>
-                  <span className="text-[9px] uppercase font-bold text-accent-400">Branch B</span>
+                  <span className="text-[9px] uppercase font-bold text-[#8A2BE2]">Branch B</span>
                 </div>
-                <p className="font-bold text-neutral-50 text-xs font-sans">Learning Twin</p>
-                <p className="text-[10px] text-neutral-300">Memory retention prediction</p>
+                <p className="font-bold text-[#1A0F05] text-xs font-sans">Learning Twin</p>
+                <p className="text-[10px] text-[#3D2714]">Memory retention prediction</p>
               </button>
             </div>
 
-            {/* NODE 6: JOB READINESS */}
+            {/* NODE 6: JOB READINESS (CONVERGENCE NODE - BURLYWOOD FILL) */}
             <button
               onClick={() => onNavigate('career')}
-              className={`p-4 rounded-lg text-left transition-all cursor-pointer space-y-2 group shadow-lg ${
+              className={`p-4 rounded-xl text-left transition-all cursor-pointer space-y-2 group shadow-md bg-[#DEB887] border border-[#C59B67] ${
                 currentStepIndex === 6
-                  ? 'bg-warning-500/20 border-warning-500 ring-2 ring-warning-500/40'
-                  : hasGeneratedResume
-                  ? 'bg-neutral-950 border-success-500/60'
-                  : 'bg-neutral-950 border-neutral-800 opacity-75 hover:opacity-100'
+                  ? 'ring-2 ring-[#8A2BE2]'
+                  : 'hover:border-[#8A2BE2]'
               }`}
             >
               <div className="flex items-center justify-between text-xs">
                 <span className={`w-6 h-6 rounded-full font-bold flex items-center justify-center text-xs ${
-                  hasGeneratedResume ? 'bg-success-600 text-neutral-50' : 'bg-neutral-800 text-neutral-400'
+                  hasGeneratedResume ? 'bg-[#8A2BE2] text-white' : 'bg-[#FFE4C4] text-[#1A0F05]'
                 }`}>
                   {hasGeneratedResume ? '✓' : '6'}
                 </span>
-                <span className="text-[10px] uppercase font-bold text-neutral-400">Convergence</span>
+                <span className="text-[10px] uppercase font-bold text-[#8A2BE2]">Convergence</span>
               </div>
-              <p className="font-bold text-neutral-50 text-sm font-sans group-hover:text-warning-300">Job Readiness & CV</p>
-              <p className="text-[11px] text-neutral-300 leading-snug">ATS Resume & Master Credential</p>
+              <p className="font-bold text-[#1A0F05] text-sm font-sans group-hover:text-[#8A2BE2]">Job Readiness & CV</p>
+              <p className="text-[11px] text-[#3D2714] leading-snug">ATS Resume & Master Credential</p>
             </button>
 
           </div>
@@ -524,32 +522,32 @@ export default function StudentDashboard({
           {graphNodes.map((node, index) => (
             <div key={node.id} className="relative flex items-center space-x-3">
               {index < graphNodes.length - 1 && (
-                <div className="absolute left-4 top-8 bottom-0 w-0.5 bg-neutral-800 -z-0"></div>
+                <div className="absolute left-4 top-8 bottom-0 w-0.5 bg-[#8A2BE2]/40 -z-0"></div>
               )}
 
               <button
                 onClick={() => onNavigate(node.targetView)}
-                className={`w-full p-4 rounded-lg border text-left transition-all cursor-pointer z-10 flex items-center justify-between ${
-                  node.isActive
-                    ? 'bg-warning-500/20 border-warning-500 ring-2 ring-warning-500/30'
-                    : node.isCompleted
-                    ? 'bg-neutral-950 border-success-500/60'
-                    : 'bg-neutral-950 border-neutral-800 opacity-75'
+                className={`w-full p-4 rounded-xl border text-left transition-all cursor-pointer z-10 flex items-center justify-between ${
+                  node.number === 6
+                    ? 'bg-[#DEB887] border-[#C59B67]'
+                    : node.isActive
+                    ? 'bg-[#ADD8E6] border-[#8A2BE2] ring-2 ring-[#8A2BE2]/60'
+                    : 'bg-[#ADD8E6] border-[#8A2BE2]/60'
                 }`}
               >
                 <div className="flex items-center space-x-3">
                   <span className={`w-7 h-7 rounded-full font-bold text-xs flex items-center justify-center shrink-0 ${
-                    node.isCompleted ? 'bg-success-600 text-neutral-50' : node.isActive ? 'bg-warning-500 text-neutral-950' : 'bg-neutral-800 text-neutral-400'
+                    node.isCompleted ? 'bg-[#8A2BE2] text-white' : node.isActive ? 'bg-[#DEB887] text-[#1A0F05]' : 'bg-[#FFE4C4] text-[#1A0F05]'
                   }`}>
                     {node.isCompleted ? '✓' : node.number}
                   </span>
                   <div>
-                    <h3 className="font-bold text-neutral-50 text-sm">{node.name}</h3>
-                    <p className="text-xs text-neutral-300">{node.subtitle}</p>
+                    <h3 className="font-bold text-[#1A0F05] text-sm">{node.name}</h3>
+                    <p className="text-xs text-[#3D2714]">{node.subtitle}</p>
                   </div>
                 </div>
 
-                <ArrowRight className="w-4 h-4 text-neutral-400" />
+                <ArrowRight className="w-4 h-4 text-[#8A2BE2]" />
               </button>
             </div>
           ))}

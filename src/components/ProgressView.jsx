@@ -9,17 +9,17 @@ export default function ProgressView({ studentProfile, skills, onNavigate }) {
   const streakDays = studentProfile?.streak || 7;
 
   const subjectPerformance = [
-    { subject: 'Python Foundations', score: 82, color: 'bg-emerald-500' },
-    { subject: 'Mathematics & Probability', score: 64, color: 'bg-amber-500' },
-    { subject: 'AI & Machine Learning', score: 71, color: 'bg-indigo-500' },
-    { subject: 'Generative AI & LLMs', score: 40, color: 'bg-purple-500' }
+    { subject: 'Python Foundations', score: 82 },
+    { subject: 'Mathematics & Probability', score: 64 },
+    { subject: 'AI & Machine Learning', score: 71 },
+    { subject: 'Generative AI & LLMs', score: 40 }
   ];
 
   const topicMasteryList = [
-    { topic: 'Lists & Data Structures', mastery: 91, status: 'Mastered' },
-    { topic: 'Control Flow & Loops', mastery: 76, status: 'Proficient' },
-    { topic: 'Functions & Recursion', mastery: 48, status: 'Needs Practice', isWeak: true },
-    { topic: 'Probability & Bayes Rule', mastery: 42, status: 'Weak', isWeak: true }
+    { topic: 'Lists & Data Structures', mastery: 91, status: 'Mastered', badgeBg: '#8A2BE2', badgeText: '#FFFFFF' },
+    { topic: 'Control Flow & Loops', mastery: 76, status: 'Proficient', badgeBg: '#DEB887', badgeText: '#1A0F05' },
+    { topic: 'Functions & Recursion', mastery: 48, status: 'Needs Practice', isWeak: true, badgeBg: '#ADD8E6', badgeText: '#161512' },
+    { topic: 'Probability & Bayes Rule', mastery: 42, status: 'Weak', isWeak: true, badgeBg: '#ADD8E6', badgeText: '#161512' }
   ];
 
   const aiInsights = [
@@ -44,92 +44,92 @@ export default function ProgressView({ studentProfile, skills, onNavigate }) {
   return (
     <div className="max-w-4xl mx-auto px-4 py-6 pb-24 space-y-6 font-sans animate-in fade-in duration-300">
       
-      {/* HEADER BAR */}
-      <div className="bg-neutral-900 border border-neutral-800 text-neutral-50 p-6 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-xl">
+      {/* HEADER BAR (BURLYWOOD BACKGROUND) */}
+      <div className="bg-[#DEB887] border border-[#C59B67] text-[#1A0F05] p-6 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-md">
         <div>
-          <div className="flex items-center space-x-2 text-amber-400 text-xs font-bold uppercase tracking-wider">
-            <BarChart3 className="w-4 h-4" />
+          <div className="flex items-center space-x-2 text-[#5A2A00] text-xs font-bold uppercase tracking-wider">
+            <BarChart3 className="w-4 h-4 text-[#5A2A00]" />
             <span>Learner Analytics & Insights</span>
           </div>
-          <h1 className="text-2xl font-bold text-neutral-50">Mastery & Progress Dashboard</h1>
-          <p className="text-xs text-neutral-400 mt-1">
+          <h1 className="text-2xl font-bold text-[#1A0F05]">Mastery & Progress Dashboard</h1>
+          <p className="text-xs text-[#3D2714] mt-1 font-medium">
             Real-time mastery tracking, retention modeling, and AI weakness diagnostics.
           </p>
         </div>
 
-        {/* STREAK BADGE */}
-        <div className="flex items-center space-x-3 bg-neutral-950 px-4 py-3 rounded-xl border border-neutral-800 self-start md:self-auto">
-          <div className="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center border border-amber-500/40">
-            <Flame className="w-6 h-6 fill-amber-400 text-amber-500" />
+        {/* STREAK BADGE (BISQUE INNER PANEL) */}
+        <div className="flex items-center space-x-3 bg-[#FFE4C4] px-4 py-3 rounded-xl border border-[#C59B67] self-start md:self-auto">
+          <div className="w-10 h-10 rounded-xl bg-[#8A2BE2] text-white flex items-center justify-center border border-[#6b1cb9]">
+            <Flame className="w-6 h-6 fill-white text-white" />
           </div>
           <div>
-            <span className="text-sm font-bold text-neutral-100 block">{streakDays} Day Streak!</span>
-            <span className="text-[10px] text-neutral-400">Consistent daily study</span>
+            <span className="text-sm font-bold text-[#1A0F05] block">{streakDays} Day Streak!</span>
+            <span className="text-[10px] text-[#5C4228] font-semibold">Consistent daily study</span>
           </div>
         </div>
       </div>
 
-      {/* MASTERY METRIC CARDS */}
+      {/* MASTERY METRIC CARDS (BISQUE & LIGHTBLUE PANELS) */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="bg-neutral-900 border border-neutral-800 p-5 rounded-2xl space-y-2 shadow-lg">
-          <span className="text-xs font-bold text-neutral-400 uppercase tracking-wider">Overall Mastery</span>
+        <div className="bg-[#FFE4C4] border border-[#E3C6A2] p-5 rounded-2xl space-y-2 shadow-sm">
+          <span className="text-xs font-bold text-[#5C4228] uppercase tracking-wider">Overall Mastery</span>
           <div className="flex items-baseline space-x-2">
-            <span className="text-3xl font-black text-amber-400">{overallMastery}%</span>
-            <span className="text-xs text-emerald-400 font-bold">+5% this week</span>
+            <span className="text-3xl font-black text-[#8A2BE2]">{overallMastery}%</span>
+            <span className="text-xs text-[#4c1d95] font-bold">+5% this week</span>
           </div>
-          <div className="w-full bg-neutral-950 rounded-full h-2 overflow-hidden border border-neutral-800">
-            <div className="bg-amber-500 h-full rounded-full" style={{ width: `${overallMastery}%` }}></div>
+          <div className="w-full bg-[#ADD8E6] rounded-full h-2.5 overflow-hidden border border-[#91c4d5]">
+            <div className="bg-[#8A2BE2] h-full rounded-full" style={{ width: `${overallMastery}%` }}></div>
           </div>
         </div>
 
-        <div className="bg-neutral-900 border border-neutral-800 p-5 rounded-2xl space-y-2 shadow-lg">
-          <span className="text-xs font-bold text-neutral-400 uppercase tracking-wider">Retention Health</span>
+        <div className="bg-[#FFE4C4] border border-[#E3C6A2] p-5 rounded-2xl space-y-2 shadow-sm">
+          <span className="text-xs font-bold text-[#5C4228] uppercase tracking-wider">Retention Health</span>
           <div className="flex items-baseline space-x-2">
-            <span className="text-3xl font-black text-emerald-400">68%</span>
-            <span className="text-xs text-neutral-400 font-medium">Optimal zone</span>
+            <span className="text-3xl font-black text-[#8A2BE2]">68%</span>
+            <span className="text-xs text-[#4A3B32] font-semibold">Optimal zone</span>
           </div>
-          <div className="w-full bg-neutral-950 rounded-full h-2 overflow-hidden border border-neutral-800">
-            <div className="bg-emerald-500 h-full rounded-full" style={{ width: '68%' }}></div>
+          <div className="w-full bg-[#ADD8E6] rounded-full h-2.5 overflow-hidden border border-[#91c4d5]">
+            <div className="bg-[#8A2BE2] h-full rounded-full" style={{ width: '68%' }}></div>
           </div>
         </div>
 
-        <div className="bg-neutral-900 border border-neutral-800 p-5 rounded-2xl space-y-2 shadow-lg">
-          <span className="text-xs font-bold text-neutral-400 uppercase tracking-wider">AI Skill Level</span>
+        <div className="bg-[#FFE4C4] border border-[#E3C6A2] p-5 rounded-2xl space-y-2 shadow-sm">
+          <span className="text-xs font-bold text-[#5C4228] uppercase tracking-wider">AI Skill Level</span>
           <div className="flex items-baseline space-x-2">
-            <span className="text-xl font-bold text-neutral-100">Level 4 Apprentice</span>
+            <span className="text-xl font-bold text-[#1A0F05]">Level 4 Apprentice</span>
           </div>
-          <p className="text-[11px] text-neutral-400">Next rank: AI Engineer (Level 5)</p>
+          <p className="text-[11px] text-[#5C4228] font-medium">Next rank: AI Engineer (Level 5)</p>
         </div>
       </div>
 
       {/* AI WEAKNESS DETECTION SECTION ("AI INSIGHTS") */}
-      <div className="bg-neutral-900 border border-neutral-800 rounded-2xl p-6 space-y-4 shadow-xl">
-        <div className="flex items-center space-x-2 text-amber-400">
-          <Sparkles className="w-5 h-5" />
-          <h2 className="text-base font-bold text-neutral-50">AI Insights & Weakness Detection</h2>
+      <div className="bg-[#FFE4C4] border border-[#E3C6A2] rounded-2xl p-6 space-y-4 shadow-md">
+        <div className="flex items-center space-x-2 text-[#8A2BE2]">
+          <Sparkles className="w-5 h-5 text-[#8A2BE2]" />
+          <h2 className="text-base font-bold text-[#1A0F05]">AI Insights & Weakness Detection</h2>
         </div>
 
         <div className="space-y-3">
           {aiInsights.map((ins) => (
-            <div key={ins.id} className="bg-neutral-950 border border-neutral-800 p-4 rounded-xl space-y-2 text-xs text-neutral-200">
+            <div key={ins.id} className="bg-[#ADD8E6] border border-[#96cbe0] p-4 rounded-xl space-y-2 text-xs text-[#161512]">
               <div className="flex items-center justify-between">
-                <span className="font-bold text-amber-400 flex items-center space-x-1.5">
-                  <AlertTriangle className="w-4 h-4 text-red-400" />
+                <span className="font-bold text-[#4c1d95] flex items-center space-x-1.5">
+                  <AlertTriangle className="w-4 h-4 text-[#8A2BE2]" />
                   <span>{ins.title}</span>
                 </span>
-                <span className="bg-red-500/20 text-red-400 text-[10px] font-bold px-2 py-0.5 rounded border border-red-500/30">
+                <span className="bg-[#DEB887] text-[#1A0F05] text-[10px] font-bold px-2.5 py-0.5 rounded border border-[#C59B67]">
                   Weakness Flag
                 </span>
               </div>
 
-              <p><strong>WHAT:</strong> {ins.what}</p>
-              <p className="text-neutral-400"><strong>WHY:</strong> {ins.why}</p>
+              <p className="text-[#0f172a]"><strong className="text-[#1A0F05]">WHAT:</strong> {ins.what}</p>
+              <p className="text-[#334155]"><strong className="text-[#1A0F05]">WHY:</strong> {ins.why}</p>
               
-              <div className="pt-2 flex items-center justify-between border-t border-neutral-800">
-                <p className="text-amber-300 font-medium"><strong>WHAT NEXT:</strong> {ins.whatNext}</p>
+              <div className="pt-2 flex items-center justify-between border-t border-[#91c4d5]">
+                <p className="text-[#4c1d95] font-bold"><strong>WHAT NEXT:</strong> {ins.whatNext}</p>
                 <button
                   onClick={() => onNavigate(ins.actionView)}
-                  className="bg-amber-500 hover:bg-amber-400 text-neutral-950 font-bold px-3 py-1.5 rounded-lg text-[11px] transition-colors flex items-center space-x-1 shrink-0"
+                  className="bg-[#8A2BE2] hover:bg-[#7823c6] text-white font-bold px-3 py-1.5 rounded-lg text-[11px] transition-colors flex items-center space-x-1 shrink-0 shadow-2xs"
                 >
                   <span>Resolve</span>
                   <ArrowRight className="w-3.5 h-3.5" />
@@ -144,20 +144,20 @@ export default function ProgressView({ studentProfile, skills, onNavigate }) {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         
         {/* SUBJECT PERFORMANCE */}
-        <div className="bg-neutral-900 border border-neutral-800 p-5 rounded-2xl space-y-4 shadow-lg">
-          <h3 className="text-sm font-bold text-neutral-100 flex items-center space-x-2">
-            <TrendingUp className="w-4 h-4 text-amber-400" />
+        <div className="bg-[#FFE4C4] border border-[#E3C6A2] p-5 rounded-2xl space-y-4 shadow-sm">
+          <h3 className="text-sm font-bold text-[#1A0F05] flex items-center space-x-2">
+            <TrendingUp className="w-4 h-4 text-[#8A2BE2]" />
             <span>Subject Performance</span>
           </h3>
           <div className="space-y-3 text-xs">
             {subjectPerformance.map((subj, i) => (
               <div key={i} className="space-y-1">
-                <div className="flex justify-between text-neutral-300 font-medium">
+                <div className="flex justify-between text-[#3D2714] font-semibold">
                   <span>{subj.subject}</span>
-                  <span className="font-bold text-neutral-100">{subj.score}%</span>
+                  <span className="font-bold text-[#1A0F05]">{subj.score}%</span>
                 </div>
-                <div className="w-full bg-neutral-950 rounded-full h-2 overflow-hidden border border-neutral-800">
-                  <div className={`${subj.color} h-full rounded-full`} style={{ width: `${subj.score}%` }}></div>
+                <div className="w-full bg-[#ADD8E6] rounded-full h-2.5 overflow-hidden border border-[#91c4d5]">
+                  <div className="bg-[#8A2BE2] h-full rounded-full" style={{ width: `${subj.score}%` }}></div>
                 </div>
               </div>
             ))}
@@ -165,25 +165,22 @@ export default function ProgressView({ studentProfile, skills, onNavigate }) {
         </div>
 
         {/* TOPIC MASTERY BREAKDOWN */}
-        <div className="bg-neutral-900 border border-neutral-800 p-5 rounded-2xl space-y-4 shadow-lg">
-          <h3 className="text-sm font-bold text-neutral-100 flex items-center space-x-2">
-            <BookOpen className="w-4 h-4 text-amber-400" />
+        <div className="bg-[#FFE4C4] border border-[#E3C6A2] p-5 rounded-2xl space-y-4 shadow-sm">
+          <h3 className="text-sm font-bold text-[#1A0F05] flex items-center space-x-2">
+            <BookOpen className="w-4 h-4 text-[#8A2BE2]" />
             <span>Topic Mastery Breakdown</span>
           </h3>
           <div className="space-y-2.5 text-xs">
             {topicMasteryList.map((t, i) => (
-              <div key={i} className="p-3 bg-neutral-950 rounded-xl border border-neutral-800 flex items-center justify-between">
+              <div key={i} className="p-3 bg-[#ADD8E6] rounded-xl border border-[#96cbe0] flex items-center justify-between">
                 <div>
-                  <p className="font-bold text-neutral-200">{t.topic}</p>
-                  <span className="text-[10px] text-neutral-400">{t.status}</span>
+                  <p className="font-bold text-[#161512]">{t.topic}</p>
+                  <span className="text-[10px] text-[#334155] font-semibold">{t.status}</span>
                 </div>
-                <span className={`font-bold text-xs px-2.5 py-1 rounded-lg border ${
-                  t.mastery >= 80
-                    ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30'
-                    : t.mastery >= 60
-                    ? 'bg-amber-500/10 text-amber-400 border-amber-500/30'
-                    : 'bg-red-500/10 text-red-400 border-red-500/30'
-                }`}>
+                <span 
+                  className="font-bold text-xs px-2.5 py-1 rounded-lg border shadow-2xs"
+                  style={{ backgroundColor: t.badgeBg, color: t.badgeText, borderColor: t.badgeBg }}
+                >
                   {t.mastery}%
                 </span>
               </div>

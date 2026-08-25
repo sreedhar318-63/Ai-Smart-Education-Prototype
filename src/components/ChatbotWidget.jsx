@@ -278,18 +278,18 @@ export default function ChatbotWidget({
  {!isOpen && (
  <button
  onClick={onToggle}
- className="fixed bottom-6 right-6 z-50 flex items-center space-x-2.5 bg-neutral-900 hover:bg-warning-700 text-neutral-100 px-4 py-3 rounded-full border border-neutral-800 transition-all duration-300 transform hover:scale-105 cursor-pointer group"
+ className="fixed bottom-6 right-6 z-50 flex items-center space-x-2.5 bg-[#DEB887] hover:bg-[#DDB480] text-[#1A0F05] px-4 py-3 rounded-full border border-[#C59B67] transition-all duration-300 transform hover:scale-105 cursor-pointer group shadow-lg"
  title="Ask AI Mentor a Doubt"
  >
  <div className="relative">
- <div className="w-8 h-8 rounded-full bg-warning-600/30 text-warning-300 flex items-center justify-center border border-warning-500/50">
- <MessageSquare className="w-4 h-4 text-warning-300 group-hover:rotate-12 transition-transform" />
+ <div className="w-8 h-8 rounded-full bg-[#F5E2C8] text-[#5A2A00] flex items-center justify-center border border-[#C59B67]">
+ <MessageSquare className="w-4 h-4 text-[#5A2A00] group-hover:rotate-12 transition-transform" />
  </div>
- <span className="absolute -top-1 -right-1 w-3 h-3 bg-success-500 rounded-full border-2 border-neutral-900 animate-pulse"></span>
+ <span className="absolute -top-1 -right-1 w-3 h-3 bg-[#8A2BE2] rounded-full border-2 border-[#DEB887] animate-pulse"></span>
  </div>
  <div className="text-left pr-1">
- <span className="block text-xs font-bold leading-tight">Clear Doubts</span>
- <span className="block text-[10px] text-warning-300 font-medium">AI {activePersonaObj.name} {activePersonaObj.icon}</span>
+ <span className="block text-xs font-bold leading-tight text-[#1A0F05]">Clear Doubts</span>
+ <span className="block text-[10px] text-[#5C4228] font-medium">AI {activePersonaObj.name} {activePersonaObj.icon}</span>
  </div>
  </button>
  )}

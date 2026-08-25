@@ -68,26 +68,52 @@ export default function App() {
  const [isCertificateOpen, setIsCertificateOpen] = useState(false);
  const [isChatbotOpen, setIsChatbotOpen] = useState(false);
 
- // Onboarding Form state
- const [onboardingData, setOnboardingData] = useState({
- role: 'Student',
- goal: 'Master AI Engineering & Machine Learning',
- skillLevel: 'Intermediate',
- timeAvailable: '25 minutes',
- timeMinutes: 25,
- domain: 'cooking',
- jobDescription: ''
- });
+  // Onboarding Form state (loads from localStorage for returning users)
+  const [onboardingData, setOnboardingData] = useState(() => {
+    try {
+      const saved = localStorage.getItem('mentorpath_onboarding_data');
+      if (saved) return JSON.parse(saved);
+    } catch (e) {
+      console.warn('Could not parse onboarding data:', e);
+    }
+    return {
+      role: 'Student',
+      goal: 'Master AI Engineering & Machine Learning',
+      skillLevel: 'Intermediate',
+      timeAvailable: '25 minutes',
+      timeMinutes: 25,
+      domain: 'cooking',
+      jobDescription: ''
+    };
+  });
 
  // Master AI-generated path state
  const [pathData, setPathData] = useState({ topics: [], skillGapMap: null });
  const [isGeneratingPath, setIsGeneratingPath] = useState(false);
 
- // Multi-day Roadmap Progress State
+ // Multi-day Roadmap Progress State (with localStorage persistence)
  const [currentDay, setCurrentDay] = useState(1);
- const [completedTopicIds, setCompletedTopicIds] = useState([]);
- const [currentTopicIndex, setCurrentTopicIndex] = useState(0);
- const [topicConfidenceMap, setTopicConfidenceMap] = useState({});
+ const [completedTopicIds, setCompletedTopicIds] = useState(() => {
+   try {
+     const saved = localStorage.getItem('mentorpath_completed_topics');
+     if (saved) return JSON.parse(saved);
+   } catch (e) {}
+   return [];
+ });
+ const [currentTopicIndex, setCurrentTopicIndex] = useState(() => {
+   try {
+     const saved = localStorage.getItem('mentorpath_topic_index');
+     if (saved !== null) return parseInt(saved, 10) || 0;
+   } catch (e) {}
+   return 0;
+ });
+ const [topicConfidenceMap, setTopicConfidenceMap] = useState(() => {
+   try {
+     const saved = localStorage.getItem('mentorpath_confidence_map');
+     if (saved) return JSON.parse(saved);
+   } catch (e) {}
+   return {};
+ });
  const [activeSessionTopicIds, setActiveSessionTopicIds] = useState([]);
 
  // 90-Day Activity Heatmap Data
@@ -201,48 +227,95 @@ export default function App() {
  navigateToView('dashboard');
  };
 
- // Onboarding Submission
- const handleOnboardingSubmit = async (formData) => {
- setOnboardingData(formData);
- setIsGeneratingPath(true);
- setCurrentDay(1);
- setCompletedTopicIds([]);
- setActiveSessionTopicIds([]);
- setTopicConfidenceMap({});
+ // Progression and feedback handlers for LearningScreen
+ const handleGotItTopic = (topicId, ratingData) => {
+   // 1. Mark topic completed & persist
+   const newCompleted = Array.from(new Set([...completedTopicIds, topicId]));
+   setCompletedTopicIds(newCompleted);
+   try {
+     localStorage.setItem('mentorpath_completed_topics', JSON.stringify(newCompleted));
+   } catch (e) {}
 
- try {
- const userPrompt = `Generate a structured learning path for a ${formData.role} whose goal is "${formData.goal}". Skill level: ${formData.skillLevel}.`;
- const res = await generatePersonalizedContent({
- type: 'path_generation',
- systemPrompt: 'You are an expert AI Learning Architect. Create a 5-8 topic learning roadmap.',
- userPrompt,
- learnerModel,
- context: { goal: formData.goal, role: formData.role, domain: formData.domain }
- });
+   const newMap = { ...topicConfidenceMap, [topicId]: ratingData };
+   setTopicConfidenceMap(newMap);
+   try {
+     localStorage.setItem('mentorpath_confidence_map', JSON.stringify(newMap));
+   } catch (e) {}
 
- if (typeof res === 'object' && res.topics) {
- setPathData(res);
- } else {
- setPathData({
- topics: [
- { id: 't1', title: 'Python & Data Structures', description: 'Core syntax, list comprehensions, and data pipelines.', estMinutes: 12, category: 'Core' },
- { id: 't2', title: 'Statistics & Probability Foundations', description: 'Descriptive stats, mean, variance, distributions, and Bayes Theorem.', estMinutes: 15, category: 'Math' },
- { id: 't3', title: 'Supervised Learning & Regression', description: 'Building baseline ML predictive models.', estMinutes: 18, category: 'Machine Learning' },
- { id: 't4', title: 'Neural Networks & Activation Mechanics', description: 'Perceptrons, backpropagation, and loss optimization.', estMinutes: 15, category: 'Deep Learning' },
- { id: 't5', title: 'Generative AI & LLM Systems', description: 'Transformers, prompt engineering, and RAG architectures.', estMinutes: 20, category: 'Advanced AI' }
- ],
- skillGapMap: null
- });
- }
-
- setCurrentStep(2);
- navigateToView('dashboard');
- } catch (err) {
- console.error('Failed to generate path:', err);
- } finally {
- setIsGeneratingPath(false);
- }
+   // 2. Advance topic pointer or finish session
+   const totalTopics = pathData.topics.length || 5;
+   if (currentTopicIndex + 1 < totalTopics) {
+     const nextIdx = currentTopicIndex + 1;
+     setCurrentTopicIndex(nextIdx);
+     try {
+       localStorage.setItem('mentorpath_topic_index', nextIdx.toString());
+     } catch (e) {}
+   } else {
+     navigateToView('recap');
+   }
  };
+
+ const handleSaveTopicRating = (topicId, ratingData) => {
+   const newMap = { ...topicConfidenceMap, [topicId]: ratingData };
+   setTopicConfidenceMap(newMap);
+   try {
+     localStorage.setItem('mentorpath_confidence_map', JSON.stringify(newMap));
+   } catch (e) {}
+ };
+
+  // Onboarding Submission
+  const handleOnboardingSubmit = async (formData) => {
+    // 1. Save/persist selections to state & localStorage BEFORE navigating
+    setOnboardingData(formData);
+    try {
+      localStorage.setItem('mentorpath_onboarding_data', JSON.stringify(formData));
+      localStorage.setItem('mentorpath_onboarded', 'true');
+    } catch (e) {
+      console.warn('Failed to persist onboarding to localStorage:', e);
+    }
+
+    setIsGeneratingPath(true);
+    setCurrentDay(1);
+    setCompletedTopicIds([]);
+    setActiveSessionTopicIds([]);
+    setTopicConfidenceMap({});
+
+    try {
+      const userPrompt = `Generate a structured learning path for a ${formData.role} whose goal is "${formData.goal}". Skill level: ${formData.skillLevel}.`;
+      const res = await generatePersonalizedContent({
+        type: 'path_generation',
+        systemPrompt: 'You are an expert AI Learning Architect. Create a 5-8 topic learning roadmap.',
+        userPrompt,
+        learnerModel,
+        context: { goal: formData.goal, role: formData.role, domain: formData.domain }
+      });
+
+      if (typeof res === 'object' && res.topics) {
+        setPathData(res);
+      } else {
+        setPathData({
+          topics: [
+            { id: 't1', title: 'Python & Data Structures', description: 'Core syntax, list comprehensions, and data pipelines.', estMinutes: 12, category: 'Core' },
+            { id: 't2', title: 'Statistics & Probability Foundations', description: 'Descriptive stats, mean, variance, distributions, and Bayes Theorem.', estMinutes: 15, category: 'Math' },
+            { id: 't3', title: 'Supervised Learning & Regression', description: 'Building baseline ML predictive models.', estMinutes: 18, category: 'Machine Learning' },
+            { id: 't4', title: 'Neural Networks & Activation Mechanics', description: 'Perceptrons, backpropagation, and loss optimization.', estMinutes: 15, category: 'Deep Learning' },
+            { id: 't5', title: 'Generative AI & LLM Systems', description: 'Transformers, prompt engineering, and RAG architectures.', estMinutes: 20, category: 'Advanced AI' }
+          ],
+          skillGapMap: null
+        });
+      }
+
+      // 2. Programmatically navigate to Home/Dashboard
+      setCurrentStep(2);
+      navigateToView('dashboard');
+    } catch (err) {
+      console.error('Failed to generate path:', err);
+      setCurrentStep(2);
+      navigateToView('dashboard');
+    } finally {
+      setIsGeneratingPath(false);
+    }
+  };
 
  return (
  <div className="min-h-screen bg-[#FCFBF9] text-[#161512] flex flex-col font-sans">
@@ -366,7 +439,8 @@ export default function App() {
  onboardingData={onboardingData}
  persona={persona}
  learnerModel={learnerModel}
- onSaveTopicConfidence={(id, data) => setCompletedTopicIds(prev => [...prev, id])}
+ onGotIt={handleGotItTopic}
+ onSaveTopicConfidence={handleSaveTopicRating}
  onFinishSession={() => navigateToView('recap')}
  onGoBack={handleGoBack}
  />
