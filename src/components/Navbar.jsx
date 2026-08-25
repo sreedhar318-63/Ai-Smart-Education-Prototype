@@ -47,13 +47,16 @@ export default function Navbar({
   };
 
   const mainNav = [
-    { id: 'dashboard', label: 'Dashboard' },
-    { id: 'learning-twin', label: 'Learning Twin' },
-    { id: 'adaptive-quiz', label: 'Adaptive Quiz' },
+    { id: 'dashboard', label: 'Home' },
+    { id: 'learn-catalog', label: 'Learn' },
+    { id: 'ai-tutor', label: 'AI Tutor' },
+    { id: 'practice', label: 'Practice' },
+    { id: 'progress', label: 'Progress' },
     { id: 'career', label: 'Career Path' },
   ];
 
   const secondaryNav = [
+    { id: 'learning-twin', label: 'Learning Twin', icon: Target },
     { id: 'onboarding', label: 'Setup Plan', icon: Target },
     { id: 'skill-graph', label: 'Skill Graph', icon: GitBranch },
     { id: 'smart-revision', label: 'Smart Revision', icon: RotateCcw },

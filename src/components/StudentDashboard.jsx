@@ -195,8 +195,89 @@ export default function StudentDashboard({
   const whyExplanation = explainRecommendation(topRecommendation.name, topRecommendation.mastery, careerGoal);
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8 space-y-8 animate-in fade-in duration-300">
+    <div className="max-w-6xl mx-auto px-4 py-6 md:py-8 space-y-6 md:space-y-8 animate-in fade-in duration-300 font-sans">
       
+      {/* 0. HOME DASHBOARD GREETING & PHONE-FIRST QUICK ACTIONS */}
+      <div className="bg-neutral-900 border border-neutral-800 text-neutral-50 p-5 md:p-6 rounded-2xl space-y-4 shadow-xl">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <div className="flex items-center space-x-2 text-amber-400 text-xs font-bold uppercase tracking-wider mb-1">
+              <Sparkles className="w-4 h-4" />
+              <span>AI Learning Companion Active</span>
+            </div>
+            <h1 className="text-2xl md:text-3xl font-bold text-neutral-50">
+              Good morning, {studentProfile?.name || 'Sreedhar'}! 👋
+            </h1>
+            <p className="text-xs text-neutral-300 mt-1">
+              You're <strong className="text-amber-400">72% through</strong> your Python fundamentals path. You have a <strong className="text-amber-400">{studentProfile?.streak || 5}-day streak</strong>!
+            </p>
+          </div>
+
+          <div className="flex items-center space-x-3 bg-neutral-950 px-4 py-2.5 rounded-xl border border-neutral-800 self-start sm:self-auto text-xs">
+            <Flame className="w-5 h-5 text-amber-400 fill-amber-400" />
+            <div>
+              <span className="text-neutral-400 text-[10px] block">Streak</span>
+              <span className="font-bold text-neutral-100">{studentProfile?.streak || 5} Days Active</span>
+            </div>
+          </div>
+        </div>
+
+        {/* PHONE-FIRST QUICK ACTION BAR */}
+        <div className="pt-2 border-t border-neutral-800/80 grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+          <button
+            onClick={() => onNavigate('ai-tutor')}
+            className="flex items-center space-x-2.5 bg-neutral-950 hover:bg-neutral-800 p-3 rounded-xl border border-neutral-800 transition-all cursor-pointer group"
+          >
+            <div className="w-8 h-8 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center shrink-0 border border-amber-500/30">
+              🎤
+            </div>
+            <div className="text-left">
+              <span className="text-xs font-bold text-neutral-100 block group-hover:text-amber-300">Ask AI Voice</span>
+              <span className="text-[10px] text-neutral-400 block">Tap to speak</span>
+            </div>
+          </button>
+
+          <button
+            onClick={() => onNavigate('ai-tutor')}
+            className="flex items-center space-x-2.5 bg-neutral-950 hover:bg-neutral-800 p-3 rounded-xl border border-neutral-800 transition-all cursor-pointer group"
+          >
+            <div className="w-8 h-8 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center shrink-0 border border-amber-500/30">
+              📷
+            </div>
+            <div className="text-left">
+              <span className="text-xs font-bold text-neutral-100 block group-hover:text-amber-300">Scan Question</span>
+              <span className="text-[10px] text-neutral-400 block">Learn camera</span>
+            </div>
+          </button>
+
+          <button
+            onClick={() => onNavigate('practice')}
+            className="flex items-center space-x-2.5 bg-neutral-950 hover:bg-neutral-800 p-3 rounded-xl border border-neutral-800 transition-all cursor-pointer group"
+          >
+            <div className="w-8 h-8 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center shrink-0 border border-amber-500/30">
+              📝
+            </div>
+            <div className="text-left">
+              <span className="text-xs font-bold text-neutral-100 block group-hover:text-amber-300">Practice Quiz</span>
+              <span className="text-[10px] text-neutral-400 block">Adaptive Engine</span>
+            </div>
+          </button>
+
+          <button
+            onClick={() => onNavigate('learning')}
+            className="flex items-center space-x-2.5 bg-neutral-950 hover:bg-neutral-800 p-3 rounded-xl border border-neutral-800 transition-all cursor-pointer group"
+          >
+            <div className="w-8 h-8 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center shrink-0 border border-amber-500/30">
+              📚
+            </div>
+            <div className="text-left">
+              <span className="text-xs font-bold text-neutral-100 block group-hover:text-amber-300">Continue</span>
+              <span className="text-[10px] text-neutral-400 block">Python functions</span>
+            </div>
+          </button>
+        </div>
+      </div>
+
       {/* 1. PERSISTENT WORKFLOW PROGRESS BAR */}
       <div className="bg-neutral-900 text-neutral-50 rounded-lg p-6 border border-neutral-800 space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">

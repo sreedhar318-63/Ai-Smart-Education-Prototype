@@ -16,6 +16,11 @@ import ResumeBuilderModal from './components/ResumeBuilderModal';
 import CertificateModal from './components/CertificateModal';
 import ChatbotWidget from './components/ChatbotWidget';
 import DemoModeModal, { DEMO_STEPS } from './components/DemoModeModal';
+import BottomNav from './components/BottomNav';
+import AITutorView from './components/AITutorView';
+import LearnCatalogView from './components/LearnCatalogView';
+import PracticeView from './components/PracticeView';
+import ProgressView from './components/ProgressView';
 
 import { generatePersonalizedContent } from './services/aiService';
 import { 
@@ -382,6 +387,37 @@ export default function App() {
  />
  )}
 
+ {activeView === 'ai-tutor' && (
+ <AITutorView
+ studentProfile={studentProfile}
+ persona={persona}
+ onboardingData={onboardingData}
+ learnerModel={learnerModel}
+ onNavigate={navigateToView}
+ />
+ )}
+
+ {activeView === 'learn-catalog' && (
+ <LearnCatalogView
+ onNavigate={navigateToView}
+ />
+ )}
+
+ {activeView === 'practice' && (
+ <PracticeView
+ studentProfile={studentProfile}
+ onNavigate={navigateToView}
+ />
+ )}
+
+ {activeView === 'progress' && (
+ <ProgressView
+ studentProfile={studentProfile}
+ skills={skills}
+ onNavigate={navigateToView}
+ />
+ )}
+
  {activeView === 'profile' && (
  <LearnerProfileScreen
  onboardingData={onboardingData}
@@ -395,6 +431,11 @@ export default function App() {
  </>
  )}
  </main>
+
+ {/* Persistent Phone-First Bottom Navigation Bar */}
+ {currentStep > 1 && (
+ <BottomNav activeView={activeView} onNavigate={navigateToView} />
+ )}
 
  {/* Footer */}
  <footer className="border-t border-neutral-200 py-6 px-4 text-center text-xs text-neutral-500 font-sans">
