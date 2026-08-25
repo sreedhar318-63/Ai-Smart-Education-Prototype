@@ -34,9 +34,21 @@ export default function App() {
  const [skills, setSkills] = useState(savedData.skills);
  const [careerGoal, setCareerGoal] = useState(savedData.career);
 
- // Active view switcher: 'onboarding', 'dashboard', 'learning-twin', 'adaptive-quiz', 'skill-graph', 'smart-revision', 'career', 'roadmap', 'learning', 'recap', 'profile'
- const [activeView, setActiveView] = useState('onboarding');
- const [currentStep, setCurrentStep] = useState(1); // Step 1: Onboarding / Setup Landing Page, Step 2: Main views
+  // Active view switcher initialized refresh-safely from URL hash & localStorage
+  const [activeView, setActiveView] = useState(() => {
+    const hash = window.location.hash.replace('#', '');
+    if (hash && hash !== 'onboarding') return hash;
+    const savedOnboarded = localStorage.getItem('mentorpath_onboarded') === 'true';
+    if (savedOnboarded) return hash || 'dashboard';
+    return 'onboarding';
+  });
+
+  const [currentStep, setCurrentStep] = useState(() => {
+    const hash = window.location.hash.replace('#', '');
+    const savedOnboarded = localStorage.getItem('mentorpath_onboarded') === 'true';
+    if ((hash && hash !== 'onboarding') || savedOnboarded) return 2;
+    return 1;
+  });
 
  // Judge Demo Mode State
  const [isDemoModeOpen, setIsDemoModeOpen] = useState(false);
@@ -89,47 +101,41 @@ export default function App() {
  avgCycles: 0.8
  });
 
- // LocalStorage Auto-Sync Effect
- useEffect(() => {
- saveStateToLocal(studentProfile, skills, careerGoal);
- }, [studentProfile, skills, careerGoal]);
-
- // Synchronize navigation step with browser history hash
+ // Synchronize navigation step with browser history hash & localStorage
  const navigateToView = (newView) => {
- if (newView === 'onboarding') {
- setCurrentStep(1);
- setActiveView('onboarding');
- window.location.hash = '#onboarding';
- } else {
- setCurrentStep(2);
- setActiveView(newView);
- window.location.hash = `#${newView}`;
- }
+    if (newView === 'onboarding') {
+      setCurrentStep(1);
+      setActiveView('onboarding');
+      window.location.hash = '#onboarding';
+      localStorage.setItem('mentorpath_active_view', 'onboarding');
+    } else {
+      setCurrentStep(2);
+      setActiveView(newView);
+      window.location.hash = `#${newView}`;
+      localStorage.setItem('mentorpath_active_view', newView);
+      localStorage.setItem('mentorpath_onboarded', 'true');
+    }
  };
 
  // Synchronize browser history and hash navigation
  useEffect(() => {
- const hash = window.location.hash.replace('#', '');
- if (hash === 'onboarding' || (!hash && currentStep === 1)) {
- setCurrentStep(1);
- setActiveView('onboarding');
- } else if (hash) {
- setCurrentStep(2);
- setActiveView(hash);
- }
+    const handleHashChange = () => {
+      const h = window.location.hash.replace('#', '');
+      const hasOnboarded = localStorage.getItem('mentorpath_onboarded') === 'true';
+      if (h === 'onboarding') {
+        setCurrentStep(1);
+        setActiveView('onboarding');
+      } else if (h) {
+        setCurrentStep(2);
+        setActiveView(h);
+      } else if (hasOnboarded) {
+        setCurrentStep(2);
+        setActiveView('dashboard');
+      }
+    };
 
- const handleHashChange = () => {
- const h = window.location.hash.replace('#', '');
- if (h === 'onboarding') {
- setCurrentStep(1);
- setActiveView('onboarding');
- } else if (h) {
- setCurrentStep(2);
- setActiveView(h);
- }
- };
- window.addEventListener('hashchange', handleHashChange);
- return () => window.removeEventListener('hashchange', handleHashChange);
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
  }, []);
 
  const handleGoBack = () => {

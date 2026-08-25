@@ -17,20 +17,89 @@ export default function StudentDashboard({
   const [isCompletedStepsExpanded, setIsCompletedStepsExpanded] = useState(false);
 
   // Determine current active workflow step based on real user state
-  const hasSkillsData = skills && skills.length > 0;
   const hasTakenQuiz = (studentProfile?.level > 1) || (skills.some(s => s.mastery > 0 && s.mastery !== 42));
   const hasReviewedGraph = localStorage.getItem('mentorpath_graph_visited') === 'true';
 
-  let currentStepIndex = 3; // Default to Adaptive Quiz step for standard demo flow
+  let currentStepIndex = 3;
   if (!careerGoal) {
     currentStepIndex = 1;
   } else if (!hasTakenQuiz) {
-    currentStepIndex = 3; // Adaptive Quiz
+    currentStepIndex = 3;
   } else if (!hasReviewedGraph) {
-    currentStepIndex = 4; // Skill Graph
+    currentStepIndex = 4;
   } else {
-    currentStepIndex = 5; // Learning Twin / Smart Revision
+    currentStepIndex = 5;
   }
+
+  // 6 Graph Nodes with Branching Logic
+  const graphNodes = [
+    {
+      id: "node-1",
+      number: 1,
+      name: "Setup Plan",
+      targetView: "onboarding",
+      subtitle: "Tailors AI context & analogy engine",
+      isCompleted: true,
+      isActive: currentStepIndex === 1,
+      isLocked: false,
+      branch: "root"
+    },
+    {
+      id: "node-2",
+      number: 2,
+      name: "AI Roadmap Path",
+      targetView: "path",
+      subtitle: "Deconstructs goal into daily topics",
+      isCompleted: true,
+      isActive: currentStepIndex === 2,
+      isLocked: false,
+      branch: "root"
+    },
+    {
+      id: "node-3",
+      number: 3,
+      name: "Adaptive Quiz",
+      targetView: "adaptive-quiz",
+      subtitle: "Calibrates speed & detects misconceptions",
+      isCompleted: hasTakenQuiz,
+      isActive: currentStepIndex === 3,
+      isLocked: false,
+      branch: "junction"
+    },
+    {
+      id: "node-4",
+      number: 4,
+      name: "Skill Graph Matrix",
+      targetView: "skill-graph",
+      subtitle: "Identifies prerequisite bottlenecks",
+      isCompleted: hasReviewedGraph,
+      isActive: currentStepIndex === 4,
+      isLocked: !hasTakenQuiz,
+      branch: "branch-a"
+    },
+    {
+      id: "node-5",
+      number: 5,
+      name: "Cognitive Learning Twin",
+      targetView: "learning-twin",
+      subtitle: "Models memory decay & smart revision",
+      isCompleted: false,
+      isActive: currentStepIndex === 5,
+      isLocked: !hasTakenQuiz,
+      branch: "branch-b"
+    },
+    {
+      id: "node-6",
+      number: 6,
+      name: "Job Readiness & CV",
+      targetView: "career",
+      subtitle: "Synthesizes ATS Resume & Certificate",
+      isCompleted: false,
+      isActive: currentStepIndex === 6,
+      isLocked: !hasTakenQuiz,
+      branch: "convergence"
+    }
+  ];
 
   const steps = [
     {
@@ -97,7 +166,6 @@ export default function StudentDashboard({
 
   const completedCount = steps.filter(s => s.isCompleted).length;
   const progressPercent = Math.round((completedCount / steps.length) * 100);
-  const activeStep = steps.find(s => s.number === currentStepIndex) || steps[2];
 
   const weakSkills = skills.filter(s => s.retention < 60 || s.mastery < 65);
   const topRecommendation = weakSkills.find(s => s.id === 'probability') || weakSkills[0] || skills[0] || { name: 'Probability', mastery: 42 };
@@ -142,17 +210,238 @@ export default function StudentDashboard({
         </div>
       </div>
 
-      {/* 2. GUIDED WORKFLOW STEPPER SEQUENCE (NOT A RANDOM GRID) */}
+      {/* 2. VISUAL 2D NODE FLOWCHART GRAPH (BRANCHING ARCHITECTURE) */}
+      <div className="bg-neutral-900 text-neutral-50 rounded-lg p-6 md:p-8 border border-neutral-800 space-y-6 relative overflow-hidden">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-neutral-800 pb-4">
+          <div>
+            <div className="flex items-center space-x-2 text-xs text-warning-400 font-semibold mb-1">
+              <GitBranch className="w-4 h-4" />
+              <span>Interactive Workflow Topology Graph</span>
+            </div>
+            <h2 className="font-editorial text-2xl font-bold text-neutral-50">
+              Personalized Learning Journey Map
+            </h2>
+            <p className="text-xs text-neutral-300 font-sans mt-0.5">
+              Visualizes node dependencies, branching calibration junctions, and unlock sequences.
+            </p>
+          </div>
+
+          <div className="flex items-center space-x-3 text-[11px] font-sans">
+            <span className="flex items-center space-x-1.5 text-success-400">
+              <span className="w-2.5 h-2.5 rounded-full bg-success-500"></span>
+              <span>Completed</span>
+            </span>
+            <span className="flex items-center space-x-1.5 text-warning-400">
+              <span className="w-2.5 h-2.5 rounded-full bg-warning-500 animate-pulse"></span>
+              <span>Active Action</span>
+            </span>
+            <span className="flex items-center space-x-1.5 text-neutral-500">
+              <span className="w-2.5 h-2.5 rounded-full bg-neutral-700"></span>
+              <span>Locked</span>
+            </span>
+          </div>
+        </div>
+
+        {/* DESKTOP 2D BRANCHING SVG GRAPH */}
+        <div className="hidden lg:block relative py-6 px-2">
+          {/* CONNECTOR SVG PATH OVERLAY */}
+          <svg className="absolute inset-0 w-full h-full pointer-events-none z-0 overflow-visible" style={{ minHeight: '320px' }}>
+            <defs>
+              <marker id="arrow-green" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="#5C9A6C" />
+              </marker>
+              <marker id="arrow-amber" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="#E5A93C" />
+              </marker>
+              <marker id="arrow-gray" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="#4B463C" />
+              </marker>
+            </defs>
+
+            {/* Line 1 -> 2 */}
+            <line x1="16%" y1="50%" x2="30%" y2="50%" stroke="#5C9A6C" strokeWidth="2.5" markerEnd="url(#arrow-green)" />
+
+            {/* Line 2 -> 3 */}
+            <line x1="33%" y1="50%" x2="47%" y2="50%" stroke="#5C9A6C" strokeWidth="2.5" markerEnd="url(#arrow-green)" />
+
+            {/* Line 3 -> 4 (Branch A Top) */}
+            <path d="M 52% 40% C 56% 20%, 60% 20%, 64% 20%" fill="none" stroke={hasTakenQuiz ? "#E5A93C" : "#4B463C"} strokeWidth="2" strokeDasharray={hasTakenQuiz ? "none" : "4 4"} markerEnd={hasTakenQuiz ? "url(#arrow-amber)" : "url(#arrow-gray)"} />
+
+            {/* Line 3 -> 5 (Branch B Bottom) */}
+            <path d="M 52% 60% C 56% 80%, 60% 80%, 64% 80%" fill="none" stroke={hasTakenQuiz ? "#E5A93C" : "#4B463C"} strokeWidth="2" strokeDasharray={hasTakenQuiz ? "none" : "4 4"} markerEnd={hasTakenQuiz ? "url(#arrow-amber)" : "url(#arrow-gray)"} />
+
+            {/* Line 4 -> 6 (Convergence Top) */}
+            <path d="M 78% 20% C 82% 20%, 84% 40%, 87% 45%" fill="none" stroke="#4B463C" strokeWidth="2" strokeDasharray="4 4" markerEnd="url(#arrow-gray)" />
+
+            {/* Line 5 -> 6 (Convergence Bottom) */}
+            <path d="M 78% 80% C 82% 80%, 84% 60%, 87% 55%" fill="none" stroke="#4B463C" strokeWidth="2" strokeDasharray="4 4" markerEnd="url(#arrow-gray)" />
+          </svg>
+
+          {/* 2D GRAPH NODE CONTAINER */}
+          <div className="relative z-10 grid grid-cols-5 gap-4 items-center min-h-[300px]">
+            
+            {/* NODE 1: SETUP */}
+            <button
+              onClick={() => onNavigate('onboarding')}
+              className="bg-neutral-950 border border-success-500/60 hover:border-success-400 p-4 rounded-lg text-left transition-all cursor-pointer space-y-2 group shadow-lg"
+            >
+              <div className="flex items-center justify-between text-xs">
+                <span className="w-6 h-6 rounded-full bg-success-600 text-neutral-50 font-bold flex items-center justify-center text-xs">✓</span>
+                <span className="text-[10px] uppercase font-bold text-success-400">Node 1</span>
+              </div>
+              <p className="font-bold text-neutral-50 text-sm font-sans group-hover:text-success-300">Setup Plan</p>
+              <p className="text-[11px] text-neutral-300 leading-snug">Tailors AI context & analogy engine</p>
+            </button>
+
+            {/* NODE 2: PATH */}
+            <button
+              onClick={() => onNavigate('path')}
+              className="bg-neutral-950 border border-success-500/60 hover:border-success-400 p-4 rounded-lg text-left transition-all cursor-pointer space-y-2 group shadow-lg"
+            >
+              <div className="flex items-center justify-between text-xs">
+                <span className="w-6 h-6 rounded-full bg-success-600 text-neutral-50 font-bold flex items-center justify-center text-xs">✓</span>
+                <span className="text-[10px] uppercase font-bold text-success-400">Node 2</span>
+              </div>
+              <p className="font-bold text-neutral-50 text-sm font-sans group-hover:text-success-300">AI Roadmap Path</p>
+              <p className="text-[11px] text-neutral-300 leading-snug">Deconstructs goal into daily topics</p>
+            </button>
+
+            {/* NODE 3: ADAPTIVE QUIZ (JUNCTION) */}
+            <button
+              onClick={() => onNavigate('adaptive-quiz')}
+              className={`p-4 rounded-lg text-left transition-all cursor-pointer space-y-2 group shadow-xl relative ${
+                currentStepIndex === 3
+                  ? 'bg-warning-500/20 border-warning-500 ring-2 ring-warning-500/40 scale-105'
+                  : hasTakenQuiz
+                  ? 'bg-neutral-950 border-success-500/60'
+                  : 'bg-neutral-950 border-warning-500/50'
+              }`}
+            >
+              {currentStepIndex === 3 && (
+                <span className="absolute -top-2.5 left-3 bg-warning-500 text-neutral-950 font-bold text-[9px] px-2 py-0.5 rounded uppercase font-sans tracking-wide shadow-md">
+                  YOU ARE HERE
+                </span>
+              )}
+              <div className="flex items-center justify-between text-xs">
+                <span className={`w-6 h-6 rounded-full font-bold flex items-center justify-center text-xs ${
+                  hasTakenQuiz ? 'bg-success-600 text-neutral-50' : 'bg-warning-500 text-neutral-950'
+                }`}>
+                  {hasTakenQuiz ? '✓' : '3'}
+                </span>
+                <span className="text-[10px] uppercase font-bold text-warning-400">Junction Node</span>
+              </div>
+              <p className="font-bold text-neutral-50 text-sm font-sans group-hover:text-warning-300">Adaptive Quiz</p>
+              <p className="text-[11px] text-neutral-300 leading-snug">Calibrates speed & mental models</p>
+            </button>
+
+            {/* PARALLEL BRANCHES (NODE 4 & NODE 5) */}
+            <div className="space-y-4 flex flex-col justify-between h-full">
+              {/* NODE 4: SKILL GRAPH */}
+              <button
+                onClick={() => onNavigate('skill-graph')}
+                className={`p-3.5 rounded-lg text-left transition-all cursor-pointer space-y-1.5 group shadow-lg ${
+                  currentStepIndex === 4
+                    ? 'bg-warning-500/20 border-warning-500 ring-2 ring-warning-500/40'
+                    : hasReviewedGraph
+                    ? 'bg-neutral-950 border-success-500/60'
+                    : 'bg-neutral-950 border-neutral-800 opacity-80'
+                }`}
+              >
+                <div className="flex items-center justify-between text-xs">
+                  <span className={`w-5 h-5 rounded-full font-bold flex items-center justify-center text-[10px] ${
+                    hasReviewedGraph ? 'bg-success-600 text-neutral-50' : 'bg-neutral-800 text-neutral-300'
+                  }`}>
+                    {hasReviewedGraph ? '✓' : '4'}
+                  </span>
+                  <span className="text-[9px] uppercase font-bold text-accent-400">Branch A</span>
+                </div>
+                <p className="font-bold text-neutral-50 text-xs font-sans">Skill Graph Matrix</p>
+                <p className="text-[10px] text-neutral-300">Prerequisite bottleneck nodes</p>
+              </button>
+
+              {/* NODE 5: LEARNING TWIN */}
+              <button
+                onClick={() => onNavigate('learning-twin')}
+                className={`p-3.5 rounded-lg text-left transition-all cursor-pointer space-y-1.5 group shadow-lg ${
+                  currentStepIndex === 5
+                    ? 'bg-warning-500/20 border-warning-500 ring-2 ring-warning-500/40'
+                    : 'bg-neutral-950 border-neutral-800 opacity-80'
+                }`}
+              >
+                <div className="flex items-center justify-between text-xs">
+                  <span className="w-5 h-5 rounded-full bg-neutral-800 text-neutral-300 font-bold flex items-center justify-center text-[10px]">5</span>
+                  <span className="text-[9px] uppercase font-bold text-accent-400">Branch B</span>
+                </div>
+                <p className="font-bold text-neutral-50 text-xs font-sans">Learning Twin</p>
+                <p className="text-[10px] text-neutral-300">Memory retention prediction</p>
+              </button>
+            </div>
+
+            {/* NODE 6: JOB READINESS */}
+            <button
+              onClick={() => onNavigate('career')}
+              className="bg-neutral-950 border border-neutral-800 opacity-75 hover:opacity-100 p-4 rounded-lg text-left transition-all cursor-pointer space-y-2 group shadow-lg"
+            >
+              <div className="flex items-center justify-between text-xs">
+                <span className="w-6 h-6 rounded-full bg-neutral-800 text-neutral-400 font-bold flex items-center justify-center text-xs">6</span>
+                <span className="text-[10px] uppercase font-bold text-neutral-400">Convergence</span>
+              </div>
+              <p className="font-bold text-neutral-50 text-sm font-sans group-hover:text-warning-300">Job Readiness & CV</p>
+              <p className="text-[11px] text-neutral-300 leading-snug">ATS Resume & Master Credential</p>
+            </button>
+
+          </div>
+        </div>
+
+        {/* MOBILE VERTICAL FLOWCHART GRAPH */}
+        <div className="lg:hidden space-y-3 relative">
+          {graphNodes.map((node, index) => (
+            <div key={node.id} className="relative flex items-center space-x-3">
+              {index < graphNodes.length - 1 && (
+                <div className="absolute left-4 top-8 bottom-0 w-0.5 bg-neutral-800 -z-0"></div>
+              )}
+
+              <button
+                onClick={() => onNavigate(node.targetView)}
+                className={`w-full p-4 rounded-lg border text-left transition-all cursor-pointer z-10 flex items-center justify-between ${
+                  node.isActive
+                    ? 'bg-warning-500/20 border-warning-500 ring-2 ring-warning-500/30'
+                    : node.isCompleted
+                    ? 'bg-neutral-950 border-success-500/60'
+                    : 'bg-neutral-950 border-neutral-800 opacity-75'
+                }`}
+              >
+                <div className="flex items-center space-x-3">
+                  <span className={`w-7 h-7 rounded-full font-bold text-xs flex items-center justify-center shrink-0 ${
+                    node.isCompleted ? 'bg-success-600 text-neutral-50' : node.isActive ? 'bg-warning-500 text-neutral-950' : 'bg-neutral-800 text-neutral-400'
+                  }`}>
+                    {node.isCompleted ? '✓' : node.number}
+                  </span>
+                  <div>
+                    <h3 className="font-bold text-neutral-50 text-sm">{node.name}</h3>
+                    <p className="text-xs text-neutral-300">{node.subtitle}</p>
+                  </div>
+                </div>
+
+                <ArrowRight className="w-4 h-4 text-neutral-400" />
+              </button>
+            </div>
+          ))}
+        </div>
+
+      </div>
+
+      {/* 3. STEPPER LIST EXPLANATIONS */}
       <div className="bg-neutral-100 rounded-lg p-6 md:p-8 border border-neutral-200 space-y-6">
         
         <div className="flex items-center justify-between border-b border-neutral-200 pb-4">
           <div>
             <h2 className="font-editorial text-2xl font-bold text-neutral-900 flex items-center space-x-2">
               <Layers className="w-5 h-5 text-warning-700" />
-              <span>Your Guided Setup & Learning Pathway</span>
+              <span>Step-by-Step Action Guidelines</span>
             </h2>
             <p className="text-xs text-neutral-600 font-sans mt-0.5">
-              Complete each step sequentially to calibrate your Learning Twin and reach job readiness.
+              Review detailed rationale and outcome payoffs for each workflow node.
             </p>
           </div>
 
@@ -174,7 +463,6 @@ export default function StudentDashboard({
             const isCompleted = step.isCompleted;
             const isLocked = !isCompleted && !isActive;
 
-            // Collapsed view for finished steps unless expanded
             if (isCompleted && !isCompletedStepsExpanded && !isActive) {
               return (
                 <div 
@@ -212,7 +500,6 @@ export default function StudentDashboard({
                     : 'bg-neutral-50/60 border-neutral-200 opacity-60'
                 }`}
               >
-                {/* STEP HEADER & BADGE */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                   <div className="flex items-center space-x-3">
                     <span className={`w-8 h-8 rounded-lg font-bold text-xs flex items-center justify-center ${
@@ -243,7 +530,6 @@ export default function StudentDashboard({
                   </span>
                 </div>
 
-                {/* STEP RATIONALE & WHAT / WHY / UNLOCKS EXPLANATION */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-sans pt-1">
                   <div className="bg-neutral-100 p-3.5 rounded-lg border border-neutral-200 space-y-1">
                     <span className="text-[10px] font-bold text-warning-700 uppercase tracking-wider block flex items-center space-x-1">
@@ -266,7 +552,6 @@ export default function StudentDashboard({
                   </div>
                 </div>
 
-                {/* RESULT PAYOFF (IF COMPLETED) */}
                 {isCompleted && step.resultPayoff && (
                   <div className="bg-success-50 border border-success-200 p-3 rounded-lg text-xs font-semibold text-success-900 flex items-center space-x-2">
                     <CheckCircle2 className="w-4 h-4 text-success-600 shrink-0" />
@@ -274,7 +559,6 @@ export default function StudentDashboard({
                   </div>
                 )}
 
-                {/* ACTION CTA BUTTON */}
                 <div className="pt-2 flex justify-end">
                   {isActive ? (
                     <button
@@ -309,7 +593,7 @@ export default function StudentDashboard({
 
       </div>
 
-      {/* 3. AI RECOMMENDATION CENTER */}
+      {/* 4. AI RECOMMENDATION CENTER */}
       <div className="bg-neutral-100 rounded-lg p-6 md:p-8 border border-neutral-200 space-y-4 relative">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2 text-warning-900">
@@ -406,10 +690,10 @@ export default function StudentDashboard({
         </div>
       )}
 
-      {/* 4. DASHBOARD CORE METRICS & FEATURES GRID */}
+      {/* 5. DASHBOARD CORE METRICS GRID */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         
-        {/* 1. LEARNING TWIN PREVIEW */}
+        {/* LEARNING TWIN PREVIEW */}
         <div 
           onClick={() => onNavigate('learning-twin')}
           className="bg-neutral-100 rounded-lg p-6 border border-neutral-200 hover:border-warning-500 transition-all cursor-pointer space-y-4 group"
@@ -449,7 +733,7 @@ export default function StudentDashboard({
           </div>
         </div>
 
-        {/* 2. FORGETTING PREDICTION & REVISION QUEUE */}
+        {/* SMART REVISION PREVIEW */}
         <div 
           onClick={() => onNavigate('smart-revision')}
           className="bg-neutral-100 rounded-lg p-6 border border-neutral-200 hover:border-error-500 transition-all cursor-pointer space-y-4 group"
@@ -486,7 +770,7 @@ export default function StudentDashboard({
           </div>
         </div>
 
-        {/* 3. CAREER SKILL GAP ANALYSIS */}
+        {/* CAREER SKILL GAP PREVIEW */}
         <div 
           onClick={() => onNavigate('career')}
           className="bg-neutral-100 rounded-lg p-6 border border-neutral-200 hover:border-warning-500 transition-all cursor-pointer space-y-4 group"
