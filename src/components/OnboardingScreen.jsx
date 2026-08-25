@@ -21,20 +21,20 @@ const SUGGESTED_GOALS = [
 
 export default function OnboardingScreen({ onSubmitOnboarding, isLoading }) {
  const [role, setRole] = useState('Student'); // Student or Working Professional
- const [goal, setGoal] = useState('Learn React & modern frontend architecture');
  const [skillLevel, setSkillLevel] = useState('Beginner'); // Beginner / Some experience / Intermediate
  const [timeMinutes, setTimeMinutes] = useState(25);
- const [timeCustomText, setTimeCustomText] = useState('25 minutes');
  const [domain, setDomain] = useState('cooking');
  const [jobDescription, setJobDescription] = useState('');
 
  const handleSubmit = (e) => {
  e.preventDefault();
- if (!goal.trim()) return;
+ const derivedGoal = role === 'Working Professional' 
+ ? (jobDescription.trim() || 'AI Engineering & Career Advancement') 
+ : 'AI Engineering & Machine Learning';
 
  onSubmitOnboarding({
  role,
- goal: goal.trim(),
+ goal: derivedGoal,
  skillLevel,
  timeAvailable: `${timeMinutes} minutes`,
  timeMinutes,
@@ -97,44 +97,13 @@ export default function OnboardingScreen({ onSubmitOnboarding, isLoading }) {
  </div>
  </div>
 
- {/* 2. Goal Input */}
- <div className="space-y-3">
- <label className="block text-xs uppercase tracking-wider font-semibold text-neutral-500">
- 2. Primary Learning Goal
- </label>
- <div className="relative">
- <Target className="absolute left-4 top-3.5 w-5 h-5 text-neutral-400" />
- <input
- type="text"
- required
- value={goal}
- onChange={(e) => setGoal(e.target.value)}
- placeholder="e.g. learn React, become job-ready in data analysis"
- className="w-full bg-neutral-50/80 border border-neutral-300 rounded-lg pl-12 pr-4 py-3 text-neutral-900 text-sm font-medium focus:outline-hidden focus:border-warning-600 focus:bg-neutral-100 transition-all"
- />
- </div>
- {/* Quick goal suggestions */}
- <div className="flex flex-wrap gap-2 pt-1">
- {SUGGESTED_GOALS.map((s, idx) => (
- <button
- key={idx}
- type="button"
- onClick={() => setGoal(s)}
- className="text-xs px-3 py-1 rounded-full bg-neutral-100 text-neutral-600 hover:bg-warning-100 hover:text-warning-900 transition-colors border border-neutral-200/60 cursor-pointer"
- >
- + {s}
- </button>
- ))}
- </div>
- </div>
-
- {/* 3. Skill Level & Time Available Grid */}
+ {/* 2. Skill Level & 3. Time Available Grid */}
  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
  
  {/* Skill Level */}
  <div className="space-y-3">
  <label className="block text-xs uppercase tracking-wider font-semibold text-neutral-500">
- 3. Current Skill Level
+ 2. Current Skill Level
  </label>
  <div className="grid grid-cols-3 gap-2">
  {['Beginner', 'Some experience', 'Intermediate'].map((lvl) => (
@@ -158,7 +127,7 @@ export default function OnboardingScreen({ onSubmitOnboarding, isLoading }) {
  <div className="space-y-3">
  <div className="flex items-center justify-between">
  <label className="block text-xs uppercase tracking-wider font-semibold text-neutral-500">
- 4. Time Available Today
+ 3. Time Available Today
  </label>
  <span className="text-xs font-bold text-warning-700 bg-warning-100 px-2.5 py-0.5 rounded-full">
  {timeMinutes} mins
@@ -185,10 +154,10 @@ export default function OnboardingScreen({ onSubmitOnboarding, isLoading }) {
 
  </div>
 
- {/* 5. Analogy Engine Domain / Hobby */}
+ {/* 4. Analogy Engine Domain / Hobby */}
  <div className="space-y-3">
  <label className="block text-xs uppercase tracking-wider font-semibold text-neutral-500">
- 5. Domain or Hobby You Know Well <span className="normal-case text-accent-800 font-normal">(Used for Analogy Engine)</span>
+ 4. Domain or Hobby You Know Well <span className="normal-case text-accent-800 font-normal">(Used for Analogy Engine)</span>
  </label>
  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
  {SUGGESTED_DOMAINS.map((item) => (
@@ -218,13 +187,13 @@ export default function OnboardingScreen({ onSubmitOnboarding, isLoading }) {
  </div>
  </div>
 
- {/* 6. Optional Job Description for Working Professionals */}
+ {/* 5. Optional Job Description for Working Professionals */}
  {role === 'Working Professional' && (
  <div className="space-y-3 pt-2 border-t border-neutral-200/70 animate-in fade-in duration-200">
  <div className="flex items-center space-x-2">
  <FileText className="w-4 h-4 text-warning-700" />
  <label className="block text-xs uppercase tracking-wider font-semibold text-neutral-700">
- 6. Target Job Description or Role Title <span className="normal-case text-neutral-400 font-normal">(Optional)</span>
+ 5. Target Job Description or Role Title <span className="normal-case text-neutral-400 font-normal">(Optional)</span>
  </label>
  </div>
  <textarea
