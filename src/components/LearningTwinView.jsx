@@ -323,7 +323,7 @@ export default function LearningTwinView({
  </div>
 
  </div>
-
+ </>)}
  </div>
  );
 }
