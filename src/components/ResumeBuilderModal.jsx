@@ -253,7 +253,7 @@ ${(resumeData.certifications || []).map(c => `- **${c.title}** (${c.issuer}, ${c
 
  {/* EXECUTIVE SUMMARY */}
  <div className="space-y-1.5">
- <h4 className="text-xs font-bold uppercase tracking-wider text-neutral-500 border-b border-neutral-200 pb-1">
+ <h4 className="text-xs font-bold uppercase tracking-wider text-neutral-700 border-b border-neutral-200 pb-1">
  Professional Executive Summary
  </h4>
  <p className="text-xs text-neutral-700 leading-relaxed">
@@ -263,7 +263,7 @@ ${(resumeData.certifications || []).map(c => `- **${c.title}** (${c.issuer}, ${c
 
  {/* CORE COMPETENCIES GRID */}
  <div className="space-y-2">
- <h4 className="text-xs font-bold uppercase tracking-wider text-neutral-500 border-b border-neutral-200 pb-1">
+ <h4 className="text-xs font-bold uppercase tracking-wider text-neutral-700 border-b border-neutral-200 pb-1">
  Verified Technical Competencies & Topics Mastered
  </h4>
 
@@ -282,7 +282,7 @@ ${(resumeData.certifications || []).map(c => `- **${c.title}** (${c.issuer}, ${c
 
  {/* KEY CAPSTONE PROJECTS */}
  <div className="space-y-3">
- <h4 className="text-xs font-bold uppercase tracking-wider text-neutral-500 border-b border-neutral-200 pb-1">
+ <h4 className="text-xs font-bold uppercase tracking-wider text-neutral-700 border-b border-neutral-200 pb-1">
  Key Projects & Practical Applications
  </h4>
 
@@ -306,7 +306,7 @@ ${(resumeData.certifications || []).map(c => `- **${c.title}** (${c.issuer}, ${c
 
  {/* CERTIFICATIONS & UPSKILLING */}
  <div className="space-y-2">
- <h4 className="text-xs font-bold uppercase tracking-wider text-neutral-500 border-b border-neutral-200 pb-1">
+ <h4 className="text-xs font-bold uppercase tracking-wider text-neutral-700 border-b border-neutral-200 pb-1">
  Certifications & Adaptive Learning Milestones
  </h4>
 

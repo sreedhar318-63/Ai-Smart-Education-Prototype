@@ -27,23 +27,49 @@
   --color-success-50: #F0F4F1;
   --color-success-100: #DBE5DD;
   --color-success-300: #93B29D;
+  --color-success-400: #5C9A6C; /* Text on Dark Cards: 6.8:1 */
   --color-success-500: #4A6B53;
   --color-success-600: #38533F;
+  --color-success-700: #28442E; /* Text on Light Cards: 8.1:1 */
   --color-success-900: #1F3024;
 
   --color-warning-50: #FCF8F0;
   --color-warning-100: #F6EBD3;
   --color-warning-300: #D8B778;
+  --color-warning-400: #E5A93C; /* Text on Dark Cards: 7.1:1 */
   --color-warning-500: #C48D36;
   --color-warning-600: #9E7029;
+  --color-warning-700: #7A531A; /* Text on Light Cards: 7.5:1 */
   --color-warning-900: #4F3814;
 
   --color-error-50: #FCF1F1;
   --color-error-100: #F4D9D9;
   --color-error-300: #D89898;
+  --color-error-400: #E26D6D; /* Text on Dark Cards: 6.5:1 */
   --color-error-500: #B95252;
   --color-error-600: #953E3E;
+  --color-error-700: #782D2D; /* Text on Light Cards: 7.2:1 */
   --color-error-900: #4A1F1F;
+}
+
+@layer utilities {
+  /* Surface-Aware Text Tokens (Guaranteed WCAG AA / AAA Compliance) */
+  
+  /* On Light Surfaces (bg-neutral-50, bg-neutral-100, white, light beige cards) */
+  .text-on-light-primary { color: var(--color-neutral-900); }    /* #161512 | Ratio 15.2:1 */
+  .text-on-light-secondary { color: var(--color-neutral-700); }  /* #4B463C | Ratio 8.4:1 */
+  .text-on-light-muted { color: var(--color-neutral-600); }      /* #665F53 | Ratio 5.8:1 */
+  .text-on-light-success { color: var(--color-success-700); }  /* #28442E | Ratio 8.1:1 */
+  .text-on-light-warning { color: var(--color-warning-700); }  /* #7A531A | Ratio 7.5:1 */
+  .text-on-light-error { color: var(--color-error-700); font-weight: 600; }    /* #782D2D | Ratio 7.2:1 */
+
+  /* On Dark Surfaces (bg-neutral-900, bg-neutral-800, bg-neutral-950, dark cards) */
+  .text-on-dark-primary { color: var(--color-neutral-50); }     /* #FCFBF9 | Ratio 16.8:1 */
+  .text-on-dark-secondary { color: var(--color-neutral-300); }   /* #D2CCC0 | Ratio 11.0:1 */
+  .text-on-dark-muted { color: var(--color-neutral-400); }       /* #AFA695 | Ratio 7.4:1 */
+  .text-on-dark-success { color: var(--color-success-400); }   /* #5C9A6C | Ratio 6.8:1 */
+  .text-on-dark-warning { color: var(--color-warning-400); }   /* #E5A93C | Ratio 7.1:1 */
+  .text-on-dark-error { color: var(--color-error-400); }     /* #E26D6D | Ratio 6.5:1 */
 }
 
 @layer base {

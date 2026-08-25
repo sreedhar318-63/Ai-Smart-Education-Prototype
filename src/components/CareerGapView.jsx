@@ -275,17 +275,17 @@ export default function CareerGapView({
 
  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs pt-1">
  <div className="bg-neutral-100 p-2.5 rounded-lg border border-neutral-200">
- <span className="text-[10px] text-neutral-400 font-bold uppercase block">Est Time & Target</span>
+ <span className="text-[10px] text-neutral-600 font-bold uppercase block">Est Time & Target</span>
  <span className="font-semibold text-neutral-800">{phase.estTime} • {phase.masteryTarget}</span>
  </div>
 
  <div className="bg-neutral-100 p-2.5 rounded-lg border border-neutral-200">
- <span className="text-[10px] text-neutral-400 font-bold uppercase block">Practical Project</span>
+ <span className="text-[10px] text-neutral-600 font-bold uppercase block">Practical Project</span>
  <span className="font-semibold text-warning-900">{phase.project}</span>
  </div>
 
  <div className="bg-neutral-100 p-2.5 rounded-lg border border-neutral-200">
- <span className="text-[10px] text-neutral-400 font-bold uppercase block">Assessment</span>
+ <span className="text-[10px] text-neutral-600 font-bold uppercase block">Assessment</span>
  <span className="font-semibold text-neutral-800">{phase.assessment}</span>
  </div>
  </div>
