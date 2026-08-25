@@ -194,6 +194,12 @@ export default function StudentDashboard({
   const topRecommendation = weakSkills.find(s => s.id === 'probability') || weakSkills[0] || skills[0] || { name: 'Probability', mastery: 42 };
   const whyExplanation = explainRecommendation(topRecommendation.name, topRecommendation.mastery, careerGoal);
 
+  // Time-aware dynamic greeting
+  const currentHour = new Date().getHours();
+  const timeGreeting = currentHour < 12 ? 'Good morning' : currentHour < 18 ? 'Good afternoon' : 'Good evening';
+  const userName = (studentProfile?.name && studentProfile.name !== 'Sreedhar') ? studentProfile.name.trim() : '';
+  const greetingText = userName ? `${timeGreeting}, ${userName}! 👋` : `${timeGreeting}! 👋`;
+
   return (
     <div className="max-w-6xl mx-auto px-4 py-6 md:py-8 space-y-6 md:space-y-8 animate-in fade-in duration-300 font-sans">
       
@@ -206,7 +212,7 @@ export default function StudentDashboard({
               <span>AI Learning Companion Active</span>
             </div>
             <h1 className="text-2xl md:text-3xl font-bold text-neutral-50">
-              Good morning, {studentProfile?.name || 'Sreedhar'}! 👋
+              {greetingText}
             </h1>
             <p className="text-xs text-neutral-300 mt-1">
               You're <strong className="text-amber-400">72% through</strong> your Python fundamentals path. You have a <strong className="text-amber-400">{studentProfile?.streak || 5}-day streak</strong>!

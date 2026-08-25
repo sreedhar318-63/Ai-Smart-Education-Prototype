@@ -11,7 +11,7 @@
  */
 
 export const INITIAL_STUDENT_PROFILE = {
-  name: "Sreedhar",
+  name: "",
   targetCareer: "AI Engineer",
   mastery: 72,
   learningSpeed: "Fast",

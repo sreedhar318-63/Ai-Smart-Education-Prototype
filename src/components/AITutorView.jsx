@@ -18,11 +18,15 @@ export default function AITutorView({
   const activePersonaObj = PERSONAS.find(p => p.id === persona) || PERSONAS[0];
 
   const [mode, setMode] = useState('tutor'); // 'tutor' | 'teach_me' (Socratic)
+  const tutorGreeting = (studentProfile?.name && studentProfile.name !== 'Sreedhar')
+    ? `Hi ${studentProfile.name}!`
+    : `Hi!`;
+
   const [messages, setMessages] = useState([
     {
       id: 'init-1',
       sender: 'ai',
-      text: `Hi ${studentProfile?.name || 'Sreedhar'}! I'm your AI Personal Tutor ${activePersonaObj.icon}.\n\nYou can ask me to explain any topic, click **🎤 Speak** to ask by voice, or **📷 Learn from Camera** to scan a textbook question!`,
+      text: `${tutorGreeting} I'm your AI Personal Tutor ${activePersonaObj.icon}.\n\nYou can ask me to explain any topic, click **🎤 Speak** to ask by voice, or **📷 Learn from Camera** to scan a textbook question!`,
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     }
   ]);
