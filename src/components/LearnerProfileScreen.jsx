@@ -343,16 +343,16 @@ INSTRUCTION: Adapt your explanation style accordingly. If this topic is conceptu
  </div>
 
  {/* AI Resume Builder CTA Banner */}
- <div className="text-neutral-100 rounded-lg p-6 border border-warning-600/40 flex flex-col sm:flex-row items-center justify-between gap-4 ">
+ <div className="bg-warning-50/80 rounded-lg p-6 border border-warning-300/80 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-xs">
  <div className="space-y-1">
- <div className="flex items-center space-x-2 text-accent-400 font-bold text-xs uppercase tracking-wider">
- <Sparkles className="w-4 h-4" />
+ <div className="flex items-center space-x-2 text-warning-800 font-bold text-xs uppercase tracking-wider">
+ <Sparkles className="w-4 h-4 text-warning-700" />
  <span>Job Readiness Tool</span>
  </div>
- <h4 className="font-editorial text-xl font-bold text-neutral-50">
+ <h4 className="font-editorial text-xl font-bold text-neutral-900">
  Generate AI Skill-Based Resume
  </h4>
- <p className="text-xs text-neutral-300 font-sans">
+ <p className="text-xs text-neutral-700 font-sans">
  Synthesize your completed roadmap topics into an ATS-optimized CV with custom bullet points.
  </p>
  </div>
