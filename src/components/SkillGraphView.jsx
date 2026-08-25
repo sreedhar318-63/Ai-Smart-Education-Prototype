@@ -138,19 +138,20 @@ export default function SkillGraphView({ skills, onNavigate }) {
  {/* LEVEL 2: CORE BRANCHES */}
  <div className="grid grid-cols-3 gap-3 max-w-xl mx-auto">
  {[
- { id: 'python', name: 'Python', mastery: 82, color: 'text-success-400 border-success-600 bg-success-950/60' },
- { id: 'statistics', name: 'Statistics', mastery: 61, color: 'text-accent-400 border-warning-600 bg-accent-950/60' },
- { id: 'ml', name: 'ML', mastery: 64, color: 'text-accent-400 border-warning-600 bg-accent-950/60' }
+ { id: 'python', name: 'Python', mastery: 82, status: 'Strong', borderColor: 'border-success-500/60', statusColor: 'text-success-400' },
+ { id: 'statistics', name: 'Statistics', mastery: 61, status: 'Moderate', borderColor: 'border-warning-500/60', statusColor: 'text-warning-400' },
+ { id: 'ml', name: 'ML', mastery: 64, status: 'Moderate', borderColor: 'border-warning-500/60', statusColor: 'text-warning-400' }
  ].map(item => (
  <button
  key={item.id}
  onClick={() => setSelectedNode(nodes.find(n => n.id === item.id))}
- className={`p-3 rounded-lg border transition-all cursor-pointer text-xs font-bold ${item.color} ${
- selectedNode.id === item.id ? 'ring-2 ring-amber-400 scale-105 ' : 'hover:opacity-90'
+ className={`p-3 rounded-lg border bg-neutral-900 transition-all cursor-pointer flex flex-col items-center justify-center ${item.borderColor} ${
+ selectedNode.id === item.id ? 'ring-2 ring-neutral-300 scale-105 ' : 'hover:bg-neutral-800'
  }`}
  >
- <span className="block">{item.name}</span>
- <span className="text-sm font-extrabold">{item.mastery}%</span>
+ <span className={`text-[9px] font-bold uppercase tracking-wider mb-1 ${item.statusColor}`}>{item.status}</span>
+ <span className="text-xs font-medium text-neutral-300 block mb-0.5">{item.name}</span>
+ <span className="text-lg font-bold text-neutral-50">{item.mastery}%</span>
  </button>
  ))}
  </div>
@@ -162,22 +163,24 @@ export default function SkillGraphView({ skills, onNavigate }) {
  <div className="grid grid-cols-2 gap-4 max-w-md mx-auto">
  <button
  onClick={() => setSelectedNode(nodes.find(n => n.id === 'probability'))}
- className={`p-3.5 rounded-lg border transition-all cursor-pointer text-xs font-bold bg-error-950/80 border-error-600 text-error-300 animate-pulse ${
- selectedNode.id === 'probability' ? 'ring-2 ring-error-400 scale-105 ' : 'hover:opacity-90'
+ className={`p-3 rounded-lg border bg-neutral-900 border-error-500/60 transition-all cursor-pointer flex flex-col items-center justify-center animate-pulse ${
+ selectedNode.id === 'probability' ? 'ring-2 ring-neutral-300 scale-105 ' : 'hover:bg-neutral-800'
  }`}
  >
- <span className="block">Probability</span>
- <span className="text-sm font-extrabold text-neutral-50">42% (Bottleneck)</span>
+ <span className="text-[9px] font-bold uppercase tracking-wider mb-1 text-error-400">Bottleneck</span>
+ <span className="text-xs font-medium text-neutral-300 block mb-0.5">Probability</span>
+ <span className="text-lg font-bold text-neutral-50">42%</span>
  </button>
 
  <button
  onClick={() => setSelectedNode(nodes.find(n => n.id === 'distributions'))}
- className={`p-3.5 rounded-lg border transition-all cursor-pointer text-xs font-bold bg-accent-950/60 border-warning-600 text-warning-300 ${
- selectedNode.id === 'distributions' ? 'ring-2 ring-amber-400 scale-105 ' : 'hover:opacity-90'
+ className={`p-3 rounded-lg border bg-neutral-900 border-warning-500/60 transition-all cursor-pointer flex flex-col items-center justify-center ${
+ selectedNode.id === 'distributions' ? 'ring-2 ring-neutral-300 scale-105 ' : 'hover:bg-neutral-800'
  }`}
  >
- <span className="block">Distributions</span>
- <span className="text-sm font-extrabold text-neutral-50">68%</span>
+ <span className="text-[9px] font-bold uppercase tracking-wider mb-1 text-warning-400">Moderate</span>
+ <span className="text-xs font-medium text-neutral-300 block mb-0.5">Distributions</span>
+ <span className="text-lg font-bold text-neutral-50">68%</span>
  </button>
  </div>
 

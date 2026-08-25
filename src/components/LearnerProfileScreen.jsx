@@ -101,10 +101,10 @@ Average Confusion Cycles per Topic: ${learnerModel.avgCycles || 0}`;
  </span>
  </div>
  <p className="text-sm text-neutral-300 font-sans">
- Goal: <strong className="text-warning-300">{onboardingData.goal}</strong> • Level: <span className="italic">{onboardingData.skillLevel}</span>
+ Goal: <strong className="text-neutral-50 font-bold">{onboardingData.goal}</strong> • Level: <span className="italic text-neutral-400">{onboardingData.skillLevel}</span>
  </p>
- <p className="text-xs text-neutral-400 font-sans">
- Analogy Engine Domain: <strong className="text-neutral-50 uppercase">{onboardingData.domain}</strong>
+ <p className="text-xs text-neutral-400 font-sans mt-1">
+ Analogy Engine Domain: <strong className="text-neutral-50 font-bold uppercase">{onboardingData.domain}</strong>
  </p>
  </div>
  </div>
@@ -113,9 +113,9 @@ Average Confusion Cycles per Topic: ${learnerModel.avgCycles || 0}`;
  <div className="grid grid-cols-3 gap-3 w-full md:w-auto z-10">
  {/* Streak Counter */}
  <div className="bg-neutral-800/90 border border-neutral-700/80 p-3.5 rounded-lg text-center space-y-0.5">
- <div className="flex items-center justify-center space-x-1 text-accent-400 text-xs font-semibold">
- <Flame className="w-4 h-4 fill-amber-400" />
- <span>Streak</span>
+ <div className="flex items-center justify-center space-x-1 mb-1">
+ <Flame className="w-3.5 h-3.5 text-warning-400" />
+ <span className="text-xs font-medium text-neutral-300 uppercase tracking-wider">Streak</span>
  </div>
  <div className="text-2xl font-bold text-neutral-50 font-sans">
  {learnerModel.currentStreak || 5}d
@@ -127,9 +127,9 @@ Average Confusion Cycles per Topic: ${learnerModel.avgCycles || 0}`;
 
  {/* Topics Completed */}
  <div className="bg-neutral-800/90 border border-neutral-700/80 p-3.5 rounded-lg text-center space-y-0.5">
- <div className="flex items-center justify-center space-x-1 text-success-400 text-xs font-semibold">
- <BookOpen className="w-4 h-4" />
- <span>Topics</span>
+ <div className="flex items-center justify-center space-x-1 mb-1">
+ <BookOpen className="w-3.5 h-3.5 text-success-400" />
+ <span className="text-xs font-medium text-neutral-300 uppercase tracking-wider">Topics</span>
  </div>
  <div className="text-2xl font-bold text-neutral-50 font-sans">
  {learnerModel.completedTopicsCount || 0}
@@ -141,9 +141,9 @@ Average Confusion Cycles per Topic: ${learnerModel.avgCycles || 0}`;
 
  {/* Time Spent */}
  <div className="bg-neutral-800/90 border border-neutral-700/80 p-3.5 rounded-lg text-center space-y-0.5">
- <div className="flex items-center justify-center space-x-1 text-cyan-400 text-xs font-semibold">
- <Clock className="w-4 h-4" />
- <span>Time</span>
+ <div className="flex items-center justify-center space-x-1 mb-1">
+ <Clock className="w-3.5 h-3.5 text-cyan-400" />
+ <span className="text-xs font-medium text-neutral-300 uppercase tracking-wider">Time</span>
  </div>
  <div className="text-2xl font-bold text-neutral-50 font-sans">
  ~{learnerModel.totalMinutesSpent || 0}m
